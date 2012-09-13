@@ -1,4 +1,4 @@
-package org.coolcow.rpttool;
+package org.coolcow.rpttool.backend;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,33 +7,33 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class LogFileTailer extends Thread {
+public class RptTailer extends Thread {
 
     private long sampleInterval = 5000;
     private File logfile;
     private boolean tailing = false;
     private Set listeners = new HashSet();
 
-    public LogFileTailer(File file) {
+    public RptTailer(File file) {
         this.logfile = file;
     }
 
-    public LogFileTailer(final File file, final long sampleInterval) {
+    public RptTailer(final File file, final long sampleInterval) {
         this.logfile = file;
         this.sampleInterval = sampleInterval;
     }
 
-    public void addLogFileTailerListener(final LogFileTailerListener listener) {
+    public void addLogFileTailerListener(final RptTailerListener listener) {
         this.listeners.add(listener);
     }
 
-    public void removeLogFileTailerListener(final LogFileTailerListener listener) {
+    public void removeLogFileTailerListener(final RptTailerListener listener) {
         this.listeners.remove(listener);
     }
 
     protected void fireNewLogFileLine(final String line) {
         for (Iterator iterator = this.listeners.iterator(); iterator.hasNext();) {
-            LogFileTailerListener listener = (LogFileTailerListener) iterator.next();
+            RptTailerListener listener = (RptTailerListener) iterator.next();
             listener.newLogFileLine(line);
         }
     }

@@ -2,23 +2,28 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.coolcow.rpttool;
+package org.coolcow.rpttool.gui;
 
-import java.awt.EventQueue;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.table.AbstractTableModel;
+import org.coolcow.rpttool.backend.RptLine;
 
 /**
  *
  * @author jruiz
  */
-public class LineModel extends AbstractTableModel {
+public class RptLineTableModel extends AbstractTableModel {
 
-    private ArrayList<Line> lines = new ArrayList<>();
-    final static String[] COLUMN_NAMES = {"#", "time", "content"};
-    final static Class[] COLUMN_CLASSES = {Integer.class, Date.class, String.class};
-    final static boolean[] COLUMN_EDITABLE = {false, false, false};
+    public static final int COLUMN_NUMBER = 0;
+    public static final int COLUMN_TIME = 1;
+    public static final int COLUMN_TYPE = 2;
+    public static final int COLUMN_CONTENT = 3;
+    
+    private ArrayList<RptLine> lines = new ArrayList<>();
+    final static String[] COLUMN_NAMES = {"#", "time", "type", "content"};
+    final static Class[] COLUMN_CLASSES = {Integer.class, Date.class, RptLine.Type.class, String.class};
+    final static boolean[] COLUMN_EDITABLE = {false, false, false, false};
 
     @Override
     public int getColumnCount() {
@@ -42,15 +47,18 @@ public class LineModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int row, int column) {
-        final Line line = lines.get(row);
+        final RptLine line = lines.get(row);
         switch (column) {
-            case 0: {
+            case COLUMN_NUMBER: {
                 return line.getNumber();
             }
-            case 1: {
+            case COLUMN_TIME: {
                 return line.getDate();
             }
-            case 2: {
+            case COLUMN_TYPE: {
+                return line.getType();
+            }
+            case COLUMN_CONTENT: {
                 return line.getContent();
             }
             default: {
@@ -64,22 +72,22 @@ public class LineModel extends AbstractTableModel {
         return lines.size();
     }   
 
-    public void addLine(final Line line) {
+    public void addLine(final RptLine line) {
         lines.add(line);
         fireTableDataChanged();
     }
     
-    public void removeLine(final Line line) {
+    public void removeLine(final RptLine line) {
         lines.remove(line);
         fireTableDataChanged();
     }
     
-    final void clear() {
+    final public void clear() {
         lines.clear();
         fireTableDataChanged();
     }
     
-    final Line getLine(final int row) {
+    final public RptLine getLine(final int row) {
         return lines.get(row);
     }
 
