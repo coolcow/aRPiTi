@@ -2,5 +2,8 @@ package org.coolcow.rpttool.backend;
 
 public interface RptTailerListener {
 
-    public void newLogFileLine(String line);
+    public void newLineTailed(String line);
+    public void tailingStarted();
+    public void tailingFinished();
+    
 }

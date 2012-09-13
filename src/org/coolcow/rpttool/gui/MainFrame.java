@@ -15,12 +15,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.RowFilter.Entry;
 import javax.swing.*;
@@ -39,10 +34,9 @@ public class MainFrame extends javax.swing.JFrame {
 
     final public static DateFormat DATE_FORMAT = new SimpleDateFormat("kk:mm:ss");
     private final RptLineTableModel model = new RptLineTableModel();
-    private final TableRowSorter rowSorter = new TableRowSorter(model);
     private File rptFile = null;
     private int lineNumber = 0;
-    private RptTailer logFileTailer;
+    private RptTailer rptFileTailer;
     private RptLine popLine = null;
 
     /**
@@ -50,8 +44,91 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
-        
+
         tblLines.setAutoCreateRowSorter(false);
+
+        final TableRowSorter<RptLineTableModel> sorter = new TableRowSorter<>(model);
+        tblLines.setRowSorter(sorter);
+
+        final RowFilter complexFilter = new RowFilter<RptLineTableModel, Integer>() {
+
+            @Override
+            public boolean include(Entry<? extends RptLineTableModel, ? extends Integer> entry) {
+                RptLineTableModel model = entry.getModel();
+                RptLine line = model.getLine(entry.getIdentifier());
+
+                final String contentFilter = txtFilter.getText();
+                final boolean contentFilterIncludes;
+                if (contentFilter != null) {
+                    final Pattern pattern = Pattern.compile(contentFilter);
+                    contentFilterIncludes = pattern.matcher(line.getContent()).find();
+                } else {
+                    contentFilterIncludes = true;
+                }
+
+                final boolean typeFilterIncludes;
+                if (line.getType() == null) {
+                    typeFilterIncludes = cbxFilterNull.isSelected();
+                } else {
+                    switch (line.getType()) {
+                        case CLEANUP:
+                            typeFilterIncludes = cbxFilterCleanup.isSelected();
+                            break;
+                        case DELETE:
+                            typeFilterIncludes = cbxFilterDelete.isSelected();
+                            break;
+                        case DISCONNECT_START:
+                            typeFilterIncludes = cbxFilterDisconnectStartI.isSelected();
+                            break;
+                        case ERROR:
+                            typeFilterIncludes = cbxFilterError.isSelected();
+                            break;
+                        case HIVE:
+                            typeFilterIncludes = cbxFilterHive.isSelected();
+                            break;
+                        case LOCALITY_EVENT:
+                            typeFilterIncludes = cbxFilterLocalityEvent.isSelected();
+                            break;
+                        case LOGIN_ATTEMPT:
+                            typeFilterIncludes = cbxFilterLoginAttempt.isSelected();
+                            break;
+                        case LOGIN_LOADED:
+                            typeFilterIncludes = cbxFilterLoginLoaded.isSelected();
+                            break;
+                        case LOGIN_PUBLISHING:
+                            typeFilterIncludes = cbxFilterLoginPublishing.isSelected();
+                            break;
+                        case OBJ:
+                            typeFilterIncludes = cbxFilterObj.isSelected();
+                            break;
+                        case PDEATH:
+                            typeFilterIncludes = cbxFilterPdeath.isSelected();
+                            break;
+                        case READ_WRITE:
+                            typeFilterIncludes = cbxFilterReadWrite.isSelected();
+                            break;
+                        case STARTING_LOGIN:
+                            typeFilterIncludes = cbxFilterStartingLogin.isSelected();
+                            break;
+                        case WRITE:
+                            typeFilterIncludes = cbxFilterWrite.isSelected();
+                            break;
+                        case DW_DEBUG_FPS:
+                            typeFilterIncludes = cbxFilterDwDebugFps.isSelected();
+                            break;
+                        case SECOND_HAND_ZOMBIE_INITIALIZED:
+                            typeFilterIncludes = cbxFilterSecondHandZombieInitialized.isSelected();
+                            break;
+                        default:
+                            typeFilterIncludes = true;
+                    }
+                }
+
+                return contentFilterIncludes && typeFilterIncludes;
+            }
+        };
+
+        sorter.setRowFilter(complexFilter);
 
         tblLines.getColumnModel().getColumn(RptLineTableModel.COLUMN_NUMBER).setPreferredWidth(60);
         tblLines.getColumnModel().getColumn(RptLineTableModel.COLUMN_TIME).setPreferredWidth(60);
@@ -102,6 +179,8 @@ public class MainFrame extends javax.swing.JFrame {
         panMain = new javax.swing.JPanel();
         panProgress = new javax.swing.JPanel();
         pgbLines = new javax.swing.JProgressBar();
+        cbAutoscroll = new javax.swing.JCheckBox();
+        btnPauseResume = new javax.swing.JButton();
         panTable = new javax.swing.JPanel();
         scrTable = new javax.swing.JScrollPane();
         tblLines = new javax.swing.JTable() {
@@ -117,7 +196,6 @@ public class MainFrame extends javax.swing.JFrame {
         panRight = new javax.swing.JPanel();
         panInfo = new javax.swing.JPanel();
         panFilter = new javax.swing.JPanel();
-        btnFilter = new javax.swing.JButton();
         txtFilter = new javax.swing.JTextField();
         panTypes = new javax.swing.JPanel();
         cbxFilterNull = new javax.swing.JCheckBox();
@@ -141,7 +219,7 @@ public class MainFrame extends javax.swing.JFrame {
         panPlayers = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList();
-        jCheckBox1 = new javax.swing.JCheckBox();
+        cbFilterPlayers = new javax.swing.JCheckBox();
         mnbMain = new javax.swing.JMenuBar();
         menMain = new javax.swing.JMenu();
         mniLoadRpt = new javax.swing.JMenuItem();
@@ -168,9 +246,35 @@ public class MainFrame extends javax.swing.JFrame {
         pgbLines.setString("0 lines");
         pgbLines.setStringPainted(true);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         panProgress.add(pgbLines, gridBagConstraints);
+
+        cbAutoscroll.setSelected(true);
+        cbAutoscroll.setToolTipText("(dis-)activate autoscroll");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        panProgress.add(cbAutoscroll, gridBagConstraints);
+
+        btnPauseResume.setText("pause");
+        btnPauseResume.setEnabled(false);
+        btnPauseResume.setMaximumSize(new java.awt.Dimension(75, 23));
+        btnPauseResume.setMinimumSize(new java.awt.Dimension(75, 23));
+        btnPauseResume.setPreferredSize(new java.awt.Dimension(75, 23));
+        btnPauseResume.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPauseResumeActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
+        panProgress.add(btnPauseResume, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -184,7 +288,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         tblLines.setModel(model);
         tblLines.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
-        tblLines.setRowSorter(rowSorter);
         tblLines.getTableHeader().setReorderingAllowed(false);
         scrTable.setViewportView(tblLines);
 
@@ -223,20 +326,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         panFilter.setBorder(javax.swing.BorderFactory.createTitledBorder("Filter"));
         panFilter.setLayout(new java.awt.GridBagLayout());
-
-        btnFilter.setText("Apply");
-        btnFilter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnFilterActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        panFilter.add(btnFilter, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -360,14 +449,14 @@ public class MainFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         panFilter.add(panPlayers, gridBagConstraints);
 
-        jCheckBox1.setText("selected players");
-        jCheckBox1.setEnabled(false);
+        cbFilterPlayers.setText("selected players");
+        cbFilterPlayers.setEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        panFilter.add(jCheckBox1, gridBagConstraints);
+        panFilter.add(cbFilterPlayers, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -422,81 +511,23 @@ public class MainFrame extends javax.swing.JFrame {
         fc.setDialogTitle("choose RPT file");
         final int returnVal = fc.showOpenDialog(this);
 
+        btnPauseResume.setEnabled(true);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             rptFile = fc.getSelectedFile();
-            new Thread() {
+            new SwingWorker<Void, Void>() {
 
                 @Override
-                public void run() {
+                protected Void doInBackground() throws Exception {
                     loadLines(rptFile);
+                    return null;
                 }
-            }.start();
+            }.execute();
         }
     }//GEN-LAST:event_mniLoadRptActionPerformed
 
     private void mniExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniExitActionPerformed
         System.exit(0);
     }//GEN-LAST:event_mniExitActionPerformed
-
-    private void btnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterActionPerformed
-        final TableRowSorter<RptLineTableModel> sorter = new TableRowSorter<>(model);
-        tblLines.setRowSorter(sorter);
-
-        final RowFilter<Object, Object> regexFilter = RowFilter.regexFilter(txtFilter.getText(), 2);
-
-        final RowFilter typeFilter = new RowFilter<RptLineTableModel, Integer>() {
-
-            @Override
-            public boolean include(Entry<? extends RptLineTableModel, ? extends Integer> entry) {
-                RptLineTableModel model = entry.getModel();
-                RptLine line = model.getLine(entry.getIdentifier());
-                if (line.getType() == null) {
-                    return cbxFilterNull.isSelected();
-                } else {
-                    switch (line.getType()) {
-                        case CLEANUP: return cbxFilterCleanup.isSelected();
-                        case DELETE: return cbxFilterDelete.isSelected();
-                        case DISCONNECT_START: return cbxFilterDisconnectStartI.isSelected();
-                        case ERROR: return cbxFilterError.isSelected();
-                        case HIVE: return cbxFilterHive.isSelected();
-                        case LOCALITY_EVENT: return cbxFilterLocalityEvent.isSelected();
-                        case LOGIN_ATTEMPT: return cbxFilterLoginAttempt.isSelected();
-                        case LOGIN_LOADED: return cbxFilterLoginLoaded.isSelected();
-                        case LOGIN_PUBLISHING: return cbxFilterLoginPublishing.isSelected();
-                        case OBJ: return cbxFilterObj.isSelected();
-                        case PDEATH: return cbxFilterPdeath.isSelected();
-                        case READ_WRITE: return cbxFilterReadWrite.isSelected();
-                        case STARTING_LOGIN: return cbxFilterStartingLogin.isSelected();
-                        case WRITE: return cbxFilterWrite.isSelected();
-                        case DW_DEBUG_FPS: return cbxFilterDwDebugFps.isSelected();
-                        case SECOND_HAND_ZOMBIE_INITIALIZED: return cbxFilterSecondHandZombieInitialized.isSelected();
-                        default: return true;
-                    }
-                }
-            }
-        };
-
-        final List<RowFilter<Object, Object>> allFilters = new ArrayList<>();
-        allFilters.add(typeFilter);
-        allFilters.add(regexFilter);
-
-        sorter.setRowFilter(RowFilter.andFilter(allFilters));
-
-        rowSorter.setRowFilter(new RowFilter<RptLineTableModel, RptLine>() {
-
-            @Override
-            public boolean include(Entry<? extends RptLineTableModel, ? extends RptLine> entry) {
-                if (entry != null && entry.getIdentifier() instanceof RptLine) {
-                    final Matcher matcher = Pattern.compile(txtFilter.getText()).matcher(entry.getIdentifier().getContent());
-
-                    final boolean regexMatches = matcher.find();
-                    return regexMatches;
-                } else {
-                    return false;
-                }
-            }
-        });
-    }//GEN-LAST:event_btnFilterActionPerformed
 
     private void mniCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniCopyActionPerformed
         if (popLine != null) {
@@ -505,6 +536,16 @@ public class MainFrame extends javax.swing.JFrame {
             clipboard.setContents(transferable, null);
         }
     }//GEN-LAST:event_mniCopyActionPerformed
+
+    private void btnPauseResumeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPauseResumeActionPerformed
+        if (rptFileTailer.isPause()) {
+            rptFileTailer.setPause(false);
+            btnPauseResume.setText("resume");
+        } else {
+            rptFileTailer.setPause(true);
+            btnPauseResume.setText("pause");
+        }
+    }//GEN-LAST:event_btnPauseResumeActionPerformed
 
     private void loadLines(final File rptFile) {
         model.clear();
@@ -515,26 +556,25 @@ public class MainFrame extends javax.swing.JFrame {
             public void run() {
                 pgbLines.setIndeterminate(true);
                 pgbLines.setEnabled(true);
-                rowSorter.allRowsChanged();
             }
         });
 
-        if (logFileTailer != null) {
-            logFileTailer.stopTailing();
+        if (rptFileTailer != null) {
+            rptFileTailer.stopTailing();
         }
-        logFileTailer = new RptTailer(rptFile, 1000);
-        logFileTailer.addLogFileTailerListener(
+        rptFileTailer = new RptTailer(rptFile, 1000);
+        rptFileTailer.addLogFileTailerListener(
                 new RptTailerListener() {
 
                     @Override
-                    public void newLogFileLine(final String lineString) {
+                    public void newLineTailed(final String lineString) {
                         lineNumber++;
                         EventQueue.invokeLater(new Runnable() {
 
                             @Override
                             public void run() {
                                 pgbLines.setValue(lineNumber);
-                                pgbLines.setString(lineNumber + " lines");
+                                pgbLines.setString(lineNumber + " lines (" + tblLines.getRowCount() + " filtered)");
                             }
                         });
 
@@ -546,16 +586,30 @@ public class MainFrame extends javax.swing.JFrame {
                         } catch (final Exception ex) {
                             ex.printStackTrace();
                         }
-                        EventQueue.invokeLater(new Runnable() {
+                        if (cbAutoscroll.isSelected()) {
+                            EventQueue.invokeLater(new Runnable() {
 
-                            @Override
-                            public void run() {
-//                            tblLines.scrollRectToVisible(tblLines.getCellRect(tblLines.getRowCount() - 1, tblLines.getColumnCount(), true));
-                            }
-                        });
+                                @Override
+                                public void run() {
+                                    tblLines.scrollRectToVisible(tblLines.getCellRect(tblLines.getRowCount() - 1, tblLines.getColumnCount(), true));
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void tailingStarted() {
+                        btnPauseResume.setEnabled(false);
+                        btnPauseResume.setText("loading");
+                    }
+
+                    @Override
+                    public void tailingFinished() {
+                        btnPauseResume.setEnabled(true);
+                        btnPauseResume.setText("pause");
                     }
                 });
-        logFileTailer.start();
+        rptFileTailer.start();
     }
 
     /**
@@ -565,7 +619,6 @@ public class MainFrame extends javax.swing.JFrame {
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         EventQueue.invokeLater(new Runnable() {
@@ -580,7 +633,9 @@ public class MainFrame extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnFilter;
+    private javax.swing.JButton btnPauseResume;
+    private javax.swing.JCheckBox cbAutoscroll;
+    private javax.swing.JCheckBox cbFilterPlayers;
     private javax.swing.JCheckBox cbxFilterCleanup;
     private javax.swing.JCheckBox cbxFilterDelete;
     private javax.swing.JCheckBox cbxFilterDisconnectStartI;
@@ -598,7 +653,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JCheckBox cbxFilterSecondHandZombieInitialized;
     private javax.swing.JCheckBox cbxFilterStartingLogin;
     private javax.swing.JCheckBox cbxFilterWrite;
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JList jList1;
     private javax.swing.JScrollPane jScrollPane1;

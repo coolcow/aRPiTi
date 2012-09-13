@@ -4,6 +4,7 @@
  */
 package org.coolcow.rpttool.gui;
 
+import java.awt.EventQueue;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.table.AbstractTableModel;

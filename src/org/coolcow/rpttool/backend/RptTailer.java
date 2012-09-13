@@ -12,6 +12,7 @@ public class RptTailer extends Thread {
     private long sampleInterval = 5000;
     private File logfile;
     private boolean tailing = false;
+    private boolean pause = false;
     private Set listeners = new HashSet();
 
     public RptTailer(File file) {
@@ -31,17 +32,39 @@ public class RptTailer extends Thread {
         this.listeners.remove(listener);
     }
 
-    protected void fireNewLogFileLine(final String line) {
+    protected void fireNewLineTailed(final String line) {
         for (Iterator iterator = this.listeners.iterator(); iterator.hasNext();) {
             RptTailerListener listener = (RptTailerListener) iterator.next();
-            listener.newLogFileLine(line);
+            listener.newLineTailed(line);
         }
     }
 
+    protected void fireTailingStarted() {
+        for (Iterator iterator = this.listeners.iterator(); iterator.hasNext();) {
+            RptTailerListener listener = (RptTailerListener) iterator.next();
+            listener.tailingStarted();
+        }
+    }
+
+    protected void fireTailingFinished() {
+        for (Iterator iterator = this.listeners.iterator(); iterator.hasNext();) {
+            RptTailerListener listener = (RptTailerListener) iterator.next();
+            listener.tailingFinished();
+        }
+    }
+    
     public void stopTailing() {
         this.tailing = false;
     }
 
+    public boolean isPause() {
+        return pause;
+    }
+
+    public void setPause(boolean pause) {
+        this.pause = pause;
+    }   
+    
     @Override
     public void run() {
         long filePointer;
@@ -59,16 +82,20 @@ public class RptTailer extends Thread {
                     }
 
                     if (fileLength > filePointer) {
+                        fireTailingStarted();
                         file.seek(filePointer);
                         String line = file.readLine();
                         while (line != null) {
-                            this.fireNewLogFileLine(line);
+                            this.fireNewLineTailed(line);
                             line = file.readLine();
                         }
                         filePointer = file.getFilePointer();
+                        fireTailingFinished();
                     }
 
-                    sleep(this.sampleInterval);
+                    do {
+                        sleep(this.sampleInterval);
+                    } while (pause);
                 } catch (IOException | InterruptedException e) {
                 }
             }
