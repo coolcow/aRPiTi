@@ -17,12 +17,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Pattern;
-import javax.swing.RowFilter.Entry;
 import javax.swing.*;
+import javax.swing.RowFilter.Entry;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 import org.coolcow.arpiti.backend.RptTailer;
 import org.coolcow.arpiti.backend.RptTailerListener;
@@ -35,6 +36,7 @@ import org.coolcow.arpiti.rptline.RptLine;
 public class MainFrame extends javax.swing.JFrame {
 
     public final static DateFormat DATE_FORMAT = new SimpleDateFormat("kk:mm:ss");
+    
     private static MainFrame INSTANCE;
     
     private final RptLineTableModel model = new RptLineTableModel();
@@ -49,131 +51,18 @@ public class MainFrame extends javax.swing.JFrame {
     private MainFrame() {
         initComponents();
 
-        tblLines.setAutoCreateRowSorter(false);
-
         final TableRowSorter<RptLineTableModel> sorter = new TableRowSorter<>(model);
-        tblLines.setRowSorter(sorter);
-
-        final RowFilter complexFilter = new RowFilter<RptLineTableModel, Integer>() {
-
-            @Override
-            public boolean include(Entry<? extends RptLineTableModel, ? extends Integer> entry) {
-                RptLineTableModel model = entry.getModel();
-                RptLine line = model.getLine(entry.getIdentifier());
-
-                final String contentFilter = txtFilter.getText();
-                final boolean contentFilterIncludes;
-                if (contentFilter != null) {
-                    final Pattern pattern = Pattern.compile(contentFilter);
-                    contentFilterIncludes = pattern.matcher(line.getEntity().getRawContent()).find();
-                } else {
-                    contentFilterIncludes = true;
-                }
-
-                final boolean typeFilterIncludes;
-                if (line.getType() == null) {
-                    typeFilterIncludes = cbxFilterNull.isSelected();
-                } else {
-                    switch (line.getType()) {
-                        case CLEANUP:
-                            typeFilterIncludes = cbxFilterCleanup.isSelected();
-                            break;
-                        case DELETE:
-                            typeFilterIncludes = cbxFilterDelete.isSelected();
-                            break;
-                        case DISCONNECT_START:
-                            typeFilterIncludes = cbxFilterDisconnectStartI.isSelected();
-                            break;
-                        case ERROR:
-                            typeFilterIncludes = cbxFilterError.isSelected();
-                            break;
-                        case HIVE:
-                            typeFilterIncludes = cbxFilterHive.isSelected();
-                            break;
-                        case LOCALITY_EVENT:
-                            typeFilterIncludes = cbxFilterLocalityEvent.isSelected();
-                            break;
-                        case LOGIN_ATTEMPT:
-                            typeFilterIncludes = cbxFilterLoginAttempt.isSelected();
-                            break;
-                        case LOGIN_LOADED:
-                            typeFilterIncludes = cbxFilterLoginLoaded.isSelected();
-                            break;
-                        case LOGIN_PUBLISHING:
-                            typeFilterIncludes = cbxFilterLoginPublishing.isSelected();
-                            break;
-                        case OBJ:
-                            typeFilterIncludes = cbxFilterObj.isSelected();
-                            break;
-                        case PDEATH:
-                            typeFilterIncludes = cbxFilterPdeath.isSelected();
-                            break;
-                        case READ_WRITE:
-                            typeFilterIncludes = cbxFilterReadWrite.isSelected();
-                            break;
-                        case STARTING_LOGIN:
-                            typeFilterIncludes = cbxFilterStartingLogin.isSelected();
-                            break;
-                        case WRITE:
-                            typeFilterIncludes = cbxFilterWrite.isSelected();
-                            break;
-                        case DW_DEBUG_FPS:
-                            typeFilterIncludes = cbxFilterDwDebugFps.isSelected();
-                            break;
-                        case SECOND_HAND_ZOMBIE_INITIALIZED:
-                            typeFilterIncludes = cbxFilterSecondHandZombieInitialized.isSelected();
-                            break;
-                        default:
-                            typeFilterIncludes = true;
-                    }
-                }
-
-                return contentFilterIncludes && typeFilterIncludes;
-            }
-        };
-
+        final RowFilter complexFilter = new RowFilterImpl();
         sorter.setRowFilter(complexFilter);
+        tblLines.setRowSorter(sorter);
+        tblLines.setAutoCreateRowSorter(false);
+        tblLines.setDefaultRenderer(Date.class, new RptTableDateCellRenderer());
+        tblLines.addMouseListener(new RptTableMouseListener());        
+        tblLines.getSelectionModel().addListSelectionListener(new RptTableSelectionListener());
 
-        tblLines.getColumnModel().getColumn(RptLineTableModel.COLUMN_NUMBER).setPreferredWidth(60);
-        tblLines.getColumnModel().getColumn(RptLineTableModel.COLUMN_TIME).setPreferredWidth(60);
-
-        tblLines.setDefaultRenderer(Date.class, new RptLineTableDateCellRenderer());
-
-        tblLines.addMouseListener(new MouseAdapter() {
-
-            @Override
-            public void mouseReleased(final MouseEvent event) {
-
-                if (event.isPopupTrigger()) {
-                    final int row = tblLines.rowAtPoint(event.getPoint());
-                    if (row >= 0 && row < tblLines.getRowCount()) {
-                        tblLines.setRowSelectionInterval(row, row);
-                    } else {
-                        tblLines.clearSelection();
-                    }
-
-                    int rowindex = tblLines.getSelectedRow();                    
-                    
-                    if (rowindex >= 0 && event.isPopupTrigger() && event.getComponent() instanceof JTable ) {
-                        popLine = (RptLine) model.getLine(tblLines.convertRowIndexToModel(row));
-                        pumTableitem.show(event.getComponent(), event.getX(), event.getY());
-                    }
-                }
-            }
-        });
-        
-        tblLines.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-
-            @Override
-            public void valueChanged(final ListSelectionEvent event) {
-                final int row = tblLines.getSelectedRow();                
-                final RptLine rptLine = model.getLine(tblLines.convertRowIndexToModel(row));
-                final JComponent renderer = rptLine.getEntity().createRenderer();
-                panInfo.removeAll();
-                panInfo.add(renderer);
-                panInfo.validate();
-            }
-        });
+        final TableColumnModel columnModel = tblLines.getColumnModel();
+        columnModel.getColumn(RptLineTableModel.COLUMN_NUMBER).setPreferredWidth(60);
+        columnModel.getColumn(RptLineTableModel.COLUMN_TIME).setPreferredWidth(60);
     }
 
     public static MainFrame getInstance() {
@@ -627,36 +516,7 @@ public class MainFrame extends javax.swing.JFrame {
             rptFileTailer.stopTailing();
         }
         rptFileTailer = new RptTailer(rptFile);
-        rptFileTailer.addLogFileTailerListener(
-                new RptTailerListener() {
-
-                    @Override
-                    public void rptLineTailed(final RptLine rptLine) {
-                        try {
-                            if (rptLine != null) {
-                                final int lineNumber = rptLine.getNumber();
-                                pgbLines.setValue(lineNumber);
-                                pgbLines.setString(lineNumber + " lines (" + tblLines.getRowCount() + " filtered)");
-                                model.addLine(rptLine);
-                                if (autoscroll) {
-                                    tblLines.scrollRectToVisible(tblLines.getCellRect(tblLines.getRowCount() - 1, tblLines.getColumnCount(), true));
-                                }
-                            }
-                        } catch (final Exception ex) {
-                            ex.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void tailingStarted() {
-                        pgbLines.setIndeterminate(true);
-                    }
-
-                    @Override
-                    public void tailingFinished() {
-                        pgbLines.setIndeterminate(false);
-                    }
-                });
+        rptFileTailer.addLogFileTailerListener(new RptTailerListenerImpl());
         rptFileTailer.start();
     }
 
@@ -725,7 +585,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtFilter;
     // End of variables declaration//GEN-END:variables
 
-    class RptLineTableDateCellRenderer extends DefaultTableCellRenderer {
+    class RptTableDateCellRenderer extends DefaultTableCellRenderer {
  
         @Override
         public Component getTableCellRendererComponent(final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
@@ -739,5 +599,147 @@ public class MainFrame extends javax.swing.JFrame {
         }
     
     }
+    
+    class RptTailerListenerImpl implements RptTailerListener {
+        @Override
+        public void rptLineTailed(final RptLine rptLine) {
+            try {
+                if (rptLine != null) {
+                    final int lineNumber = rptLine.getNumber();
+                    pgbLines.setValue(lineNumber);
+                    pgbLines.setString(lineNumber + " lines (" + tblLines.getRowCount() + " filtered)");
+                    model.addLine(rptLine);
+                    if (autoscroll) {
+                        tblLines.scrollRectToVisible(tblLines.getCellRect(tblLines.getRowCount() - 1, tblLines.getColumnCount(), true));
+                    }
+                }
+            } catch (final Exception ex) {
+                ex.printStackTrace();
+            }
+        }
 
+        @Override
+        public void tailingStarted() {
+            pgbLines.setIndeterminate(true);
+        }
+
+        @Override
+        public void tailingFinished() {
+            pgbLines.setIndeterminate(false);
+        }
+    }
+
+    class RowFilterImpl extends RowFilter<RptLineTableModel, Integer> {
+
+        @Override
+        public boolean include(Entry<? extends RptLineTableModel, ? extends Integer> entry) {
+            RptLineTableModel model = entry.getModel();
+            RptLine line = model.getLine(entry.getIdentifier());
+
+            final String contentFilter = txtFilter.getText();
+            final boolean contentFilterIncludes;
+            if (contentFilter != null) {
+                final Pattern pattern = Pattern.compile(contentFilter);
+                contentFilterIncludes = pattern.matcher(line.getEntity().getRawContent()).find();
+            } else {
+                contentFilterIncludes = true;
+            }
+
+            final boolean typeFilterIncludes;
+            if (line.getType() == null) {
+                typeFilterIncludes = cbxFilterNull.isSelected();
+            } else {
+                switch (line.getType()) {
+                    case CLEANUP:
+                        typeFilterIncludes = cbxFilterCleanup.isSelected();
+                        break;
+                    case DELETE:
+                        typeFilterIncludes = cbxFilterDelete.isSelected();
+                        break;
+                    case DISCONNECT_START:
+                        typeFilterIncludes = cbxFilterDisconnectStartI.isSelected();
+                        break;
+                    case ERROR:
+                        typeFilterIncludes = cbxFilterError.isSelected();
+                        break;
+                    case HIVE:
+                        typeFilterIncludes = cbxFilterHive.isSelected();
+                        break;
+                    case LOCALITY_EVENT:
+                        typeFilterIncludes = cbxFilterLocalityEvent.isSelected();
+                        break;
+                    case LOGIN_ATTEMPT:
+                        typeFilterIncludes = cbxFilterLoginAttempt.isSelected();
+                        break;
+                    case LOGIN_LOADED:
+                        typeFilterIncludes = cbxFilterLoginLoaded.isSelected();
+                        break;
+                    case LOGIN_PUBLISHING:
+                        typeFilterIncludes = cbxFilterLoginPublishing.isSelected();
+                        break;
+                    case OBJ:
+                        typeFilterIncludes = cbxFilterObj.isSelected();
+                        break;
+                    case PDEATH:
+                        typeFilterIncludes = cbxFilterPdeath.isSelected();
+                        break;
+                    case READ_WRITE:
+                        typeFilterIncludes = cbxFilterReadWrite.isSelected();
+                        break;
+                    case STARTING_LOGIN:
+                        typeFilterIncludes = cbxFilterStartingLogin.isSelected();
+                        break;
+                    case WRITE:
+                        typeFilterIncludes = cbxFilterWrite.isSelected();
+                        break;
+                    case DW_DEBUG_FPS:
+                        typeFilterIncludes = cbxFilterDwDebugFps.isSelected();
+                        break;
+                    case SECOND_HAND_ZOMBIE_INITIALIZED:
+                        typeFilterIncludes = cbxFilterSecondHandZombieInitialized.isSelected();
+                        break;
+                    default:
+                        typeFilterIncludes = true;
+                }
+            }
+
+            return contentFilterIncludes && typeFilterIncludes;
+        }
+    }
+    
+    class RptTableMouseListener extends MouseAdapter {
+
+        @Override
+        public void mouseReleased(final MouseEvent event) {
+
+            if (event.isPopupTrigger()) {
+                final int row = tblLines.rowAtPoint(event.getPoint());
+                if (row >= 0 && row < tblLines.getRowCount()) {
+                    tblLines.setRowSelectionInterval(row, row);
+                } else {
+                    tblLines.clearSelection();
+                }
+
+                int rowindex = tblLines.getSelectedRow();                    
+
+                if (rowindex >= 0 && event.isPopupTrigger() && event.getComponent() instanceof JTable ) {
+                    popLine = (RptLine) model.getLine(tblLines.convertRowIndexToModel(row));
+                    pumTableitem.show(event.getComponent(), event.getX(), event.getY());
+                }
+            }
+        }
+    }
+    
+    class RptTableSelectionListener implements ListSelectionListener {
+
+        @Override
+        public void valueChanged(final ListSelectionEvent event) {
+            final int row = tblLines.getSelectedRow();                
+            final RptLine rptLine = model.getLine(tblLines.convertRowIndexToModel(row));
+            final JComponent renderer = rptLine.getEntity().createRenderer();
+            panInfo.removeAll();
+            panInfo.add(renderer);
+            panInfo.validate();
+        }
+    }
 }
