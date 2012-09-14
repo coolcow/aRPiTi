@@ -119,6 +119,7 @@ public class RptTailer extends SwingWorker<Void, Void> {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             try {
                 file.close();

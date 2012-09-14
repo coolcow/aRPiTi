@@ -30,7 +30,7 @@ public class RptLineFactory {
         try {
             date = MainFrame.DATE_FORMAT.parse(rawLine.substring(0, 8));
             content = rawLine.substring(9);
-        } catch (ParseException ex) {
+        } catch (Exception ex) {
             date = null;
             content = rawLine;
         }
