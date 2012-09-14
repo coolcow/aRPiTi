@@ -3,25 +3,20 @@ package org.coolcow.rpttool.backend;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class RptTailer extends Thread {
 
-    private long sampleInterval = 5000;
-    private File logfile;
+    private final File rptFile;
+    private long sampleInterval = 1000;
     private boolean tailing = false;
+    private boolean autorefresh = true;
     private boolean pause = false;
-    private Set listeners = new HashSet();
+    private Collection<RptTailerListener> listeners = new ArrayList<>();
 
-    public RptTailer(File file) {
-        this.logfile = file;
-    }
-
-    public RptTailer(final File file, final long sampleInterval) {
-        this.logfile = file;
-        this.sampleInterval = sampleInterval;
+    public RptTailer(File rptFile) {
+        this.rptFile = rptFile;
     }
 
     public void addLogFileTailerListener(final RptTailerListener listener) {
@@ -33,22 +28,19 @@ public class RptTailer extends Thread {
     }
 
     protected void fireRptLineTailed(final RptLine rptLine) {
-        for (Iterator iterator = this.listeners.iterator(); iterator.hasNext();) {
-            RptTailerListener listener = (RptTailerListener) iterator.next();
+        for (final RptTailerListener listener : listeners) {
             listener.rptLineTailed(rptLine);
         }
     }
 
     protected void fireTailingStarted() {
-        for (Iterator iterator = this.listeners.iterator(); iterator.hasNext();) {
-            RptTailerListener listener = (RptTailerListener) iterator.next();
+        for (final RptTailerListener listener : listeners) {
             listener.tailingStarted();
         }
     }
 
     protected void fireTailingFinished() {
-        for (Iterator iterator = this.listeners.iterator(); iterator.hasNext();) {
-            RptTailerListener listener = (RptTailerListener) iterator.next();
+        for (final RptTailerListener listener : listeners) {
             listener.tailingFinished();
         }
     }
@@ -63,7 +55,15 @@ public class RptTailer extends Thread {
 
     public void setPause(boolean pause) {
         this.pause = pause;
-    }   
+    }
+
+    public boolean isAutorefresh() {
+        return autorefresh;
+    }
+
+    public void setAutorefresh(boolean autorefresh) {
+        this.autorefresh = autorefresh;
+    }    
     
     @Override
     public void run() {
@@ -74,9 +74,9 @@ public class RptTailer extends Thread {
             this.tailing = true;
             while (this.tailing) {
                 try {
-                    long fileLength = this.logfile.length();
+                    long fileLength = this.rptFile.length();
                     if (file == null || fileLength < filePointer) {
-                        file = new RandomAccessFile(logfile, "r");
+                        file = new RandomAccessFile(rptFile, "r");
                         filePointer = 0;
                     }
 
@@ -97,6 +97,9 @@ public class RptTailer extends Thread {
                     }
 
                     sleep(this.sampleInterval);
+                    while (!autorefresh) {
+                        sleep(100);                        
+                    }
                 } catch (IOException | InterruptedException e) {
                 }
             }

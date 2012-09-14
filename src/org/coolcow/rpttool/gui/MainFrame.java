@@ -183,8 +183,9 @@ public class MainFrame extends javax.swing.JFrame {
         panMain = new javax.swing.JPanel();
         panProgress = new javax.swing.JPanel();
         pgbLines = new javax.swing.JProgressBar();
-        cbAutoscroll = new javax.swing.JCheckBox();
+        cbAutoScroll = new javax.swing.JCheckBox();
         btnPauseResume = new javax.swing.JButton();
+        cbAutoRefresh = new javax.swing.JCheckBox();
         panTable = new javax.swing.JPanel();
         scrTable = new javax.swing.JScrollPane();
         tblLines = new javax.swing.JTable() {
@@ -250,19 +251,19 @@ public class MainFrame extends javax.swing.JFrame {
         pgbLines.setString("0 lines");
         pgbLines.setStringPainted(true);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         panProgress.add(pgbLines, gridBagConstraints);
 
-        cbAutoscroll.setSelected(true);
-        cbAutoscroll.setToolTipText("(dis-)activate autoscroll");
+        cbAutoScroll.setSelected(true);
+        cbAutoScroll.setToolTipText("(dis-)activate autoscroll");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        panProgress.add(cbAutoscroll, gridBagConstraints);
+        panProgress.add(cbAutoScroll, gridBagConstraints);
 
         btnPauseResume.setText("pause");
         btnPauseResume.setMaximumSize(new java.awt.Dimension(75, 23));
@@ -274,10 +275,23 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
         panProgress.add(btnPauseResume, gridBagConstraints);
+
+        cbAutoRefresh.setSelected(true);
+        cbAutoRefresh.setToolTipText("(dis-)activate auto refresh");
+        cbAutoRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbAutoRefreshActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        panProgress.add(cbAutoRefresh, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -553,13 +567,18 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnPauseResumeActionPerformed
 
+    private void cbAutoRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbAutoRefreshActionPerformed
+        final boolean autoRefresh = !rptFileTailer.isAutorefresh();
+        rptFileTailer.setAutorefresh(autoRefresh);
+    }//GEN-LAST:event_cbAutoRefreshActionPerformed
+
     private void loadLines(final File rptFile) {
         model.clear();
 
         if (rptFileTailer != null) {
             rptFileTailer.stopTailing();
         }
-        rptFileTailer = new RptTailer(rptFile, 1000);
+        rptFileTailer = new RptTailer(rptFile);
         rptFileTailer.addLogFileTailerListener(
                 new RptTailerListener() {
 
@@ -571,7 +590,7 @@ public class MainFrame extends javax.swing.JFrame {
                                 pgbLines.setValue(lineNumber);
                                 pgbLines.setString(lineNumber + " lines (" + tblLines.getRowCount() + " filtered)");
                                 model.addLine(rptLine);
-                                if (cbAutoscroll.isSelected()) {
+                                if (cbAutoScroll.isSelected()) {
                                     tblLines.scrollRectToVisible(tblLines.getCellRect(tblLines.getRowCount() - 1, tblLines.getColumnCount(), true));
                                 }
                             }
@@ -615,7 +634,8 @@ public class MainFrame extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnPauseResume;
-    private javax.swing.JCheckBox cbAutoscroll;
+    private javax.swing.JCheckBox cbAutoRefresh;
+    private javax.swing.JCheckBox cbAutoScroll;
     private javax.swing.JCheckBox cbFilterPlayers;
     private javax.swing.JCheckBox cbxFilterCleanup;
     private javax.swing.JCheckBox cbxFilterDelete;
