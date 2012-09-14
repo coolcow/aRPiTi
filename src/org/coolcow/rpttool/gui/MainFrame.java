@@ -238,7 +238,7 @@ public class MainFrame extends javax.swing.JFrame {
         pumTableitem.add(mniCopy);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("RPT Tool (alpha) - by coolcow");
+        setTitle("aRPiTi (RPT analysis tool)  - by coolcow [ALPHA version]");
         setMinimumSize(new java.awt.Dimension(400, 400));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
