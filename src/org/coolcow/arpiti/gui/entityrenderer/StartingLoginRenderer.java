@@ -114,7 +114,7 @@ public class StartingLoginRenderer extends AbstractEntityRenderer {
         jPanel3.add(jTextField2, gridBagConstraints);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel3.setText("Login Loaded");
+        jLabel3.setText("Starting Login");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
