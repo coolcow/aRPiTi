@@ -7,6 +7,7 @@ package org.coolcow.arpiti.backend;
 import java.util.Date;
 import java.util.regex.Pattern;
 import org.coolcow.arpiti.backend.entities.DefaultEntity;
+import org.coolcow.arpiti.backend.entities.DisconnectStartIEntity;
 import org.coolcow.arpiti.backend.entities.DwDebugFpsEntity;
 import org.coolcow.arpiti.backend.entities.Entity;
 import org.coolcow.arpiti.backend.entities.LocalityEventEntity;
@@ -95,9 +96,10 @@ public class RptLineFactory {
             content = content.substring(("\"" + RptLine.Type.STARTING_LOGIN + ": ").length(), content.length() - 1);
             type = RptLine.Type.STARTING_LOGIN;
             entity = new StartingLoginEntity(content);
-        } else if (content.startsWith("\"" + RptLine.Type.DISCONNECT_START + ": ")) {
-            content = content.substring(("\"" + RptLine.Type.DISCONNECT_START + ": ").length(), content.length() - 1);
-            type = RptLine.Type.DISCONNECT_START;
+        } else if (content.startsWith("\"" + RptLine.Type.DISCONNECT_START_I + ": ")) {
+            content = content.substring(("\"" + RptLine.Type.DISCONNECT_START_I + ": ").length(), content.length() - 1);
+            type = RptLine.Type.DISCONNECT_START_I;
+            entity = new DisconnectStartIEntity(content);
         } else if (content.startsWith("\"" + RptLine.Type.DELETE + ": ")) {
             content = content.substring(("\"" + RptLine.Type.DELETE + ": ").length(), content.length() - 1);
             type = RptLine.Type.DELETE;

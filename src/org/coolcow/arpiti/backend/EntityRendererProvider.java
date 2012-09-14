@@ -6,9 +6,9 @@ package org.coolcow.arpiti.backend;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.coolcow.arpiti.backend.RptLine;
 import org.coolcow.arpiti.gui.entityrenderer.AbstractEntityRenderer;
 import org.coolcow.arpiti.gui.entityrenderer.DefaultEntityRenderer;
+import org.coolcow.arpiti.gui.entityrenderer.DisconnectStartIRenderer;
 import org.coolcow.arpiti.gui.entityrenderer.DwDebugFpsRenderer;
 import org.coolcow.arpiti.gui.entityrenderer.LocalityEventRenderer;
 import org.coolcow.arpiti.gui.entityrenderer.LoginAttemptRenderer;
@@ -51,6 +51,9 @@ public abstract class EntityRendererProvider {
                     } break;
                     case LOCALITY_EVENT: { 
                         renderer = new LocalityEventRenderer();
+                    } break;
+                    case DISCONNECT_START_I: { 
+                        renderer = new DisconnectStartIRenderer();
                     } break;
                     default: 
                         renderer = new DefaultEntityRenderer();

@@ -681,7 +681,7 @@ public class MainFrame extends javax.swing.JFrame {
                     case DELETE:
                         typeFilterIncludes = cbxFilterDelete.isSelected();
                         break;
-                    case DISCONNECT_START:
+                    case DISCONNECT_START_I:
                         typeFilterIncludes = cbxFilterDisconnectStartI.isSelected();
                         break;
                     case ERROR:

@@ -59,7 +59,7 @@ public class RptLine {
             public String toString() {
                 return "LOGIN ATTEMPT";
             }
-        }, DISCONNECT_START {
+        }, DISCONNECT_START_I {
 
             @Override
             public String toString() {
