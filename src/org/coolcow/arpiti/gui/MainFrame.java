@@ -502,6 +502,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void btnFilterApplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterApplyActionPerformed
         sorter.allRowsChanged();
+        tblLines.revalidate();
     }//GEN-LAST:event_btnFilterApplyActionPerformed
 
     /**
