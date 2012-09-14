@@ -11,6 +11,7 @@ import org.coolcow.arpiti.backend.entities.DwDebugFpsEntity;
 import org.coolcow.arpiti.backend.entities.Entity;
 import org.coolcow.arpiti.backend.entities.LocalityEventEntity;
 import org.coolcow.arpiti.backend.entities.LoginAttemptEntity;
+import org.coolcow.arpiti.backend.entities.LoginPublishingEntity;
 import org.coolcow.arpiti.gui.MainFrame;
 
 /**
@@ -86,6 +87,7 @@ public class RptLineFactory {
         } else if (content.startsWith("\"" + RptLine.Type.LOGIN_PUBLISHING + ": ")) {
             content = content.substring(("\"" + RptLine.Type.LOGIN_PUBLISHING + ": ").length(), content.length() - 1);
             type = RptLine.Type.LOGIN_PUBLISHING;
+            entity = new LoginPublishingEntity(content);
         } else if (content.startsWith("\"" + RptLine.Type.STARTING_LOGIN + ": ")) {
             content = content.substring(("\"" + RptLine.Type.STARTING_LOGIN + ": ").length(), content.length() - 1);
             type = RptLine.Type.STARTING_LOGIN;
