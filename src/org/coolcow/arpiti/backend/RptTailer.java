@@ -1,14 +1,15 @@
 package org.coolcow.arpiti.backend;
 
-import org.coolcow.arpiti.rptline.RptLineFactory;
-import org.coolcow.arpiti.rptline.RptLine;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Collection;
+import javax.swing.SwingWorker;
+import org.coolcow.arpiti.rptline.RptLine;
+import org.coolcow.arpiti.rptline.RptLineFactory;
 
-public class RptTailer extends Thread {
+public class RptTailer extends SwingWorker<Void, Void> {
 
     private final File rptFile;
     private long sampleInterval = 1000;
@@ -66,9 +67,9 @@ public class RptTailer extends Thread {
     public void setAutorefresh(boolean autorefresh) {
         this.autorefresh = autorefresh;
     }    
-    
+
     @Override
-    public void run() {
+    protected Void doInBackground() throws Exception {    
         long filePointer = 0;
         int lineNumber = 0;
         RandomAccessFile file = null;
@@ -87,9 +88,9 @@ public class RptTailer extends Thread {
                         file.seek(filePointer);
                         String lineString ;
                         while ((lineString = file.readLine()) != null) {
-                            while (pause) {
-                                sleep(100);
-                            }
+                            do {
+                                Thread.sleep(1); // gives edt a chance to execute rowsorter
+                            } while (pause);
                             lineNumber++;
                             final RptLine rptLine = RptLineFactory.parseLine(lineNumber, lineString);                            
                             fireRptLineTailed(rptLine);
@@ -98,9 +99,9 @@ public class RptTailer extends Thread {
                         fireTailingFinished();
                     }
 
-                    sleep(this.sampleInterval);
+                    Thread.sleep(this.sampleInterval);
                     while (!autorefresh) {
-                        sleep(100);                        
+                        Thread.sleep(100);                        
                     }
                 } catch (IOException | InterruptedException e) {
                 }
@@ -112,5 +113,6 @@ public class RptTailer extends Thread {
             } catch (IOException ex) {
             }
         }
+        return null;
     }
 }

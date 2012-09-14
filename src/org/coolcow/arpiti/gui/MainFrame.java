@@ -40,6 +40,8 @@ public class MainFrame extends javax.swing.JFrame {
     private static MainFrame INSTANCE;
     
     private final RptLineTableModel model = new RptLineTableModel();
+    final TableRowSorter<RptLineTableModel> sorter = new TableRowSorter<>(model);
+
     private File rptFile = null;
     private RptTailer rptFileTailer;
     private RptLine popLine = null;
@@ -51,9 +53,7 @@ public class MainFrame extends javax.swing.JFrame {
     private MainFrame() {
         initComponents();
 
-        final TableRowSorter<RptLineTableModel> sorter = new TableRowSorter<>(model);
-        final RowFilter complexFilter = new RowFilterImpl();
-        sorter.setRowFilter(complexFilter);
+        sorter.setRowFilter(new RowFilterImpl());
         tblLines.setRowSorter(sorter);
         tblLines.setAutoCreateRowSorter(false);
         tblLines.setDefaultRenderer(Date.class, new RptTableDateCellRenderer());
@@ -467,14 +467,14 @@ public class MainFrame extends javax.swing.JFrame {
         tgbResume.setSelected(true);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             rptFile = fc.getSelectedFile();
-            new SwingWorker<Void, Void>() {
+            model.clear();
 
-                @Override
-                protected Void doInBackground() throws Exception {
-                    loadLines(rptFile);
-                    return null;
-                }
-            }.execute();
+            if (rptFileTailer != null) {
+                rptFileTailer.stopTailing();
+            }
+            rptFileTailer = new RptTailer(rptFile);
+            rptFileTailer.addLogFileTailerListener(new RptTailerListenerImpl());
+            rptFileTailer.execute();
         }
     }//GEN-LAST:event_mniLoadRptActionPerformed
 
@@ -508,17 +508,6 @@ public class MainFrame extends javax.swing.JFrame {
     private void tgbAutoScrollActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tgbAutoScrollActionPerformed
         autoscroll = tgbAutoScroll.isSelected();
     }//GEN-LAST:event_tgbAutoScrollActionPerformed
-
-    private void loadLines(final File rptFile) {
-        model.clear();
-
-        if (rptFileTailer != null) {
-            rptFileTailer.stopTailing();
-        }
-        rptFileTailer = new RptTailer(rptFile);
-        rptFileTailer.addLogFileTailerListener(new RptTailerListenerImpl());
-        rptFileTailer.start();
-    }
 
     /**
      * @param args the command line arguments
@@ -605,27 +594,44 @@ public class MainFrame extends javax.swing.JFrame {
         public void rptLineTailed(final RptLine rptLine) {
             try {
                 if (rptLine != null) {
-                    final int lineNumber = rptLine.getNumber();
-                    pgbLines.setValue(lineNumber);
-                    pgbLines.setString(lineNumber + " lines (" + tblLines.getRowCount() + " filtered)");
-                    model.addLine(rptLine);
-                    if (autoscroll) {
-                        tblLines.scrollRectToVisible(tblLines.getCellRect(tblLines.getRowCount() - 1, tblLines.getColumnCount(), true));
-                    }
+                    SwingUtilities.invokeLater(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            final int lineNumber = rptLine.getNumber();
+                            pgbLines.setValue(lineNumber);
+                            pgbLines.setString(lineNumber + " lines (" + tblLines.getRowCount() + " filtered)");
+                            model.addLine(rptLine);
+                            if (autoscroll) {
+                                tblLines.scrollRectToVisible(tblLines.getCellRect(tblLines.getRowCount() - 1, tblLines.getColumnCount(), true));
+                            }
+                        }
+                    });
                 }
             } catch (final Exception ex) {
-                ex.printStackTrace();
             }
         }
 
         @Override
         public void tailingStarted() {
-            pgbLines.setIndeterminate(true);
+            SwingUtilities.invokeLater(new Runnable() {
+
+                @Override
+                public void run() {
+                    pgbLines.setIndeterminate(true);
+                }
+            });
         }
 
         @Override
         public void tailingFinished() {
-            pgbLines.setIndeterminate(false);
+            SwingUtilities.invokeLater(new Runnable() {
+
+                @Override
+                public void run() {            
+                    pgbLines.setIndeterminate(false);
+                }
+            });
         }
     }
 

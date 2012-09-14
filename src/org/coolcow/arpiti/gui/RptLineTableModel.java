@@ -82,7 +82,7 @@ public class RptLineTableModel extends AbstractTableModel {
     public void addLine(final RptLine line) {
         synchronized(lines) {
             lines.add(line);
-            fireTableDataChanged();
+            fireTableRowsInserted(lines.size() - 1, lines.size() - 1);
         }
     }
     
