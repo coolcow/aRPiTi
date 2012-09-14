@@ -4,7 +4,7 @@
  */
 package org.coolcow.arpiti.gui.entityrenderer;
 
-import org.coolcow.arpiti.backend.bindingconverter.DoubleToStringConverter;
+import org.coolcow.arpiti.backend.bindingconverter.IntToStringConverter;
 import org.coolcow.arpiti.backend.entities.Entity;
 import org.jdesktop.beansbinding.Converter;
 
@@ -12,12 +12,14 @@ import org.jdesktop.beansbinding.Converter;
  *
  * @author jruiz
  */
-public class DwDebugFpsRenderer extends AbstractEntityRenderer {
+public class LoginAttemptRenderer extends AbstractEntityRenderer {
+ 
+    final Converter<Double, String> converter = new DoubleToStringConverter();
     
     /**
      * Creates new form DwDebugFpsRenderer
      */
-    public DwDebugFpsRenderer() {
+    public LoginAttemptRenderer() {
         initComponents();
     }
 
@@ -37,25 +39,34 @@ public class DwDebugFpsRenderer extends AbstractEntityRenderer {
         jTextField1 = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
 
         setLayout(new java.awt.GridBagLayout());
 
         jPanel3.setLayout(new java.awt.GridBagLayout());
 
-        jLabel1.setText("FPS: ");
+        jLabel1.setText("player name: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
         jPanel3.add(jLabel1, gridBagConstraints);
 
         jTextField1.setEditable(false);
-        jTextField1.setMinimumSize(new java.awt.Dimension(50, 20));
-        jTextField1.setPreferredSize(new java.awt.Dimension(50, 20));
+        jTextField1.setMinimumSize(new java.awt.Dimension(150, 20));
+        jTextField1.setPreferredSize(new java.awt.Dimension(150, 20));
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${entity.fps}"), jTextField1, org.jdesktop.beansbinding.BeanProperty.create("text"), "");
-        binding.setConverter(new DoubleToStringConverter());
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${entity.playerName}"), jTextField1, org.jdesktop.beansbinding.BeanProperty.create("text"), "");
         bindingGroup.addBinding(binding);
 
-        jPanel3.add(jTextField1, new java.awt.GridBagConstraints());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        jPanel3.add(jTextField1, gridBagConstraints);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -69,7 +80,7 @@ public class DwDebugFpsRenderer extends AbstractEntityRenderer {
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.gridheight = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         jPanel3.add(jPanel1, gridBagConstraints);
@@ -87,11 +98,44 @@ public class DwDebugFpsRenderer extends AbstractEntityRenderer {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         gridBagConstraints.weighty = 1.0;
         jPanel3.add(jPanel2, gridBagConstraints);
+
+        jLabel2.setText("player id: ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
+        jPanel3.add(jLabel2, gridBagConstraints);
+
+        jTextField2.setEditable(false);
+        jTextField2.setMinimumSize(new java.awt.Dimension(150, 20));
+        jTextField2.setPreferredSize(new java.awt.Dimension(150, 20));
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${entity.playerId}"), jTextField2, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding.setConverter(new IntToStringConverter());
+        bindingGroup.addBinding(binding);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        jPanel3.add(jTextField2, gridBagConstraints);
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel3.setText("Login Attempt");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 0);
+        jPanel3.add(jLabel3, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
@@ -104,10 +148,13 @@ public class DwDebugFpsRenderer extends AbstractEntityRenderer {
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
@@ -117,5 +164,19 @@ public class DwDebugFpsRenderer extends AbstractEntityRenderer {
         super.setEntity(entity);
         bindingGroup.bind();
     }
+        
+    class DoubleToStringConverter extends Converter<Double, String> {
+
+        @Override
+        public String convertForward(Double value) {
+            return Double.toString(value);
+        }
+
+        @Override
+        public Double convertReverse(String value) {
+            return Double.parseDouble(value);
+        }
+
+    };
     
 }

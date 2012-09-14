@@ -9,8 +9,7 @@ package org.coolcow.arpiti.backend.entities;
  * @author jruiz
  */
 public class LocalityEventEntity extends AbstractEntity {
-    
-    
+        
     public LocalityEventEntity(final String content) {
         super(content);
     }

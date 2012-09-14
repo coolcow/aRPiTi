@@ -4,13 +4,13 @@
  */
 package org.coolcow.arpiti.backend;
 
-import java.text.ParseException;
 import java.util.Date;
 import java.util.regex.Pattern;
 import org.coolcow.arpiti.backend.entities.DefaultEntity;
 import org.coolcow.arpiti.backend.entities.DwDebugFpsEntity;
 import org.coolcow.arpiti.backend.entities.Entity;
 import org.coolcow.arpiti.backend.entities.LocalityEventEntity;
+import org.coolcow.arpiti.backend.entities.LoginAttemptEntity;
 import org.coolcow.arpiti.gui.MainFrame;
 
 /**
@@ -79,6 +79,7 @@ public class RptLineFactory {
         } else if (content.startsWith("\"" + RptLine.Type.LOGIN_ATTEMPT + ": ")) {
             content = content.substring(("\"" + RptLine.Type.LOGIN_ATTEMPT + ": ").length(), content.length() - 1);
             type = RptLine.Type.LOGIN_ATTEMPT;
+            entity = new LoginAttemptEntity(content);      
         } else if (content.startsWith("\"" + RptLine.Type.LOGIN_LOADED + ": ")) {
             content = content.substring(("\"" + RptLine.Type.LOGIN_LOADED + ": ").length(), content.length() - 1);
             type = RptLine.Type.LOGIN_LOADED;

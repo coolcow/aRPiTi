@@ -11,6 +11,7 @@ import org.coolcow.arpiti.gui.entityrenderer.AbstractEntityRenderer;
 import org.coolcow.arpiti.gui.entityrenderer.DefaultEntityRenderer;
 import org.coolcow.arpiti.gui.entityrenderer.DwDebugFpsRenderer;
 import org.coolcow.arpiti.gui.entityrenderer.LocalityEventRenderer;
+import org.coolcow.arpiti.gui.entityrenderer.LoginAttemptRenderer;
 
 /**
  *
@@ -30,6 +31,9 @@ public abstract class EntityRendererProvider {
                 renderer = new DefaultEntityRenderer();
             } else {
                 switch (type) {
+                    case LOGIN_ATTEMPT: { 
+                        renderer = new LoginAttemptRenderer();
+                    } break;
                     case DW_DEBUG_FPS: { 
                         renderer = new DwDebugFpsRenderer();
                     } break;
