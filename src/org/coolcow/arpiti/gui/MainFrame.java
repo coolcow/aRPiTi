@@ -759,12 +759,14 @@ public class MainFrame extends javax.swing.JFrame {
 
         @Override
         public void valueChanged(final ListSelectionEvent event) {
-            final int row = tblLines.getSelectedRow();                
-            final RptLine rptLine = model.getLine(tblLines.convertRowIndexToModel(row));
-            final AbstractEntityRenderer renderer = EntityRendererProvider.getEntityRenderer(rptLine.getType());
-            renderer.setEntity(rptLine.getEntity());
             panInfo.removeAll();
-            panInfo.add(renderer);
+            final int row = tblLines.getSelectedRow();  
+            if (row >= 0) {
+                final RptLine rptLine = model.getLine(tblLines.convertRowIndexToModel(row));
+                final AbstractEntityRenderer renderer = EntityRendererProvider.getEntityRenderer(rptLine.getType());
+                renderer.setEntity(rptLine.getEntity());
+                panInfo.add(renderer);
+            }
             panInfo.validate();
         }
     }
