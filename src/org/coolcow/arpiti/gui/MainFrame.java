@@ -617,9 +617,9 @@ public class MainFrame extends javax.swing.JFrame {
 
                         @Override
                         public void run() {
+                            model.addLines(rptLines);
                             pgbLines.setValue(model.getRowCount());
                             pgbLines.setString(model.getRowCount() + " lines (" + sorter.getViewRowCount() + " filtered)");
-                            model.addLines(rptLines);
                             if (autoscroll) {
                                 tblLines.scrollRectToVisible(tblLines.getCellRect(tblLines.getRowCount() - 1, tblLines.getColumnCount(), true));
                             }

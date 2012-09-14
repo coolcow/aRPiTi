@@ -111,8 +111,14 @@ public class RptTailer extends SwingWorker<Void, Void> {
                         filePointer = file.getFilePointer();
                     }
 
-                    fireTailingWait();
-                    Thread.sleep(refreshInterval);
+                    if (collectedRptLines.size() > 0) {
+                        Thread.sleep(System.currentTimeMillis() - timeInMs);
+                        fireRptLinesTailed(collectedRptLines);
+                        collectedRptLines = new ArrayList<>();
+                    } else {                    
+                        fireTailingWait();
+                        Thread.sleep(refreshInterval);
+                    }
                 } catch (IOException | InterruptedException e) {
                 }
             }
