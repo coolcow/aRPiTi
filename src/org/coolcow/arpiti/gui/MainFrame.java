@@ -130,6 +130,7 @@ public class MainFrame extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList();
         cbFilterPlayers = new javax.swing.JCheckBox();
+        btnFilterApply = new javax.swing.JButton();
         mnbMain = new javax.swing.JMenuBar();
         menMain = new javax.swing.JMenu();
         mniLoadRpt = new javax.swing.JMenuItem();
@@ -410,6 +411,19 @@ public class MainFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         panFilter.add(panPlayers, gridBagConstraints);
 
+        btnFilterApply.setText("apply filter to all rows");
+        btnFilterApply.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFilterApplyActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        panFilter.add(btnFilterApply, gridBagConstraints);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -509,6 +523,10 @@ public class MainFrame extends javax.swing.JFrame {
         autoscroll = tgbAutoScroll.isSelected();
     }//GEN-LAST:event_tgbAutoScrollActionPerformed
 
+    private void btnFilterApplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterApplyActionPerformed
+        sorter.allRowsChanged();
+    }//GEN-LAST:event_btnFilterApplyActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -530,6 +548,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnFilterApply;
     private javax.swing.JCheckBox cbFilterPlayers;
     private javax.swing.JCheckBox cbxFilterCleanup;
     private javax.swing.JCheckBox cbxFilterDelete;
