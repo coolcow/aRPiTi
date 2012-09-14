@@ -32,7 +32,9 @@ import org.coolcow.rpttool.backend.RptTailerListener;
  */
 public class MainFrame extends javax.swing.JFrame {
 
-    final public static DateFormat DATE_FORMAT = new SimpleDateFormat("kk:mm:ss");
+    public final static DateFormat DATE_FORMAT = new SimpleDateFormat("kk:mm:ss");
+    private static MainFrame INSTANCE;
+    
     private final RptLineTableModel model = new RptLineTableModel();
     private File rptFile = null;
     private int lineNumber = 0;
@@ -42,7 +44,7 @@ public class MainFrame extends javax.swing.JFrame {
     /**
      * Creates new form NewJFrame
      */
-    public MainFrame() {
+    private MainFrame() {
         initComponents();
 
         tblLines.setAutoCreateRowSorter(false);
@@ -133,37 +135,40 @@ public class MainFrame extends javax.swing.JFrame {
         tblLines.getColumnModel().getColumn(RptLineTableModel.COLUMN_NUMBER).setPreferredWidth(60);
         tblLines.getColumnModel().getColumn(RptLineTableModel.COLUMN_TIME).setPreferredWidth(60);
 
-        tblLines.setEnabled(false);
-
-        tblLines.setDefaultRenderer(Date.class, new DefaultTableCellRenderer() {
-
-            @Override
-            public Component getTableCellRendererComponent(final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
-                final JComponent component;
-                if (value instanceof Date) {
-                    component = (JComponent) super.getTableCellRendererComponent(table, DATE_FORMAT.format(value), isSelected, hasFocus, row, column);
-                } else {
-                    component = (JComponent) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                }
-                component.add(pumTableitem);
-                return component;
-            }
-        });
+        tblLines.setDefaultRenderer(Date.class, new RptLineTableDateCellRenderer());
 
         tblLines.addMouseListener(new MouseAdapter() {
 
             @Override
-            public void mouseReleased(final MouseEvent e) {
+            public void mouseReleased(final MouseEvent event) {
 
-                if (e.isPopupTrigger()) {
-                    final int row = tblLines.rowAtPoint(e.getPoint());
-                    popLine = (RptLine) model.getLine(tblLines.convertRowIndexToModel(row));
-                    pumTableitem.show(e.getComponent(), e.getX(), e.getY());
+                if (event.isPopupTrigger()) {
+                    final int row = tblLines.rowAtPoint(event.getPoint());
+                    if (row >= 0 && row < tblLines.getRowCount()) {
+                        tblLines.setRowSelectionInterval(row, row);
+                    } else {
+                        tblLines.clearSelection();
+                    }
+
+                    int rowindex = tblLines.getSelectedRow();                    
+                    
+                    if (rowindex >= 0 && event.isPopupTrigger() && event.getComponent() instanceof JTable ) {
+                        popLine = (RptLine) model.getLine(tblLines.convertRowIndexToModel(row));
+                        pumTableitem.show(event.getComponent(), event.getX(), event.getY());
+                    }
                 }
             }
         });
     }
 
+    public static MainFrame getInstance() {
+        if (INSTANCE == null) {
+            return (INSTANCE = new MainFrame());
+        } else {
+            return INSTANCE;
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -288,6 +293,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         tblLines.setModel(model);
         tblLines.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
+        tblLines.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tblLines.getTableHeader().setReorderingAllowed(false);
         scrTable.setViewportView(tblLines);
 
@@ -675,4 +681,20 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTable tblLines;
     private javax.swing.JTextField txtFilter;
     // End of variables declaration//GEN-END:variables
+
+    class RptLineTableDateCellRenderer extends DefaultTableCellRenderer {
+ 
+        @Override
+        public Component getTableCellRendererComponent(final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
+            final JComponent component;
+            if (value instanceof Date) {
+                component = (JComponent) super.getTableCellRendererComponent(table, MainFrame.DATE_FORMAT.format(value), isSelected, hasFocus, row, column);
+            } else {
+                component = (JComponent) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            }
+            return component;
+        }
+    
+    }
+
 }
