@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 import org.coolcow.arpiti.entities.DefaultEntity;
 import org.coolcow.arpiti.entities.DwDebugFpsEntity;
 import org.coolcow.arpiti.entities.Entity;
+import org.coolcow.arpiti.entities.LocalityEventEntity;
 import org.coolcow.arpiti.gui.MainFrame;
 
 /**
@@ -39,6 +40,7 @@ public class RptLineFactory {
         } else if (content.startsWith("\"" + RptLine.Type.OBJ + ": ")) {
             content = content.substring(("\"" + RptLine.Type.OBJ + ": ").length(), content.length() - 1);
             type = RptLine.Type.OBJ;
+            entity = new LocalityEventEntity(content);      
         } else if (content.startsWith("\"" + RptLine.Type.HIVE + ": ")) {
             content = content.substring(("\"" + RptLine.Type.HIVE + ": ").length(), content.length() - 1);
             type = RptLine.Type.HIVE;
