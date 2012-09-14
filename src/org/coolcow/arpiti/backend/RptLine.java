@@ -1,7 +1,7 @@
-package org.coolcow.arpiti.rptline;
+package org.coolcow.arpiti.backend;
 
 import java.util.Date;
-import org.coolcow.arpiti.entities.Entity;
+import org.coolcow.arpiti.backend.entities.Entity;
 
 /**
  *

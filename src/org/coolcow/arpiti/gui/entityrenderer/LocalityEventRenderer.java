@@ -4,22 +4,17 @@
  */
 package org.coolcow.arpiti.gui.entityrenderer;
 
-import org.coolcow.arpiti.entities.LocalityEventEntity;
-
 /**
  *
  * @author jruiz
  */
-public class LocalityEventRenderer extends javax.swing.JPanel {
+public class LocalityEventRenderer extends AbstractEntityRenderer {
 
-    final LocalityEventEntity entity;
-    
     /**
      * Creates new form DefaultRenderer
      */
-    public LocalityEventRenderer(final LocalityEventEntity entity) {
+    public LocalityEventRenderer() {
         initComponents();
-        this.entity = entity;
     }
 
     /**
@@ -90,4 +85,5 @@ public class LocalityEventRenderer extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
+
 }

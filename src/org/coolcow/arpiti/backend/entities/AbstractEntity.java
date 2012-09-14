@@ -2,12 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.coolcow.arpiti.entities;
+package org.coolcow.arpiti.backend.entities;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import javax.swing.JComponent;
-import org.coolcow.arpiti.gui.entityrenderer.DwDebugFpsRenderer;
 
 /**
  *

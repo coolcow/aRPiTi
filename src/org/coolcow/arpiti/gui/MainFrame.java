@@ -28,7 +28,9 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 import org.coolcow.arpiti.backend.RptTailer;
 import org.coolcow.arpiti.backend.RptTailerListener;
-import org.coolcow.arpiti.rptline.RptLine;
+import org.coolcow.arpiti.gui.entityrenderer.AbstractEntityRenderer;
+import org.coolcow.arpiti.backend.entities.EntityRendererProvider;
+import org.coolcow.arpiti.backend.RptLine;
 
 /**
  *
@@ -759,7 +761,8 @@ public class MainFrame extends javax.swing.JFrame {
         public void valueChanged(final ListSelectionEvent event) {
             final int row = tblLines.getSelectedRow();                
             final RptLine rptLine = model.getLine(tblLines.convertRowIndexToModel(row));
-            final JComponent renderer = rptLine.getEntity().createRenderer();
+            final AbstractEntityRenderer renderer = EntityRendererProvider.getEntityRenderer(rptLine.getType());
+            renderer.setEntity(rptLine.getEntity());
             panInfo.removeAll();
             panInfo.add(renderer);
             panInfo.validate();

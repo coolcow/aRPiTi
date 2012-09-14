@@ -4,22 +4,22 @@
  */
 package org.coolcow.arpiti.gui.entityrenderer;
 
-import org.coolcow.arpiti.entities.DefaultEntity;
+import org.coolcow.arpiti.backend.entities.DefaultEntity;
+import org.jdesktop.beansbinding.BindingGroup;
 
 /**
  *
  * @author jruiz
  */
-public class DefaultRenderer extends javax.swing.JPanel {
+public class DefaultEntityRenderer extends AbstractEntityRenderer {
 
-    final DefaultEntity entity;
+    DefaultEntity entity;
     
     /**
      * Creates new form DefaultRenderer
      */
-    public DefaultRenderer(final DefaultEntity entity) {
+    public DefaultEntityRenderer() {
         initComponents();
-        this.entity = entity;
     }
 
     /**
@@ -98,4 +98,5 @@ public class DefaultRenderer extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
+
 }

@@ -1,7 +1,6 @@
 package org.coolcow.arpiti.backend;
 
 import java.util.List;
-import org.coolcow.arpiti.rptline.RptLine;
 
 public interface RptTailerListener {
 

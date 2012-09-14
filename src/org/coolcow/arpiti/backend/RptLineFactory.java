@@ -2,15 +2,15 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.coolcow.arpiti.rptline;
+package org.coolcow.arpiti.backend;
 
 import java.text.ParseException;
 import java.util.Date;
 import java.util.regex.Pattern;
-import org.coolcow.arpiti.entities.DefaultEntity;
-import org.coolcow.arpiti.entities.DwDebugFpsEntity;
-import org.coolcow.arpiti.entities.Entity;
-import org.coolcow.arpiti.entities.LocalityEventEntity;
+import org.coolcow.arpiti.backend.entities.DefaultEntity;
+import org.coolcow.arpiti.backend.entities.DwDebugFpsEntity;
+import org.coolcow.arpiti.backend.entities.Entity;
+import org.coolcow.arpiti.backend.entities.LocalityEventEntity;
 import org.coolcow.arpiti.gui.MainFrame;
 
 /**

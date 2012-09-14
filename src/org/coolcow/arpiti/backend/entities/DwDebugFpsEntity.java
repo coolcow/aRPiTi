@@ -2,10 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.coolcow.arpiti.entities;
-
-import javax.swing.JComponent;
-import org.coolcow.arpiti.gui.entityrenderer.DwDebugFpsRenderer;
+package org.coolcow.arpiti.backend.entities;
 
 /**
  *
@@ -22,11 +19,6 @@ public class DwDebugFpsEntity extends AbstractEntity {
     
     public double getFps() {
         return fps;
-    }
-
-    @Override
-    public JComponent createRenderer() {
-        return new DwDebugFpsRenderer(this);
     }
     
 }

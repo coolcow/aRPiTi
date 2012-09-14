@@ -4,22 +4,22 @@
  */
 package org.coolcow.arpiti.gui.entityrenderer;
 
-import org.coolcow.arpiti.entities.DwDebugFpsEntity;
+import org.coolcow.arpiti.backend.entities.Entity;
+import org.jdesktop.beansbinding.Converter;
 
 /**
  *
  * @author jruiz
  */
-public class DwDebugFpsRenderer extends javax.swing.JPanel {
+public class DwDebugFpsRenderer extends AbstractEntityRenderer {
 
-    final DwDebugFpsEntity entity;
+    final Converter<Double, String> converter = new DoubleToStringConverter();
     
     /**
      * Creates new form DwDebugFpsRenderer
      */
-    public DwDebugFpsRenderer(final DwDebugFpsEntity entity) {
+    public DwDebugFpsRenderer() {
         initComponents();
-        this.entity = entity;
     }
 
     /**
@@ -52,7 +52,8 @@ public class DwDebugFpsRenderer extends javax.swing.JPanel {
         jTextField1.setMinimumSize(new java.awt.Dimension(50, 20));
         jTextField1.setPreferredSize(new java.awt.Dimension(50, 20));
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${entity.fps}"), jTextField1, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${entity.fps}"), jTextField1, org.jdesktop.beansbinding.BeanProperty.create("text"), "");
+        binding.setConverter(converter);
         bindingGroup.addBinding(binding);
 
         jPanel3.add(jTextField1, new java.awt.GridBagConstraints());
@@ -110,4 +111,25 @@ public class DwDebugFpsRenderer extends javax.swing.JPanel {
     private javax.swing.JTextField jTextField1;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void setEntity(Entity entity) {
+        bindingGroup.unbind();
+        super.setEntity(entity);
+        bindingGroup.bind();
+    }
+        
+    class DoubleToStringConverter extends Converter<Double, String> {
+
+        @Override
+        public String convertForward(Double value) {
+            return Double.toString(value);
+        }
+
+        @Override
+        public Double convertReverse(String value) {
+            return Double.parseDouble(value);
+        }
+
+    };
 }

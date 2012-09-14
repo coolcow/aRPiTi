@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.swing.SwingWorker;
-import org.coolcow.arpiti.rptline.RptLine;
-import org.coolcow.arpiti.rptline.RptLineFactory;
 
 public class RptTailer extends SwingWorker<Void, Void> {
 
