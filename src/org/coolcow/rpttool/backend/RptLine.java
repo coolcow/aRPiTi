@@ -72,12 +72,14 @@ public class RptLine {
             }
         }, PDEATH, DELETE, ERROR, OBJ, HIVE, CLEANUP
     };
+    private String rawLine = null;
     private Type type = null;
     private int number = -1;
     private Date date = null;
     private String content = null;
 
-    public RptLine(final int number, final Date date, final Type type, final String content) {
+    public RptLine(final String rawLine, final int number, final Date date, final Type type, final String content) {
+        this.rawLine = rawLine;
         this.number = number;
         this.date = date;
         this.content = content;
@@ -116,19 +118,27 @@ public class RptLine {
         this.type = type;
     }
 
-    public static RptLine parseLine(final int number, final String line) {
-        if (line.trim().length() == 0) {
+    public String getRawLine() {
+        return rawLine;
+    }
+
+    public void setRawLine(String rawLine) {
+        this.rawLine = rawLine;
+    }
+    
+    public static RptLine parseLine(final int number, final String rawLine) {
+        if (rawLine.trim().length() == 0) {
             return null;
         }
         Type type;
         Date date;
         String content;
         try {
-            date = DATE_FORMAT.parse(line.substring(0, 8));
-            content = line.substring(9);
+            date = DATE_FORMAT.parse(rawLine.substring(0, 8));
+            content = rawLine.substring(9);
         } catch (ParseException ex) {
             date = null;
-            content = line;
+            content = rawLine;
         }
         if (content.equals("\"" + Type.LOCALITY_EVENT + "\"")) {
             content = "";
@@ -201,6 +211,6 @@ public class RptLine {
         } else {
             type = null;
         }
-        return new RptLine(number, date, type, content);
+        return new RptLine(rawLine, number, date, type, content);
     }
 }

@@ -32,10 +32,10 @@ public class RptTailer extends Thread {
         this.listeners.remove(listener);
     }
 
-    protected void fireNewLineTailed(final String line) {
+    protected void fireRptLineTailed(final RptLine rptLine) {
         for (Iterator iterator = this.listeners.iterator(); iterator.hasNext();) {
             RptTailerListener listener = (RptTailerListener) iterator.next();
-            listener.newLineTailed(line);
+            listener.rptLineTailed(rptLine);
         }
     }
 
@@ -67,9 +67,8 @@ public class RptTailer extends Thread {
     
     @Override
     public void run() {
-        long filePointer;
-
-        filePointer = 0;
+        long filePointer = 0;
+        int lineNumber = 0;
         RandomAccessFile file = null;
         try {
             this.tailing = true;
@@ -84,18 +83,20 @@ public class RptTailer extends Thread {
                     if (fileLength > filePointer) {
                         fireTailingStarted();
                         file.seek(filePointer);
-                        String line = file.readLine();
-                        while (line != null) {
-                            this.fireNewLineTailed(line);
-                            line = file.readLine();
+                        String lineString ;
+                        while ((lineString = file.readLine()) != null) {
+                            while (pause) {
+                                sleep(100);
+                            }
+                            lineNumber++;
+                            final RptLine rptLine = RptLine.parseLine(lineNumber, lineString);                            
+                            fireRptLineTailed(rptLine);
                         }
                         filePointer = file.getFilePointer();
                         fireTailingFinished();
                     }
 
-                    do {
-                        sleep(this.sampleInterval);
-                    } while (pause);
+                    sleep(this.sampleInterval);
                 } catch (IOException | InterruptedException e) {
                 }
             }

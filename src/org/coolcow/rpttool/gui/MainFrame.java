@@ -37,7 +37,6 @@ public class MainFrame extends javax.swing.JFrame {
     
     private final RptLineTableModel model = new RptLineTableModel();
     private File rptFile = null;
-    private int lineNumber = 0;
     private RptTailer rptFileTailer;
     private RptLine popLine = null;
 
@@ -266,7 +265,6 @@ public class MainFrame extends javax.swing.JFrame {
         panProgress.add(cbAutoscroll, gridBagConstraints);
 
         btnPauseResume.setText("pause");
-        btnPauseResume.setEnabled(false);
         btnPauseResume.setMaximumSize(new java.awt.Dimension(75, 23));
         btnPauseResume.setMinimumSize(new java.awt.Dimension(75, 23));
         btnPauseResume.setPreferredSize(new java.awt.Dimension(75, 23));
@@ -538,7 +536,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void mniCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniCopyActionPerformed
         if (popLine != null) {
             final Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-            final Transferable transferable = new StringSelection(popLine.getContent());
+            final Transferable transferable = new StringSelection(popLine.getRawLine());
             clipboard.setContents(transferable, null);
         }
     }//GEN-LAST:event_mniCopyActionPerformed
@@ -546,24 +544,17 @@ public class MainFrame extends javax.swing.JFrame {
     private void btnPauseResumeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPauseResumeActionPerformed
         if (rptFileTailer.isPause()) {
             rptFileTailer.setPause(false);
-            btnPauseResume.setText("resume");
+            btnPauseResume.setText("pause");
+            pgbLines.setIndeterminate(true);
         } else {
             rptFileTailer.setPause(true);
-            btnPauseResume.setText("pause");
+            btnPauseResume.setText("resume");
+            pgbLines.setIndeterminate(false);
         }
     }//GEN-LAST:event_btnPauseResumeActionPerformed
 
     private void loadLines(final File rptFile) {
         model.clear();
-        lineNumber = 0;
-        EventQueue.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                pgbLines.setIndeterminate(true);
-                pgbLines.setEnabled(true);
-            }
-        });
 
         if (rptFileTailer != null) {
             rptFileTailer.stopTailing();
@@ -573,46 +564,30 @@ public class MainFrame extends javax.swing.JFrame {
                 new RptTailerListener() {
 
                     @Override
-                    public void newLineTailed(final String lineString) {
-                        lineNumber++;
-                        EventQueue.invokeLater(new Runnable() {
-
-                            @Override
-                            public void run() {
+                    public void rptLineTailed(final RptLine rptLine) {
+                        try {
+                            if (rptLine != null) {
+                                final int lineNumber = rptLine.getNumber();
                                 pgbLines.setValue(lineNumber);
                                 pgbLines.setString(lineNumber + " lines (" + tblLines.getRowCount() + " filtered)");
-                            }
-                        });
-
-                        try {
-                            final RptLine line = RptLine.parseLine(lineNumber, lineString);
-                            if (line != null) {
-                                model.addLine(line);
+                                model.addLine(rptLine);
+                                if (cbAutoscroll.isSelected()) {
+                                    tblLines.scrollRectToVisible(tblLines.getCellRect(tblLines.getRowCount() - 1, tblLines.getColumnCount(), true));
+                                }
                             }
                         } catch (final Exception ex) {
                             ex.printStackTrace();
-                        }
-                        if (cbAutoscroll.isSelected()) {
-                            EventQueue.invokeLater(new Runnable() {
-
-                                @Override
-                                public void run() {
-                                    tblLines.scrollRectToVisible(tblLines.getCellRect(tblLines.getRowCount() - 1, tblLines.getColumnCount(), true));
-                                }
-                            });
                         }
                     }
 
                     @Override
                     public void tailingStarted() {
-                        btnPauseResume.setEnabled(false);
-                        btnPauseResume.setText("loading");
+                        pgbLines.setIndeterminate(true);
                     }
 
                     @Override
                     public void tailingFinished() {
-                        btnPauseResume.setEnabled(true);
-                        btnPauseResume.setText("pause");
+                        pgbLines.setIndeterminate(false);
                     }
                 });
         rptFileTailer.start();
