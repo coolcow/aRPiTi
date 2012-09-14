@@ -26,15 +26,19 @@ public abstract class EntityRendererProvider {
     public static AbstractEntityRenderer getEntityRenderer(final RptLine.Type type) {
         if (!rendererMap.containsKey(type)) {
             final AbstractEntityRenderer renderer;
-            switch (type) {
-                case DW_DEBUG_FPS: { 
-                    renderer = new DwDebugFpsRenderer();
-                } break;
-                case LOCALITY_EVENT: { 
-                    renderer = new LocalityEventRenderer();
-                } break;
-                default: 
-                    renderer = new DefaultEntityRenderer();
+            if (type == null) {
+                renderer = new DefaultEntityRenderer();
+            } else {
+                switch (type) {
+                    case DW_DEBUG_FPS: { 
+                        renderer = new DwDebugFpsRenderer();
+                    } break;
+                    case LOCALITY_EVENT: { 
+                        renderer = new LocalityEventRenderer();
+                    } break;
+                    default: 
+                        renderer = new DefaultEntityRenderer();
+                }
             }
             rendererMap.put(type, renderer);
         }

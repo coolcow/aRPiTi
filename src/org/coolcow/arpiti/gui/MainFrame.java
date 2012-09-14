@@ -248,7 +248,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         panRight.setLayout(new java.awt.GridBagLayout());
 
-        panInfo.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        panInfo.setBorder(javax.swing.BorderFactory.createTitledBorder("Renderer"));
         panInfo.setLayout(new javax.swing.BoxLayout(panInfo, javax.swing.BoxLayout.LINE_AXIS));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
