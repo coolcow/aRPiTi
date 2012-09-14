@@ -5,14 +5,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Pattern;
+import org.coolcow.arpiti.gui.MainFrame;
 
 /**
  *
  * @author jruiz
  */
 public class RptLine {
-
-    final public static DateFormat DATE_FORMAT = new SimpleDateFormat("kk:mm:ss");
 
     public enum Type {
 
@@ -134,7 +133,7 @@ public class RptLine {
         Date date;
         String content;
         try {
-            date = DATE_FORMAT.parse(rawLine.substring(0, 8));
+            date = MainFrame.DATE_FORMAT.parse(rawLine.substring(0, 8));
             content = rawLine.substring(9);
         } catch (ParseException ex) {
             date = null;

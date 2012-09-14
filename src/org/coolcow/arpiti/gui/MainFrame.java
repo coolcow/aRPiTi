@@ -39,6 +39,7 @@ public class MainFrame extends javax.swing.JFrame {
     private File rptFile = null;
     private RptTailer rptFileTailer;
     private RptLine popLine = null;
+    private boolean autoscroll = true;
 
     /**
      * Creates new form NewJFrame
@@ -183,9 +184,9 @@ public class MainFrame extends javax.swing.JFrame {
         panMain = new javax.swing.JPanel();
         panProgress = new javax.swing.JPanel();
         pgbLines = new javax.swing.JProgressBar();
-        cbAutoScroll = new javax.swing.JCheckBox();
-        btnPauseResume = new javax.swing.JButton();
-        cbAutoRefresh = new javax.swing.JCheckBox();
+        tgbResume = new javax.swing.JToggleButton();
+        tgbAutoScroll = new javax.swing.JToggleButton();
+        tgbAutoRefresh = new javax.swing.JToggleButton();
         panTable = new javax.swing.JPanel();
         scrTable = new javax.swing.JScrollPane();
         tblLines = new javax.swing.JTable() {
@@ -230,6 +231,7 @@ public class MainFrame extends javax.swing.JFrame {
         mniLoadRpt = new javax.swing.JMenuItem();
         mniExit = new javax.swing.JMenuItem();
 
+        mniCopy.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/coolcow/arpiti/gui/copy.png"))); // NOI18N
         mniCopy.setText("copy to clipboard");
         mniCopy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -247,6 +249,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         panProgress.setLayout(new java.awt.GridBagLayout());
 
+        pgbLines.setFocusable(false);
         pgbLines.setPreferredSize(new java.awt.Dimension(146, 20));
         pgbLines.setString("0 lines");
         pgbLines.setStringPainted(true);
@@ -257,48 +260,74 @@ public class MainFrame extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         panProgress.add(pgbLines, gridBagConstraints);
 
-        cbAutoScroll.setSelected(true);
-        cbAutoScroll.setToolTipText("(dis-)activate autoscroll");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        panProgress.add(cbAutoScroll, gridBagConstraints);
-
-        btnPauseResume.setText("pause");
-        btnPauseResume.setMaximumSize(new java.awt.Dimension(75, 23));
-        btnPauseResume.setMinimumSize(new java.awt.Dimension(75, 23));
-        btnPauseResume.setPreferredSize(new java.awt.Dimension(75, 23));
-        btnPauseResume.addActionListener(new java.awt.event.ActionListener() {
+        tgbResume.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/coolcow/arpiti/gui/resume.png"))); // NOI18N
+        tgbResume.setEnabled(false);
+        tgbResume.setFocusPainted(false);
+        tgbResume.setFocusable(false);
+        tgbResume.setMaximumSize(new java.awt.Dimension(100, 25));
+        tgbResume.setMinimumSize(new java.awt.Dimension(100, 25));
+        tgbResume.setPreferredSize(new java.awt.Dimension(100, 25));
+        tgbResume.setRequestFocusEnabled(false);
+        tgbResume.setRolloverEnabled(false);
+        tgbResume.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/org/coolcow/arpiti/gui/pause.png"))); // NOI18N
+        tgbResume.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPauseResumeActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
-        panProgress.add(btnPauseResume, gridBagConstraints);
-
-        cbAutoRefresh.setSelected(true);
-        cbAutoRefresh.setToolTipText("(dis-)activate auto refresh");
-        cbAutoRefresh.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbAutoRefreshActionPerformed(evt);
+                tgbResumeActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        panProgress.add(cbAutoRefresh, gridBagConstraints);
+        panProgress.add(tgbResume, gridBagConstraints);
+
+        tgbAutoScroll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/coolcow/arpiti/gui/autoscroll.png"))); // NOI18N
+        tgbAutoScroll.setSelected(true);
+        tgbAutoScroll.setFocusPainted(false);
+        tgbAutoScroll.setFocusable(false);
+        tgbAutoScroll.setMaximumSize(new java.awt.Dimension(25, 25));
+        tgbAutoScroll.setMinimumSize(new java.awt.Dimension(25, 25));
+        tgbAutoScroll.setPreferredSize(new java.awt.Dimension(25, 25));
+        tgbAutoScroll.setRequestFocusEnabled(false);
+        tgbAutoScroll.setRolloverEnabled(false);
+        tgbAutoScroll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tgbAutoScrollActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
+        panProgress.add(tgbAutoScroll, gridBagConstraints);
+
+        tgbAutoRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/coolcow/arpiti/gui/autorefresh.png"))); // NOI18N
+        tgbAutoRefresh.setSelected(true);
+        tgbAutoRefresh.setFocusPainted(false);
+        tgbAutoRefresh.setFocusable(false);
+        tgbAutoRefresh.setMaximumSize(new java.awt.Dimension(25, 25));
+        tgbAutoRefresh.setMinimumSize(new java.awt.Dimension(25, 25));
+        tgbAutoRefresh.setPreferredSize(new java.awt.Dimension(25, 25));
+        tgbAutoRefresh.setRequestFocusEnabled(false);
+        tgbAutoRefresh.setRolloverEnabled(false);
+        tgbAutoRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tgbAutoRefreshActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        panProgress.add(tgbAutoRefresh, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 5);
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 5);
         panMain.add(panProgress, gridBagConstraints);
 
         panTable.setLayout(new java.awt.GridBagLayout());
@@ -324,7 +353,7 @@ public class MainFrame extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 5);
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         panMain.add(panTable, gridBagConstraints);
         panTable.getAccessibleContext().setAccessibleName("");
 
@@ -443,7 +472,8 @@ public class MainFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         panFilter.add(jLabel1, gridBagConstraints);
 
-        panPlayers.setBorder(javax.swing.BorderFactory.createTitledBorder("Players"));
+        panPlayers.setBorder(javax.swing.BorderFactory.createTitledBorder("Players (not yet implemented)"));
+        panPlayers.setEnabled(false);
         panPlayers.setLayout(new java.awt.GridBagLayout());
 
         jScrollPane1.setMaximumSize(new java.awt.Dimension(150, 130));
@@ -455,10 +485,19 @@ public class MainFrame extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jList1);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         panPlayers.add(jScrollPane1, gridBagConstraints);
+
+        cbFilterPlayers.setText("filter selected");
+        cbFilterPlayers.setEnabled(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        panPlayers.add(cbFilterPlayers, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -466,15 +505,6 @@ public class MainFrame extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         panFilter.add(panPlayers, gridBagConstraints);
-
-        cbFilterPlayers.setText("selected players");
-        cbFilterPlayers.setEnabled(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        panFilter.add(cbFilterPlayers, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -529,7 +559,8 @@ public class MainFrame extends javax.swing.JFrame {
         fc.setDialogTitle("choose RPT file");
         final int returnVal = fc.showOpenDialog(this);
 
-        btnPauseResume.setEnabled(true);
+        tgbResume.setEnabled(true);
+        tgbResume.setSelected(true);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             rptFile = fc.getSelectedFile();
             new SwingWorker<Void, Void>() {
@@ -555,22 +586,24 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mniCopyActionPerformed
 
-    private void btnPauseResumeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPauseResumeActionPerformed
-        if (rptFileTailer.isPause()) {
+    private void tgbResumeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tgbResumeActionPerformed
+        if (tgbResume.isSelected()) {
             rptFileTailer.setPause(false);
-            btnPauseResume.setText("pause");
             pgbLines.setIndeterminate(true);
         } else {
             rptFileTailer.setPause(true);
-            btnPauseResume.setText("resume");
             pgbLines.setIndeterminate(false);
         }
-    }//GEN-LAST:event_btnPauseResumeActionPerformed
+    }//GEN-LAST:event_tgbResumeActionPerformed
 
-    private void cbAutoRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbAutoRefreshActionPerformed
-        final boolean autoRefresh = !rptFileTailer.isAutorefresh();
+    private void tgbAutoRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tgbAutoRefreshActionPerformed
+        final boolean autoRefresh = tgbAutoRefresh.isSelected();
         rptFileTailer.setAutorefresh(autoRefresh);
-    }//GEN-LAST:event_cbAutoRefreshActionPerformed
+    }//GEN-LAST:event_tgbAutoRefreshActionPerformed
+
+    private void tgbAutoScrollActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tgbAutoScrollActionPerformed
+        autoscroll = tgbAutoScroll.isSelected();
+    }//GEN-LAST:event_tgbAutoScrollActionPerformed
 
     private void loadLines(final File rptFile) {
         model.clear();
@@ -590,7 +623,7 @@ public class MainFrame extends javax.swing.JFrame {
                                 pgbLines.setValue(lineNumber);
                                 pgbLines.setString(lineNumber + " lines (" + tblLines.getRowCount() + " filtered)");
                                 model.addLine(rptLine);
-                                if (cbAutoScroll.isSelected()) {
+                                if (autoscroll) {
                                     tblLines.scrollRectToVisible(tblLines.getCellRect(tblLines.getRowCount() - 1, tblLines.getColumnCount(), true));
                                 }
                             }
@@ -633,9 +666,6 @@ public class MainFrame extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnPauseResume;
-    private javax.swing.JCheckBox cbAutoRefresh;
-    private javax.swing.JCheckBox cbAutoScroll;
     private javax.swing.JCheckBox cbFilterPlayers;
     private javax.swing.JCheckBox cbxFilterCleanup;
     private javax.swing.JCheckBox cbxFilterDelete;
@@ -674,6 +704,9 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPopupMenu pumTableitem;
     private javax.swing.JScrollPane scrTable;
     private javax.swing.JTable tblLines;
+    private javax.swing.JToggleButton tgbAutoRefresh;
+    private javax.swing.JToggleButton tgbAutoScroll;
+    private javax.swing.JToggleButton tgbResume;
     private javax.swing.JTextField txtFilter;
     // End of variables declaration//GEN-END:variables
 
