@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import javax.swing.SwingWorker;
 import org.coolcow.arpiti.rptline.RptLine;
 import org.coolcow.arpiti.rptline.RptLineFactory;
@@ -12,10 +13,12 @@ import org.coolcow.arpiti.rptline.RptLineFactory;
 public class RptTailer extends SwingWorker<Void, Void> {
 
     private final File rptFile;
-    private long sampleInterval = 1000;
+    private long flushInterval = 1000;
+    private long refreshInterval = 1000;
     private boolean tailing = false;
-    private boolean autorefresh = true;
     private boolean pause = false;
+    private List<RptLine> collectedRptLines = new ArrayList<>();
+            
     private Collection<RptTailerListener> listeners = new ArrayList<>();
 
     public RptTailer(File rptFile) {
@@ -36,15 +39,21 @@ public class RptTailer extends SwingWorker<Void, Void> {
         }
     }
 
-    protected void fireTailingStarted() {
+    protected void fireRptLinesTailed(final List<RptLine> rptLines) {
         for (final RptTailerListener listener : listeners) {
-            listener.tailingStarted();
+            listener.rptLinesTailed(rptLines);
+        }
+    }
+    
+    protected void fireTailingResumed() {
+        for (final RptTailerListener listener : listeners) {
+            listener.tailingResumed();
         }
     }
 
-    protected void fireTailingFinished() {
+    protected void fireTailingWait() {
         for (final RptTailerListener listener : listeners) {
-            listener.tailingFinished();
+            listener.tailingWait();
         }
     }
     
@@ -59,14 +68,6 @@ public class RptTailer extends SwingWorker<Void, Void> {
     public void setPause(boolean pause) {
         this.pause = pause;
     }
-
-    public boolean isAutorefresh() {
-        return autorefresh;
-    }
-
-    public void setAutorefresh(boolean autorefresh) {
-        this.autorefresh = autorefresh;
-    }    
 
     @Override
     protected Void doInBackground() throws Exception {    
@@ -83,26 +84,37 @@ public class RptTailer extends SwingWorker<Void, Void> {
                         filePointer = 0;
                     }
 
+                    long timeInMs = System.currentTimeMillis();
                     if (fileLength > filePointer) {
-                        fireTailingStarted();
+                        fireTailingResumed();
                         file.seek(filePointer);
                         String lineString ;
                         while ((lineString = file.readLine()) != null) {
-                            do {
-                                Thread.sleep(1); // gives edt a chance to execute rowsorter
-                            } while (pause);
+                            if (pause) {
+                                fireTailingWait();
+                                while (pause) {
+                                    Thread.sleep(100);
+                                }
+                                fireTailingResumed();
+                            }
                             lineNumber++;
-                            final RptLine rptLine = RptLineFactory.parseLine(lineNumber, lineString);                            
-                            fireRptLineTailed(rptLine);
+                            final RptLine rptLine = RptLineFactory.parseLine(lineNumber, lineString); 
+                            if (rptLine != null) {
+                                collectedRptLines.add(rptLine);
+                            }
+                            
+                            final long newTimeInMs = System.currentTimeMillis();
+                            if (newTimeInMs - timeInMs > flushInterval) {
+                                timeInMs = newTimeInMs;
+                                fireRptLinesTailed(collectedRptLines);
+                                collectedRptLines = new ArrayList<>();
+                            }
                         }
                         filePointer = file.getFilePointer();
-                        fireTailingFinished();
                     }
 
-                    Thread.sleep(this.sampleInterval);
-                    while (!autorefresh) {
-                        Thread.sleep(100);                        
-                    }
+                    fireTailingWait();
+                    Thread.sleep(refreshInterval);
                 } catch (IOException | InterruptedException e) {
                 }
             }
@@ -115,4 +127,5 @@ public class RptTailer extends SwingWorker<Void, Void> {
         }
         return null;
     }
+    
 }

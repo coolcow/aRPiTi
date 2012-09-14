@@ -6,6 +6,7 @@ package org.coolcow.arpiti.gui;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import org.coolcow.arpiti.rptline.RptLine;
 
@@ -83,6 +84,13 @@ public class RptLineTableModel extends AbstractTableModel {
         synchronized(lines) {
             lines.add(line);
             fireTableRowsInserted(lines.size() - 1, lines.size() - 1);
+        }
+    }
+
+    public void addLines(final List<RptLine> lines) {
+        synchronized(lines) {
+            this.lines.addAll(lines);
+            fireTableRowsInserted(this.lines.size() - lines.size(), this.lines.size() - 1);
         }
     }
     
