@@ -19,12 +19,14 @@ import java.util.Date;
 import java.util.regex.Pattern;
 import javax.swing.RowFilter.Entry;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableRowSorter;
-import org.coolcow.arpiti.backend.RptLine;
 import org.coolcow.arpiti.backend.RptTailer;
 import org.coolcow.arpiti.backend.RptTailerListener;
+import org.coolcow.arpiti.rptline.RptLine;
 
 /**
  *
@@ -63,7 +65,7 @@ public class MainFrame extends javax.swing.JFrame {
                 final boolean contentFilterIncludes;
                 if (contentFilter != null) {
                     final Pattern pattern = Pattern.compile(contentFilter);
-                    contentFilterIncludes = pattern.matcher(line.getContent()).find();
+                    contentFilterIncludes = pattern.matcher(line.getEntity().getRawContent()).find();
                 } else {
                     contentFilterIncludes = true;
                 }
@@ -157,6 +159,19 @@ public class MainFrame extends javax.swing.JFrame {
                         pumTableitem.show(event.getComponent(), event.getX(), event.getY());
                     }
                 }
+            }
+        });
+        
+        tblLines.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+            @Override
+            public void valueChanged(final ListSelectionEvent event) {
+                final int row = tblLines.getSelectedRow();                
+                final RptLine rptLine = model.getLine(tblLines.convertRowIndexToModel(row));
+                final JComponent renderer = rptLine.getEntity().createRenderer();
+                panInfo.removeAll();
+                panInfo.add(renderer);
+                panInfo.validate();
             }
         });
     }
@@ -360,7 +375,7 @@ public class MainFrame extends javax.swing.JFrame {
         panRight.setLayout(new java.awt.GridBagLayout());
 
         panInfo.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-        panInfo.setLayout(new java.awt.GridBagLayout());
+        panInfo.setLayout(new javax.swing.BoxLayout(panInfo, javax.swing.BoxLayout.LINE_AXIS));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;

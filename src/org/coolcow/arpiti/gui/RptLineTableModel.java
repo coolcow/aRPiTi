@@ -7,7 +7,7 @@ package org.coolcow.arpiti.gui;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.table.AbstractTableModel;
-import org.coolcow.arpiti.backend.RptLine;
+import org.coolcow.arpiti.rptline.RptLine;
 
 /**
  *
@@ -62,7 +62,7 @@ public class RptLineTableModel extends AbstractTableModel {
                 return line.getType();
             }
             case COLUMN_CONTENT: {
-                return line.getContent();
+                return line.getEntity().getRawContent();
             }
             default: {
                 return null;

@@ -1,5 +1,7 @@
 package org.coolcow.arpiti.backend;
 
+import org.coolcow.arpiti.rptline.RptLineFactory;
+import org.coolcow.arpiti.rptline.RptLine;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -89,7 +91,7 @@ public class RptTailer extends Thread {
                                 sleep(100);
                             }
                             lineNumber++;
-                            final RptLine rptLine = RptLine.parseLine(lineNumber, lineString);                            
+                            final RptLine rptLine = RptLineFactory.parseLine(lineNumber, lineString);                            
                             fireRptLineTailed(rptLine);
                         }
                         filePointer = file.getFilePointer();
