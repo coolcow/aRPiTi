@@ -13,6 +13,7 @@ import org.coolcow.arpiti.backend.entities.LocalityEventEntity;
 import org.coolcow.arpiti.backend.entities.LoginAttemptEntity;
 import org.coolcow.arpiti.backend.entities.LoginLoadedEntity;
 import org.coolcow.arpiti.backend.entities.LoginPublishingEntity;
+import org.coolcow.arpiti.backend.entities.StartingLoginEntity;
 import org.coolcow.arpiti.gui.MainFrame;
 
 /**
@@ -93,6 +94,7 @@ public class RptLineFactory {
         } else if (content.startsWith("\"" + RptLine.Type.STARTING_LOGIN + ": ")) {
             content = content.substring(("\"" + RptLine.Type.STARTING_LOGIN + ": ").length(), content.length() - 1);
             type = RptLine.Type.STARTING_LOGIN;
+            entity = new StartingLoginEntity(content);
         } else if (content.startsWith("\"" + RptLine.Type.DISCONNECT_START + ": ")) {
             content = content.substring(("\"" + RptLine.Type.DISCONNECT_START + ": ").length(), content.length() - 1);
             type = RptLine.Type.DISCONNECT_START;

@@ -26,11 +26,11 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
+import org.coolcow.arpiti.backend.EntityRendererProvider;
+import org.coolcow.arpiti.backend.RptLine;
 import org.coolcow.arpiti.backend.RptTailer;
 import org.coolcow.arpiti.backend.RptTailerListener;
 import org.coolcow.arpiti.gui.entityrenderer.AbstractEntityRenderer;
-import org.coolcow.arpiti.backend.entities.EntityRendererProvider;
-import org.coolcow.arpiti.backend.RptLine;
 
 /**
  *
