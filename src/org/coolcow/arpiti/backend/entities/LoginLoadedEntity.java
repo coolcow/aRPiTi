@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
  *
  * @author jruiz
  */
-public class LoginPublishingEntity extends AbstractEntity {
+public class LoginLoadedEntity extends AbstractEntity {
     
     private String unknownValue1;
     private String unknownValue2;
@@ -19,7 +19,7 @@ public class LoginPublishingEntity extends AbstractEntity {
     private String playerName;
     private String skinName;
     
-    public LoginPublishingEntity(final String content) {
+    public LoginLoadedEntity(final String content) {
         super(content);
         final Matcher matcher = Pattern.compile("(.) (.-.-.):(\\d+) \\((.*)\\) REMOTE Type: (.*)").matcher(content);
         if (matcher.matches()) {
