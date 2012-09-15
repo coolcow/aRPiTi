@@ -151,8 +151,11 @@ public abstract class AbstractRptLine implements RptLine {
                     type = Type.OBJ; 
                     rptLine = new ObjRptLine();
                 } break;
+                case "ERROR": { 
+                    type = Type.ERROR; 
+                    rptLine = new ErrorRptLine();
+                } break;
                 case "DELETE": { type = Type.DELETE; } break;
-                case "ERROR": { type = Type.ERROR; } break;
                 case "Second Hand Zombie Initialized": { type = Type.SECOND_HAND_ZOMBIE_INITIALIZED; } break;
                 case "HIVE": { type = Type.HIVE; } break;
                 case "WRITE": { type = Type.WRITE; } break;

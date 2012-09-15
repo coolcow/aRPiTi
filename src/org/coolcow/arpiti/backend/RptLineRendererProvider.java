@@ -11,6 +11,7 @@ import org.coolcow.arpiti.gui.rptline.AbstractRptLineRenderer;
 import org.coolcow.arpiti.gui.rptline.DefaultRenderer;
 import org.coolcow.arpiti.gui.rptline.DisconnectStartIRenderer;
 import org.coolcow.arpiti.gui.rptline.DwDebugFpsRenderer;
+import org.coolcow.arpiti.gui.rptline.ErrorRenderer;
 import org.coolcow.arpiti.gui.rptline.LocalityEventRenderer;
 import org.coolcow.arpiti.gui.rptline.LoginAttemptRenderer;
 import org.coolcow.arpiti.gui.rptline.LoginLoadedRenderer;
@@ -44,6 +45,7 @@ public abstract class RptLineRendererProvider {
                     case LOCALITY_EVENT: { renderer = new LocalityEventRenderer(); } break;
                     case DISCONNECT_START_I: { renderer = new DisconnectStartIRenderer(); } break;
                     case OBJ: { renderer = new ObjRenderer(); } break;
+                    case ERROR: { renderer = new ErrorRenderer(); } break;
                     default: renderer = new DefaultRenderer();
                 }
             }
