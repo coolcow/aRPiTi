@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
-import org.coolcow.arpiti.backend.RptLine;
+import org.coolcow.arpiti.backend.rptline.AbstractRptLine;
 
 /**
  *
@@ -19,13 +19,12 @@ public class RptLineTableModel extends AbstractTableModel {
     public static final int COLUMN_NUMBER = 0;
     public static final int COLUMN_TIME = 1;
     public static final int COLUMN_TYPE = 2;
-    public static final int COLUMN_CONTENT = 3;    
-    public static final String[] COLUMN_NAMES = {"#", "time", "type", "content"};
-    public static final Class[] COLUMN_CLASSES = {Integer.class, Date.class, RptLine.Type.class, String.class};
-    public static final boolean[] COLUMN_EDITABLE = {false, false, false, false};
+    public static final int COLUMN_CONTENT = 3;
+    static final boolean[] COLUMN_EDITABLE = {false, false, false, false};
+    static final Class[] COLUMN_CLASSES = {Integer.class, Date.class, AbstractRptLine.Type.class, String.class};
+    static final String[] COLUMN_NAMES = {"#", "time", "type", "content"};
+    private final ArrayList<AbstractRptLine> lines = new ArrayList<>();
 
-    private final ArrayList<RptLine> lines = new ArrayList<>();
-    
     @Override
     public int getColumnCount() {
         return COLUMN_NAMES.length;
@@ -44,12 +43,12 @@ public class RptLineTableModel extends AbstractTableModel {
     @Override
     public boolean isCellEditable(int row, int columnIndex) {
         return COLUMN_EDITABLE[columnIndex];
-    }        
+    }
 
     @Override
     public Object getValueAt(int row, int column) {
-        final RptLine line;
-        synchronized(lines) {
+        final AbstractRptLine line;
+        synchronized (lines) {
             line = lines.get(row);
         }
         switch (column) {
@@ -63,7 +62,7 @@ public class RptLineTableModel extends AbstractTableModel {
                 return line.getType();
             }
             case COLUMN_CONTENT: {
-                return line.getEntity().getRawContent();
+                return line.getRawContent();
             }
             default: {
                 return null;
@@ -74,46 +73,45 @@ public class RptLineTableModel extends AbstractTableModel {
     @Override
     public int getRowCount() {
         final int rowCount;
-        synchronized(lines) {
+        synchronized (lines) {
             rowCount = lines.size();
         }
         return rowCount;
-    }   
+    }
 
-    public void addLine(final RptLine line) {
-        synchronized(lines) {
+    public void addLine(final AbstractRptLine line) {
+        synchronized (lines) {
             lines.add(line);
             fireTableRowsInserted(lines.size() - 1, lines.size() - 1);
         }
     }
 
-    public void addLines(final List<RptLine> lines) {
-        synchronized(lines) {
+    public void addLines(final List<AbstractRptLine> lines) {
+        synchronized (lines) {
             this.lines.addAll(lines);
             fireTableRowsInserted(this.lines.size() - lines.size(), this.lines.size() - 1);
         }
     }
-    
-    public void removeLine(final RptLine line) {
-        synchronized(lines) {
+
+    public void removeLine(final AbstractRptLine line) {
+        synchronized (lines) {
             lines.remove(line);
             fireTableDataChanged();
         }
     }
-    
+
     final public void clear() {
-        synchronized(lines) {
+        synchronized (lines) {
             lines.clear();
             fireTableDataChanged();
         }
     }
-    
-    final public RptLine getLine(final int row) {
-        final RptLine line;
-        synchronized(lines) {
+
+    final public AbstractRptLine getLine(final int row) {
+        final AbstractRptLine line;
+        synchronized (lines) {
             line = lines.get(row);
         }
         return line;
     }
-
 }

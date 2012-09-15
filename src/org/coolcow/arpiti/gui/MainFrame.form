@@ -212,7 +212,7 @@
                     </Property>
                   </Properties>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable() {&#xa;    @Override public void doLayout() {&#xa;        if (getTableHeader().getResizingColumn() == null) {&#xa;            if (getAutoResizeMode() == JTable.AUTO_RESIZE_LAST_COLUMN) {&#xa;                getTableHeader().setResizingColumn(getColumnModel().getColumn(getColumnModel().getColumnCount()-1));&#xa;            }&#xa;        }&#xa;        super.doLayout();&#xa;    } &#xa;}"/>
+                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new CorrectLayoutJTable()"/>
                   </AuxValues>
                 </Component>
               </SubComponents>
@@ -232,7 +232,7 @@
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder title="Renderer"/>
+                    <TitledBorder title="Details about selected row"/>
                   </Border>
                 </Property>
               </Properties>

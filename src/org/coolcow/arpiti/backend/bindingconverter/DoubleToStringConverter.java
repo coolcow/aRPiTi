@@ -21,5 +21,4 @@ public class DoubleToStringConverter extends Converter<Double, String> {
     public Double convertReverse(String value) {
         return Double.parseDouble(value);
     }
-
 }

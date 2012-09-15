@@ -2,20 +2,17 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.coolcow.arpiti.gui.entityrenderer;
+package org.coolcow.arpiti.gui.rptline;
 
 import org.coolcow.arpiti.backend.bindingconverter.IntToStringConverter;
-import org.coolcow.arpiti.backend.entities.Entity;
-import org.jdesktop.beansbinding.Converter;
+import org.coolcow.arpiti.backend.rptline.RptLine;
 
 /**
  *
  * @author jruiz
  */
-public class LoginAttemptRenderer extends AbstractEntityRenderer {
- 
-    final Converter<Double, String> converter = new DoubleToStringConverter();
-    
+public class LoginAttemptRenderer extends AbstractRptLineRenderer {
+
     /**
      * Creates new form DwDebugFpsRenderer
      */
@@ -59,7 +56,7 @@ public class LoginAttemptRenderer extends AbstractEntityRenderer {
         jTextField1.setMinimumSize(new java.awt.Dimension(150, 20));
         jTextField1.setPreferredSize(new java.awt.Dimension(150, 20));
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${entity.playerName}"), jTextField1, org.jdesktop.beansbinding.BeanProperty.create("text"), "");
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.playerName}"), jTextField1, org.jdesktop.beansbinding.BeanProperty.create("text"), "");
         bindingGroup.addBinding(binding);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -116,7 +113,7 @@ public class LoginAttemptRenderer extends AbstractEntityRenderer {
         jTextField2.setMinimumSize(new java.awt.Dimension(150, 20));
         jTextField2.setPreferredSize(new java.awt.Dimension(150, 20));
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${entity.playerId}"), jTextField2, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.playerId}"), jTextField2, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setConverter(new IntToStringConverter());
         bindingGroup.addBinding(binding);
 
@@ -159,24 +156,9 @@ public class LoginAttemptRenderer extends AbstractEntityRenderer {
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void setEntity(Entity entity) {
+    public void setRptLine(final RptLine rptLine) {
         bindingGroup.unbind();
-        super.setEntity(entity);
+        super.setRptLine(rptLine);
         bindingGroup.bind();
     }
-        
-    class DoubleToStringConverter extends Converter<Double, String> {
-
-        @Override
-        public String convertForward(Double value) {
-            return Double.toString(value);
-        }
-
-        @Override
-        public Double convertReverse(String value) {
-            return Double.parseDouble(value);
-        }
-
-    };
-    
 }

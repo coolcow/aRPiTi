@@ -2,18 +2,17 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.coolcow.arpiti.gui.entityrenderer;
+package org.coolcow.arpiti.gui.rptline;
 
 import org.coolcow.arpiti.backend.bindingconverter.DoubleToStringConverter;
-import org.coolcow.arpiti.backend.entities.Entity;
-import org.jdesktop.beansbinding.Converter;
+import org.coolcow.arpiti.backend.rptline.RptLine;
 
 /**
  *
  * @author jruiz
  */
-public class DwDebugFpsRenderer extends AbstractEntityRenderer {
-    
+public class DwDebugFpsRenderer extends AbstractRptLineRenderer {
+
     /**
      * Creates new form DwDebugFpsRenderer
      */
@@ -51,7 +50,7 @@ public class DwDebugFpsRenderer extends AbstractEntityRenderer {
         jTextField1.setMinimumSize(new java.awt.Dimension(50, 20));
         jTextField1.setPreferredSize(new java.awt.Dimension(50, 20));
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${entity.fps}"), jTextField1, org.jdesktop.beansbinding.BeanProperty.create("text"), "");
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.fps}"), jTextField1, org.jdesktop.beansbinding.BeanProperty.create("text"), "");
         binding.setConverter(new DoubleToStringConverter());
         bindingGroup.addBinding(binding);
 
@@ -112,10 +111,9 @@ public class DwDebugFpsRenderer extends AbstractEntityRenderer {
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void setEntity(Entity entity) {
+    public void setRptLine(final RptLine rptLine) {
         bindingGroup.unbind();
-        super.setEntity(entity);
+        super.setRptLine(rptLine);
         bindingGroup.bind();
     }
-    
 }

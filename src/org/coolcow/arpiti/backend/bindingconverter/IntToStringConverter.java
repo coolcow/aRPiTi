@@ -21,5 +21,4 @@ public class IntToStringConverter extends Converter<Integer, String> {
     public Integer convertReverse(String value) {
         return Integer.parseInt(value);
     }
-
 };

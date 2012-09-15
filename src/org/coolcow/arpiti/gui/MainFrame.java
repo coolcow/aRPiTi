@@ -13,7 +13,6 @@ import java.awt.datatransfer.Transferable;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -26,29 +25,26 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
-import org.coolcow.arpiti.backend.EntityRendererProvider;
-import org.coolcow.arpiti.backend.RptLine;
+import org.coolcow.arpiti.backend.RptLineRendererProvider;
 import org.coolcow.arpiti.backend.RptTailer;
 import org.coolcow.arpiti.backend.RptTailerListener;
-import org.coolcow.arpiti.gui.entityrenderer.AbstractEntityRenderer;
+import org.coolcow.arpiti.backend.rptline.AbstractRptLine;
+import org.coolcow.arpiti.gui.rptline.AbstractRptLineRenderer;
 
 /**
  *
  * @author jruiz
  */
-public class MainFrame extends javax.swing.JFrame {
+public final class MainFrame extends javax.swing.JFrame {
 
-    public final static DateFormat DATE_FORMAT = new SimpleDateFormat("kk:mm:ss");
-    
+    public final static String DATE_FORMAT = "kk:mm:ss";
     private static MainFrame INSTANCE;
-    
     private final RptLineTableModel model = new RptLineTableModel();
-    final TableRowSorter<RptLineTableModel> sorter = new TableRowSorter<>(model);
-
     private File rptFile = null;
-    private RptTailer rptFileTailer;
-    private RptLine popLine = null;
     private boolean autoscroll = true;
+    private final TableRowSorter<RptLineTableModel> sorter = new TableRowSorter<>(model);
+    private RptTailer rptFileTailer;
+    private AbstractRptLine popLine = null;
 
     /**
      * Creates new form NewJFrame
@@ -60,7 +56,7 @@ public class MainFrame extends javax.swing.JFrame {
         tblLines.setRowSorter(sorter);
         tblLines.setAutoCreateRowSorter(false);
         tblLines.setDefaultRenderer(Date.class, new RptTableDateCellRenderer());
-        tblLines.addMouseListener(new RptTableMouseListener());        
+        tblLines.addMouseListener(new RptTableMouseListener());
         tblLines.getSelectionModel().addListSelectionListener(new RptTableSelectionListener());
 
         final TableColumnModel columnModel = tblLines.getColumnModel();
@@ -75,7 +71,7 @@ public class MainFrame extends javax.swing.JFrame {
             return INSTANCE;
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -95,16 +91,7 @@ public class MainFrame extends javax.swing.JFrame {
         tgbAutoScroll = new javax.swing.JToggleButton();
         panTable = new javax.swing.JPanel();
         scrTable = new javax.swing.JScrollPane();
-        tblLines = new javax.swing.JTable() {
-            @Override public void doLayout() {
-                if (getTableHeader().getResizingColumn() == null) {
-                    if (getAutoResizeMode() == JTable.AUTO_RESIZE_LAST_COLUMN) {
-                        getTableHeader().setResizingColumn(getColumnModel().getColumn(getColumnModel().getColumnCount()-1));
-                    }
-                }
-                super.doLayout();
-            }
-        };
+        tblLines = new CorrectLayoutJTable();
         panRight = new javax.swing.JPanel();
         panInfo = new javax.swing.JPanel();
         panFilter = new javax.swing.JPanel();
@@ -248,7 +235,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         panRight.setLayout(new java.awt.GridBagLayout());
 
-        panInfo.setBorder(javax.swing.BorderFactory.createTitledBorder("Renderer"));
+        panInfo.setBorder(javax.swing.BorderFactory.createTitledBorder("Details about selected row"));
         panInfo.setLayout(new javax.swing.BoxLayout(panInfo, javax.swing.BoxLayout.LINE_AXIS));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -513,11 +500,10 @@ public class MainFrame extends javax.swing.JFrame {
     public static void main(final String args[]) {
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (final ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
         }
 
         EventQueue.invokeLater(new Runnable() {
-
             @Override
             public void run() {
 
@@ -572,68 +558,66 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtFilter;
     // End of variables declaration//GEN-END:variables
 
-    class RptTableDateCellRenderer extends DefaultTableCellRenderer {
- 
+    static class RptTableDateCellRenderer extends DefaultTableCellRenderer {
+
         @Override
         public Component getTableCellRendererComponent(final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
             final JComponent component;
             if (value instanceof Date) {
-                component = (JComponent) super.getTableCellRendererComponent(table, MainFrame.DATE_FORMAT.format(value), isSelected, hasFocus, row, column);
+                component = (JComponent) super.getTableCellRendererComponent(table, new SimpleDateFormat(DATE_FORMAT).format(value), isSelected, hasFocus, row, column);
             } else {
                 component = (JComponent) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             }
             return component;
         }
-    
     }
-    
+
     class RptTailerListenerImpl implements RptTailerListener {
-        @Override
-        public void rptLineTailed(final RptLine rptLine) {
-            try {
-                if (rptLine != null) {
-                    SwingUtilities.invokeLater(new Runnable() {
 
-                        @Override
-                        public void run() {
-                            pgbLines.setValue(model.getRowCount());
-                            pgbLines.setString(model.getRowCount() + " lines (" + tblLines.getRowCount() + " filtered)");
-                            model.addLine(rptLine);
+        @Override
+        public void rptLineTailed(final AbstractRptLine rptLine) {
+            if (rptLine != null) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        pgbLines.setValue(model.getRowCount());
+                        pgbLines.setString(model.getRowCount() + " lines (" + tblLines.getRowCount() + " filtered)");
+                        model.addLine(rptLine);
+                        try {
                             if (autoscroll) {
                                 tblLines.scrollRectToVisible(tblLines.getCellRect(tblLines.getRowCount() - 1, tblLines.getColumnCount(), true));
                             }
+                        } catch (final IndexOutOfBoundsException ex) {
                         }
-                    });
-                }
-            } catch (final Exception ex) {
+                    }
+                });
             }
         }
 
         @Override
-        public void rptLinesTailed(final List<RptLine> rptLines) {
-            try {
-                if (rptLines != null) {
-                    SwingUtilities.invokeLater(new Runnable() {
+        public void rptLinesTailed(final List<AbstractRptLine> rptLines) {
+            if (rptLines != null) {
+                SwingUtilities.invokeLater(new Runnable() {
 
-                        @Override
-                        public void run() {
-                            model.addLines(rptLines);
-                            pgbLines.setValue(model.getRowCount());
-                            pgbLines.setString(model.getRowCount() + " lines (" + sorter.getViewRowCount() + " filtered)");
-                            if (autoscroll) {
+                    @Override
+                    public void run() {
+                        model.addLines(rptLines);
+                        pgbLines.setValue(model.getRowCount());
+                        pgbLines.setString(model.getRowCount() + " lines (" + sorter.getViewRowCount() + " filtered)");
+                        if (autoscroll) {
+                            try {
                                 tblLines.scrollRectToVisible(tblLines.getCellRect(tblLines.getRowCount() - 1, tblLines.getColumnCount(), true));
+                            } catch (final IndexOutOfBoundsException ex) {
                             }
                         }
-                    });
-                }
-            } catch (final Exception ex) {
+                    }
+                });
             }
         }
-        
+
         @Override
         public void tailingResumed() {
             SwingUtilities.invokeLater(new Runnable() {
-
                 @Override
                 public void run() {
                     pgbLines.setIndeterminate(true);
@@ -644,28 +628,26 @@ public class MainFrame extends javax.swing.JFrame {
         @Override
         public void tailingWait() {
             SwingUtilities.invokeLater(new Runnable() {
-
                 @Override
-                public void run() {            
+                public void run() {
                     pgbLines.setIndeterminate(false);
                 }
             });
         }
-
     }
 
     class RowFilterImpl extends RowFilter<RptLineTableModel, Integer> {
 
         @Override
         public boolean include(Entry<? extends RptLineTableModel, ? extends Integer> entry) {
-            RptLineTableModel model = entry.getModel();
-            RptLine line = model.getLine(entry.getIdentifier());
+            final RptLineTableModel model = entry.getModel();
+            final AbstractRptLine line = model.getLine(entry.getIdentifier());
 
             final String contentFilter = txtFilter.getText();
             final boolean contentFilterIncludes;
             if (contentFilter != null) {
                 final Pattern pattern = Pattern.compile(contentFilter);
-                contentFilterIncludes = pattern.matcher(line.getEntity().getRawContent()).find();
+                contentFilterIncludes = pattern.matcher(line.getRawContent()).find();
             } else {
                 contentFilterIncludes = true;
             }
@@ -731,7 +713,7 @@ public class MainFrame extends javax.swing.JFrame {
             return contentFilterIncludes && typeFilterIncludes;
         }
     }
-    
+
     class RptTableMouseListener extends MouseAdapter {
 
         @Override
@@ -745,29 +727,42 @@ public class MainFrame extends javax.swing.JFrame {
                     tblLines.clearSelection();
                 }
 
-                int rowindex = tblLines.getSelectedRow();                    
+                int rowindex = tblLines.getSelectedRow();
 
-                if (rowindex >= 0 && event.isPopupTrigger() && event.getComponent() instanceof JTable ) {
-                    popLine = (RptLine) model.getLine(tblLines.convertRowIndexToModel(row));
+                if (rowindex >= 0 && event.isPopupTrigger() && event.getComponent() instanceof JTable) {
+                    popLine = (AbstractRptLine) model.getLine(tblLines.convertRowIndexToModel(row));
                     pumTableitem.show(event.getComponent(), event.getX(), event.getY());
                 }
             }
         }
     }
-    
+
     class RptTableSelectionListener implements ListSelectionListener {
 
         @Override
         public void valueChanged(final ListSelectionEvent event) {
             panInfo.removeAll();
-            final int row = tblLines.getSelectedRow();  
+            final int row = tblLines.getSelectedRow();
             if (row >= 0) {
-                final RptLine rptLine = model.getLine(tblLines.convertRowIndexToModel(row));
-                final AbstractEntityRenderer renderer = EntityRendererProvider.getEntityRenderer(rptLine.getType());
-                renderer.setEntity(rptLine.getEntity());
+                final AbstractRptLine rptLine = model.getLine(tblLines.convertRowIndexToModel(row));
+                final AbstractRptLineRenderer renderer = RptLineRendererProvider.getRenderer(rptLine.getType());
+                renderer.setRptLine(rptLine);
                 panInfo.add(renderer);
             }
             panInfo.validate();
+        }
+    }
+
+    static class CorrectLayoutJTable extends JTable {
+
+        @Override
+        public void doLayout() {
+            if (getTableHeader().getResizingColumn() == null) {
+                if (getAutoResizeMode() == JTable.AUTO_RESIZE_LAST_COLUMN) {
+                    getTableHeader().setResizingColumn(getColumnModel().getColumn(getColumnModel().getColumnCount() - 1));
+                }
+            }
+            super.doLayout();
         }
     }
 }

@@ -2,24 +2,21 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.coolcow.arpiti.gui.entityrenderer;
+package org.coolcow.arpiti.gui.rptline;
 
 import org.coolcow.arpiti.backend.bindingconverter.IntToStringConverter;
-import org.coolcow.arpiti.backend.entities.Entity;
-import org.jdesktop.beansbinding.Converter;
+import org.coolcow.arpiti.backend.rptline.RptLine;
 
 /**
  *
  * @author jruiz
  */
-public class StartingLoginRenderer extends AbstractEntityRenderer {
- 
-    final Converter<Double, String> converter = new DoubleToStringConverter();
-    
+public class LoginLoadedRenderer extends AbstractRptLineRenderer {
+
     /**
      * Creates new form DwDebugFpsRenderer
      */
-    public StartingLoginRenderer() {
+    public LoginLoadedRenderer() {
         initComponents();
     }
 
@@ -51,7 +48,7 @@ public class StartingLoginRenderer extends AbstractEntityRenderer {
 
         jPanel3.setLayout(new java.awt.GridBagLayout());
 
-        jLabel1.setText("player id: ");
+        jLabel1.setText("skin name: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
@@ -63,8 +60,7 @@ public class StartingLoginRenderer extends AbstractEntityRenderer {
         jTextField1.setMinimumSize(new java.awt.Dimension(150, 20));
         jTextField1.setPreferredSize(new java.awt.Dimension(150, 20));
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${entity.playerId}"), jTextField1, org.jdesktop.beansbinding.BeanProperty.create("text"), "playerId");
-        binding.setConverter(new IntToStringConverter());
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.skinName}"), jTextField1, org.jdesktop.beansbinding.BeanProperty.create("text"), "skinName");
         bindingGroup.addBinding(binding);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -104,7 +100,7 @@ public class StartingLoginRenderer extends AbstractEntityRenderer {
         jTextField2.setMinimumSize(new java.awt.Dimension(150, 20));
         jTextField2.setPreferredSize(new java.awt.Dimension(150, 20));
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${entity.unknownValue1}"), jTextField2, org.jdesktop.beansbinding.BeanProperty.create("text"), "unknownValue1");
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.unknownValue1}"), jTextField2, org.jdesktop.beansbinding.BeanProperty.create("text"), "unknownValue1");
         bindingGroup.addBinding(binding);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -114,7 +110,7 @@ public class StartingLoginRenderer extends AbstractEntityRenderer {
         jPanel3.add(jTextField2, gridBagConstraints);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel3.setText("Starting Login");
+        jLabel3.setText("Login Loaded");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -128,7 +124,7 @@ public class StartingLoginRenderer extends AbstractEntityRenderer {
         jTextField5.setMinimumSize(new java.awt.Dimension(150, 20));
         jTextField5.setPreferredSize(new java.awt.Dimension(150, 20));
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${entity.unknownValue2}"), jTextField5, org.jdesktop.beansbinding.BeanProperty.create("text"), "unknownValue2");
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.unknownValue2}"), jTextField5, org.jdesktop.beansbinding.BeanProperty.create("text"), "unknownValue2");
         binding.setConverter(new IntToStringConverter());
         bindingGroup.addBinding(binding);
 
@@ -158,7 +154,7 @@ public class StartingLoginRenderer extends AbstractEntityRenderer {
         jTextField6.setMinimumSize(new java.awt.Dimension(150, 20));
         jTextField6.setPreferredSize(new java.awt.Dimension(150, 20));
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${entity.playerName}"), jTextField6, org.jdesktop.beansbinding.BeanProperty.create("text"), "playerName");
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.playerName}"), jTextField6, org.jdesktop.beansbinding.BeanProperty.create("text"), "playerName");
         bindingGroup.addBinding(binding);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -212,24 +208,9 @@ public class StartingLoginRenderer extends AbstractEntityRenderer {
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void setEntity(Entity entity) {
+    public void setRptLine(final RptLine rptLine) {
         bindingGroup.unbind();
-        super.setEntity(entity);
+        super.setRptLine(rptLine);
         bindingGroup.bind();
     }
-        
-    class DoubleToStringConverter extends Converter<Double, String> {
-
-        @Override
-        public String convertForward(Double value) {
-            return Double.toString(value);
-        }
-
-        @Override
-        public Double convertReverse(String value) {
-            return Double.parseDouble(value);
-        }
-
-    };
-    
 }
