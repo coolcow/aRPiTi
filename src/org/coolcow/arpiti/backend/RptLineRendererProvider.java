@@ -15,6 +15,7 @@ import org.coolcow.arpiti.gui.rptline.LocalityEventRenderer;
 import org.coolcow.arpiti.gui.rptline.LoginAttemptRenderer;
 import org.coolcow.arpiti.gui.rptline.LoginLoadedRenderer;
 import org.coolcow.arpiti.gui.rptline.LoginPublishingRenderer;
+import org.coolcow.arpiti.gui.rptline.ObjRenderer;
 import org.coolcow.arpiti.gui.rptline.StartingLoginRenderer;
 
 /**
@@ -35,36 +36,15 @@ public abstract class RptLineRendererProvider {
                 renderer = new DefaultRenderer();
             } else {
                 switch (type) {
-                    case STARTING_LOGIN: {
-                        renderer = new StartingLoginRenderer();
-                    }
-                    break;
-                    case LOGIN_ATTEMPT: {
-                        renderer = new LoginAttemptRenderer();
-                    }
-                    break;
-                    case LOGIN_PUBLISHING: {
-                        renderer = new LoginPublishingRenderer();
-                    }
-                    break;
-                    case LOGIN_LOADED: {
-                        renderer = new LoginLoadedRenderer();
-                    }
-                    break;
-                    case DW_DEBUG_FPS: {
-                        renderer = new DwDebugFpsRenderer();
-                    }
-                    break;
-                    case LOCALITY_EVENT: {
-                        renderer = new LocalityEventRenderer();
-                    }
-                    break;
-                    case DISCONNECT_START_I: {
-                        renderer = new DisconnectStartIRenderer();
-                    }
-                    break;
-                    default:
-                        renderer = new DefaultRenderer();
+                    case STARTING_LOGIN: { renderer = new StartingLoginRenderer(); } break;
+                    case LOGIN_ATTEMPT: { renderer = new LoginAttemptRenderer(); } break;
+                    case LOGIN_PUBLISHING: { renderer = new LoginPublishingRenderer(); } break;
+                    case LOGIN_LOADED: { renderer = new LoginLoadedRenderer(); } break;
+                    case DW_DEBUG_FPS: { renderer = new DwDebugFpsRenderer(); } break;
+                    case LOCALITY_EVENT: { renderer = new LocalityEventRenderer(); } break;
+                    case DISCONNECT_START_I: { renderer = new DisconnectStartIRenderer(); } break;
+                    case OBJ: { renderer = new ObjRenderer(); } break;
+                    default: renderer = new DefaultRenderer();
                 }
             }
             rendererMap.put(type, renderer);

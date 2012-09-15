@@ -147,7 +147,10 @@ public abstract class AbstractRptLine implements RptLine {
                     type = Type.DW_DEBUG_FPS; 
                     rptLine = new DwDebugFpsRptLine();
                 } break;
-                case "OBJ": { type = Type.OBJ; } break;
+                case "OBJ": { 
+                    type = Type.OBJ; 
+                    rptLine = new ObjRptLine();
+                } break;
                 case "DELETE": { type = Type.DELETE; } break;
                 case "ERROR": { type = Type.ERROR; } break;
                 case "Second Hand Zombie Initialized": { type = Type.SECOND_HAND_ZOMBIE_INITIALIZED; } break;
