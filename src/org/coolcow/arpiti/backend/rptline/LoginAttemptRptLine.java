@@ -16,7 +16,7 @@ public class LoginAttemptRptLine extends AbstractRptLine {
     private String playerName;
     private int playerId;
 
-    public LoginAttemptRptLine(final String content) {
+    public LoginAttemptRptLine() {
     }
 
     public String getPlayerName() {

@@ -37,7 +37,8 @@ import org.coolcow.arpiti.gui.rptline.AbstractRptLineRenderer;
  */
 public final class MainFrame extends javax.swing.JFrame {
 
-    public final static String DATE_FORMAT = "kk:mm:ss";
+    public final static String INPUT_DATE_FORMAT = "kk:mm:ss";
+    public final static String OUTPUT_DATE_FORMAT = "HH:mm:ss";
     private static MainFrame INSTANCE;
     private final RptLineTableModel model = new RptLineTableModel();
     private File rptFile = null;
@@ -564,7 +565,7 @@ public final class MainFrame extends javax.swing.JFrame {
         public Component getTableCellRendererComponent(final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
             final JComponent component;
             if (value instanceof Date) {
-                component = (JComponent) super.getTableCellRendererComponent(table, new SimpleDateFormat(DATE_FORMAT).format(value), isSelected, hasFocus, row, column);
+                component = (JComponent) super.getTableCellRendererComponent(table, new SimpleDateFormat(OUTPUT_DATE_FORMAT).format(value), isSelected, hasFocus, row, column);
             } else {
                 component = (JComponent) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             }
