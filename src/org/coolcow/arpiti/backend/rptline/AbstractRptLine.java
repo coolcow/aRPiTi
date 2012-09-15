@@ -159,6 +159,10 @@ public abstract class AbstractRptLine implements RptLine {
                     type = Type.SECOND_HAND_ZOMBIE_INITIALIZED; 
                     rptLine = new SecondHandZombieInitializedRptLine();
                 } break;
+                case "PDEATH": { 
+                    type = Type.PDEATH; 
+                    rptLine = new PDeathRptLine();
+                } break;
                 case "DELETE": { type = Type.DELETE; } break;
                 case "HIVE": { type = Type.HIVE; } break;
                 case "WRITE": { type = Type.WRITE; } break;
@@ -185,7 +189,6 @@ public abstract class AbstractRptLine implements RptLine {
 //                        }
 //                    }
                 } break;
-                case "PDEATH": { type = Type.PDEATH; } break;
                 default: {
                 }
             }
