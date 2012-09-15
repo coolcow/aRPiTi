@@ -20,6 +20,7 @@ import org.coolcow.arpiti.gui.rptline.ObjRenderer;
 import org.coolcow.arpiti.gui.rptline.PDeathRenderer;
 import org.coolcow.arpiti.gui.rptline.SecondHandZombieInitializedRenderer;
 import org.coolcow.arpiti.gui.rptline.StartingLoginRenderer;
+import org.coolcow.arpiti.gui.rptline.WriteRenderer;
 
 /**
  *
@@ -50,6 +51,7 @@ public abstract class RptLineRendererProvider {
                     case ERROR: { renderer = new ErrorRenderer(); } break;
                     case SECOND_HAND_ZOMBIE_INITIALIZED: { renderer = new SecondHandZombieInitializedRenderer(); } break;
                     case PDEATH: { renderer = new PDeathRenderer(); } break;
+                    case WRITE: { renderer = new WriteRenderer(); } break;
                     default: renderer = new DefaultRenderer();
                 }
             }

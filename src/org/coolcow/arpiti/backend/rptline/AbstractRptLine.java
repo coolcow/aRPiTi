@@ -163,9 +163,12 @@ public abstract class AbstractRptLine implements RptLine {
                     type = Type.PDEATH; 
                     rptLine = new PDeathRptLine();
                 } break;
+                case "WRITE": { 
+                    type = Type.WRITE; 
+                    rptLine = new WriteRptLine();
+                } break;
                 case "DELETE": { type = Type.DELETE; } break;
                 case "HIVE": { type = Type.HIVE; } break;
-                case "WRITE": { type = Type.WRITE; } break;
                 case "CLEANUP": { type = Type.CLEANUP; } break;
                 case "READ/WRITE": { 
                     type = Type.READ_WRITE; 
