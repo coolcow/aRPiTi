@@ -13,12 +13,12 @@ import org.jdesktop.beansbinding.Converter;
 public class IntToStringConverter extends Converter<Integer, String> {
 
     @Override
-    public String convertForward(Integer value) {
+    public String convertForward(final Integer value) {
         return Integer.toString(value);
     }
 
     @Override
-    public Integer convertReverse(String value) {
+    public Integer convertReverse(final String value) {
         return Integer.parseInt(value);
     }
 };

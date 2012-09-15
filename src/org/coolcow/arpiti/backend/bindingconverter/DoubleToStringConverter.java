@@ -13,12 +13,12 @@ import org.jdesktop.beansbinding.Converter;
 public class DoubleToStringConverter extends Converter<Double, String> {
 
     @Override
-    public String convertForward(Double value) {
+    public String convertForward(final Double value) {
         return Double.toString(value);
     }
 
     @Override
-    public Double convertReverse(String value) {
+    public Double convertReverse(final String value) {
         return Double.parseDouble(value);
     }
 }

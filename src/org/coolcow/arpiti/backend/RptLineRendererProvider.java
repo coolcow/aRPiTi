@@ -17,6 +17,7 @@ import org.coolcow.arpiti.gui.rptline.LoginAttemptRenderer;
 import org.coolcow.arpiti.gui.rptline.LoginLoadedRenderer;
 import org.coolcow.arpiti.gui.rptline.LoginPublishingRenderer;
 import org.coolcow.arpiti.gui.rptline.ObjRenderer;
+import org.coolcow.arpiti.gui.rptline.SecondHandZombieInitializedRenderer;
 import org.coolcow.arpiti.gui.rptline.StartingLoginRenderer;
 
 /**
@@ -46,6 +47,7 @@ public abstract class RptLineRendererProvider {
                     case DISCONNECT_START_I: { renderer = new DisconnectStartIRenderer(); } break;
                     case OBJ: { renderer = new ObjRenderer(); } break;
                     case ERROR: { renderer = new ErrorRenderer(); } break;
+                    case SECOND_HAND_ZOMBIE_INITIALIZED: { renderer = new SecondHandZombieInitializedRenderer(); } break;
                     default: renderer = new DefaultRenderer();
                 }
             }
