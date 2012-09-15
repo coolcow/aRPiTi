@@ -751,6 +751,7 @@ public final class MainFrame extends javax.swing.JFrame {
                 panInfo.add(renderer);
             }
             panInfo.validate();
+            panInfo.repaint();
         }
     }
 
