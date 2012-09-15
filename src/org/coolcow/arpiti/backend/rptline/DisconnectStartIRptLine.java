@@ -97,10 +97,10 @@ public class DisconnectStartIRptLine extends AbstractRptLine {
         }
 
         final String rawContent = getRawContent();
-        final Matcher matcherA = Pattern.compile("(.+) \\(\"(\\d+)\"\\) Object: (. .-.-.):(\\d+) \\((.+)\\)( REMOTE)?").matcher(rawContent);
-        final Matcher matcherB = Pattern.compile("(.+) \\(\"(\\d+)\"\\) Object: (. .-.-.):(\\d+)( REMOTE)?").matcher(rawContent);
-        final Matcher matcherC = Pattern.compile("(.+) \\(\"(\\d+)\"\\) Object: <NULL-object>").matcher(rawContent);
-        final Matcher matcherD = Pattern.compile("(.+) \\(\"(\\d+)\"\\) Object: (\\w+)# (\\d+): (.+) REMOTE?").matcher(rawContent);
+        final Matcher matcherA = Pattern.compile("^(.+) \\(\"(\\d+)\"\\) Object: (. .-.-.):(\\d+) \\((.+)\\)( REMOTE)?$").matcher(rawContent);
+        final Matcher matcherB = Pattern.compile("^(.+) \\(\"(\\d+)\"\\) Object: (. .-.-.):(\\d+)( REMOTE)?$").matcher(rawContent);
+        final Matcher matcherC = Pattern.compile("^(.+) \\(\"(\\d+)\"\\) Object: <NULL-object>$").matcher(rawContent);
+        final Matcher matcherD = Pattern.compile("^(.+) \\(\"(\\d+)\"\\) Object: (\\w+)# (\\d+): (.+) REMOTE?$").matcher(rawContent);
 
         if (matcherA.matches()) {
             setPlayerName(matcherA.group(1));

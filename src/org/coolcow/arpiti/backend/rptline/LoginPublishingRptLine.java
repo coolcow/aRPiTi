@@ -61,7 +61,7 @@ public class LoginPublishingRptLine extends AbstractRptLine {
         }
 
         final String rawContent = getRawContent();
-        final Matcher matcher = Pattern.compile("(.) (.-.-.):(\\d+) \\((.*)\\) REMOTE Type: (.*)").matcher(rawContent);
+        final Matcher matcher = Pattern.compile("^(.) (.-.-.):(\\d+) \\((.*)\\) REMOTE Type: (.*)$").matcher(rawContent);
         if (matcher.matches()) {
             setUnknownValue1(matcher.group(1));
             try {

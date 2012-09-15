@@ -61,7 +61,7 @@ public class StartingLoginRptLine extends AbstractRptLine {
         }
 
         final String rawContent = getRawContent();
-        final Matcher matcher = Pattern.compile("\\[\"(\\d+)\",(. .-.-.):(\\d+) \\((.+)\\) REMOTE\\]").matcher(rawContent);
+        final Matcher matcher = Pattern.compile("^\\[\"(\\d+)\",(. .-.-.):(\\d+) \\((.+)\\) REMOTE\\]$").matcher(rawContent);
         if (matcher.matches()) {
             try {
                 setPlayerId(Integer.parseInt(matcher.group(1)));
