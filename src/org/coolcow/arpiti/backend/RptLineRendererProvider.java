@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.coolcow.arpiti.backend.rptline.AbstractRptLine;
 import org.coolcow.arpiti.gui.rptline.AbstractRptLineRenderer;
+import org.coolcow.arpiti.gui.rptline.CleanupRenderer;
 import org.coolcow.arpiti.gui.rptline.DefaultRenderer;
 import org.coolcow.arpiti.gui.rptline.DisconnectStartIRenderer;
 import org.coolcow.arpiti.gui.rptline.DwDebugFpsRenderer;
@@ -52,6 +53,7 @@ public abstract class RptLineRendererProvider {
                     case SECOND_HAND_ZOMBIE_INITIALIZED: { renderer = new SecondHandZombieInitializedRenderer(); } break;
                     case PDEATH: { renderer = new PDeathRenderer(); } break;
                     case WRITE: { renderer = new WriteRenderer(); } break;
+                    case CLEANUP: { renderer = new CleanupRenderer(); } break;
                     default: renderer = new DefaultRenderer();
                 }
             }

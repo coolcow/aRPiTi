@@ -167,9 +167,14 @@ public abstract class AbstractRptLine implements RptLine {
                     type = Type.WRITE; 
                     rptLine = new WriteRptLine();
                 } break;
-                case "DELETE": { type = Type.DELETE; } break;
+                case "CLEANUP": { 
+                    type = Type.CLEANUP; 
+                    rptLine = new CleanupRptLine();
+                } break;
+                case "DELETE": { 
+                    type = Type.DELETE; 
+                } break;
                 case "HIVE": { type = Type.HIVE; } break;
-                case "CLEANUP": { type = Type.CLEANUP; } break;
                 case "READ/WRITE": { 
                     type = Type.READ_WRITE; 
 //                    switch (content.split(Pattern.quote("[")).length) {
