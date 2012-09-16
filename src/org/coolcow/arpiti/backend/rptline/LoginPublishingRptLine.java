@@ -6,6 +6,7 @@ package org.coolcow.arpiti.backend.rptline;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -13,6 +14,8 @@ import java.util.regex.Pattern;
  */
 public class LoginPublishingRptLine extends AbstractRptLine {
 
+    private static final Logger LOG = Logger.getLogger(LoginPublishingRptLine.class);
+    
     private String unknownValue1;
     private int unknownValue2;
     private String playerName;
@@ -62,15 +65,24 @@ public class LoginPublishingRptLine extends AbstractRptLine {
 
         final String rawContent = getRawContent();
         final Matcher matcher = Pattern.compile("^(.) (.-.-.):(\\d+) \\((.*)\\) REMOTE Type: (.*)$").matcher(rawContent);
+        
         if (matcher.matches()) {
-            setUnknownValue1(matcher.group(1));
+            final String unknownValue1String = matcher.group(1);
+            final String unknownValue2String = matcher.group(3);
+            final String playerNameString = matcher.group(4);
+            final String skinNameString = matcher.group(5);
+            
+            
+            setUnknownValue1(unknownValue1String);
             try {
-                setUnknownValue2(Integer.parseInt(matcher.group(3)));
-            } catch (final NumberFormatException ex) {
+                setUnknownValue2(Integer.parseInt(unknownValue2String));
+            } catch (final NumberFormatException exception) {
+                LOG.warn("Error while parsing unknownValue2. Set to -1. The source String was: " + unknownValue2String, exception);
                 setUnknownValue2(-1);
             }
-            setPlayerName(matcher.group(4));
-            setSkinName(matcher.group(5));
+            setPlayerName(playerNameString);
+            setSkinName(skinNameString);
+            
             return true;
         } else {
             return false;

@@ -6,6 +6,7 @@ package org.coolcow.arpiti.backend.rptline;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -13,6 +14,8 @@ import java.util.regex.Pattern;
  */
 public class LoginAttemptRptLine extends AbstractRptLine {
 
+    private static final Logger LOG = Logger.getLogger(LoginAttemptRptLine.class);
+    
     private String playerName;
     private int playerId;
 
@@ -43,13 +46,19 @@ public class LoginAttemptRptLine extends AbstractRptLine {
 
         final String rawContent = getRawContent();
         final Matcher matcher = Pattern.compile("\"(.*)\" (.*)").matcher(rawContent);
+        
         if (matcher.matches()) {
+            final String playerIdString = matcher.group(1);
+            final String playerNameString = matcher.group(2);
+            
             try {
-                setPlayerId(Integer.parseInt(matcher.group(1)));
-            } catch (final NumberFormatException ex) {
+                setPlayerId(Integer.parseInt(playerIdString));
+            } catch (final NumberFormatException exception) {
+                LOG.warn("Error while parsing playerId. Set to -1. The source String was: " + playerIdString, exception);
                 setPlayerId(playerId = -1);
             }
-            setPlayerName(matcher.group(2));
+            setPlayerName(playerNameString);
+            
             return true;
         } else {
             return false;

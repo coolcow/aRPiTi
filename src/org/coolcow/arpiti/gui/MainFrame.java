@@ -16,6 +16,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 import java.util.regex.Pattern;
 import javax.swing.*;
 import javax.swing.RowFilter.Entry;
@@ -25,6 +26,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 import org.coolcow.arpiti.backend.RptLineRendererProvider;
 import org.coolcow.arpiti.backend.RptTailer;
 import org.coolcow.arpiti.backend.RptTailerListener;
@@ -46,6 +49,8 @@ public final class MainFrame extends javax.swing.JFrame {
     private final TableRowSorter<RptLineTableModel> sorter = new TableRowSorter<>(model);
     private RptTailer rptFileTailer;
     private AbstractRptLine popLine = null;
+    
+    private static final Logger LOG = Logger.getLogger(MainFrame.class);
 
     /**
      * Creates new form NewJFrame
@@ -500,21 +505,50 @@ public final class MainFrame extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(final String args[]) {
-        try {
-            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-        } catch (final ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-        }
-
+        configureLocalLog4JAppender();
+        configureLookAndFeel();
+        
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-
                 final MainFrame frame = new MainFrame();
                 frame.setLocationRelativeTo(null);
                 frame.setVisible(true);
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("MainFrame set to visible");
+                }
             }
         });
     }
+    
+    /**
+     * local Log4J appender for BeanMill
+     * 
+     * (http://blogs.cismet.de/gadgets/beanmill/)
+     */
+    private static void configureLocalLog4JAppender() {
+        final Properties p = new Properties();
+        p.put("log4j.appender.Remote", "org.apache.log4j.net.SocketAppender"); // NOI18N
+        p.put("log4j.appender.Remote.remoteHost", "localhost");                // NOI18N
+        p.put("log4j.appender.Remote.port", "4445");                           // NOI18N
+        p.put("log4j.appender.Remote.locationInfo", "true");                   // NOI18N
+        p.put("log4j.rootLogger", "DEBUG,Remote");                             // NOI18N
+        PropertyConfigurator.configure(p);        
+        
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Logger configured (Except you don't see this log message ;) )");
+        }       
+    }
+    
+    private static void configureLookAndFeel() {
+        final String laf = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
+        try {
+            UIManager.setLookAndFeel(laf);
+        } catch (final ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            LOG.error("LookAndFeel could not be set: " + laf, ex);
+        }        
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFilterApply;
     private javax.swing.JCheckBox cbFilterPlayers;
@@ -589,7 +623,8 @@ public final class MainFrame extends javax.swing.JFrame {
                             if (autoscroll) {
                                 tblLines.scrollRectToVisible(tblLines.getCellRect(tblLines.getRowCount() - 1, tblLines.getColumnCount(), true));
                             }
-                        } catch (final IndexOutOfBoundsException ex) {
+                        } catch (final IndexOutOfBoundsException exception) {
+                            LOG.warn("Error while doing autoscroll.", exception);
                         }
                     }
                 });
@@ -609,7 +644,8 @@ public final class MainFrame extends javax.swing.JFrame {
                         if (autoscroll) {
                             try {
                                 tblLines.scrollRectToVisible(tblLines.getCellRect(tblLines.getRowCount() - 1, tblLines.getColumnCount(), true));
-                            } catch (final IndexOutOfBoundsException ex) {
+                            } catch (final IndexOutOfBoundsException exception) {
+                                LOG.warn("Error while doing autoscroll.", exception);
                             }
                         }
                     }

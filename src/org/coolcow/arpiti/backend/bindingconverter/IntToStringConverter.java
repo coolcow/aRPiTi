@@ -4,6 +4,7 @@
  */
 package org.coolcow.arpiti.backend.bindingconverter;
 
+import org.apache.log4j.Logger;
 import org.jdesktop.beansbinding.Converter;
 
 /**
@@ -12,6 +13,8 @@ import org.jdesktop.beansbinding.Converter;
  */
 public class IntToStringConverter extends Converter<Integer, String> {
 
+    private static final Logger LOG = Logger.getLogger(IntToStringConverter.class);
+    
     @Override
     public String convertForward(final Integer value) {
         return Integer.toString(value);
@@ -19,6 +22,12 @@ public class IntToStringConverter extends Converter<Integer, String> {
 
     @Override
     public Integer convertReverse(final String value) {
-        return Integer.parseInt(value);
+        try {
+            return Integer.parseInt(value);
+        } catch (final NumberFormatException exception) {
+            LOG.warn("The given String could not be parsed to an Integer: " + value, exception);
+            throw exception;
+        }
+        
     }
 };

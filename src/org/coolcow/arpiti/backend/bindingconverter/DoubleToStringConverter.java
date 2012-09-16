@@ -4,6 +4,7 @@
  */
 package org.coolcow.arpiti.backend.bindingconverter;
 
+import org.apache.log4j.Logger;
 import org.jdesktop.beansbinding.Converter;
 
 /**
@@ -11,6 +12,8 @@ import org.jdesktop.beansbinding.Converter;
  * @author jruiz
  */
 public class DoubleToStringConverter extends Converter<Double, String> {
+    
+    private static final Logger LOG = Logger.getLogger(DoubleToStringConverter.class);
 
     @Override
     public String convertForward(final Double value) {
@@ -19,6 +22,11 @@ public class DoubleToStringConverter extends Converter<Double, String> {
 
     @Override
     public Double convertReverse(final String value) {
-        return Double.parseDouble(value);
+        try {
+            return Double.parseDouble(value);
+        } catch (final NumberFormatException exception) {
+            LOG.warn("The given String could not be parsed to a Double: " + value, exception);
+            throw exception;
+        }
     }
 }
