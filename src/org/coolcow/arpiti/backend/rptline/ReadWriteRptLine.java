@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
+import org.coolcow.arpiti.backend.Coordinate;
+import org.coolcow.arpiti.backend.Item;
 
 /**
  *
@@ -25,16 +27,13 @@ public class ReadWriteRptLine extends AbstractRptLine {
     private String unknownValue1;
     private boolean unknownValue2;
     private int unknownValue3;
-    private double unknownValue4;
-    private double unknownValue5;
-    private double unknownValue6;
+    private int unknownValue4;
+    private int unknownValue5;
+    private int unknownValue6;
     private double versionNumber;
-    private int unknownValue7;
-    private int unknownValue8;
-    private int unknownValue9;
-    
-    private List<Item> toolbelt = new ArrayList<>();
-    private List<Item> chest = new ArrayList<>();
+    private Coordinate coordinate;    
+    private List<Item> toolbelt;
+    private List<Item> inventory = new ArrayList<>();
     private List<Item> backpack = new ArrayList<>();
     
     private String backpackType;
@@ -47,7 +46,7 @@ public class ReadWriteRptLine extends AbstractRptLine {
         return typeA;
     }
 
-    protected void setTypeA(boolean typeA) {
+    protected void setTypeA(final boolean typeA) {
         this.typeA = typeA;
     }
 
@@ -55,7 +54,7 @@ public class ReadWriteRptLine extends AbstractRptLine {
         return typeB;
     }
 
-    protected void setTypeB(boolean typeB) {
+    protected void setTypeB(final boolean typeB) {
         this.typeB = typeB;
     }
 
@@ -63,7 +62,7 @@ public class ReadWriteRptLine extends AbstractRptLine {
         return playerId;
     }
 
-    protected void setPlayerId(int playerId) {
+    protected void setPlayerId(final int playerId) {
         this.playerId = playerId;
     }
 
@@ -71,7 +70,7 @@ public class ReadWriteRptLine extends AbstractRptLine {
         return skinName;
     }
 
-    protected void setSkinName(String skinName) {
+    protected void setSkinName(final String skinName) {
         this.skinName = skinName;
     }
 
@@ -79,7 +78,7 @@ public class ReadWriteRptLine extends AbstractRptLine {
         return versionNumber;
     }
 
-    protected void setVersionNumber(double versionNumber) {
+    protected void setVersionNumber(final double versionNumber) {
         this.versionNumber = versionNumber;
     }
 
@@ -87,7 +86,7 @@ public class ReadWriteRptLine extends AbstractRptLine {
         return unknownValue1;
     }
 
-    protected void setUnknownValue1(String unknownValue1) {
+    protected void setUnknownValue1(final String unknownValue1) {
         this.unknownValue1 = unknownValue1;
     }
 
@@ -95,75 +94,94 @@ public class ReadWriteRptLine extends AbstractRptLine {
         return unknownValue2;
     }
 
-    protected void setUnknownValue2(boolean unknownValue2) {
+    protected void setUnknownValue2(final boolean unknownValue2) {
         this.unknownValue2 = unknownValue2;
-    }
-
-    protected void setUnknownValue3(int unknownValue3) {
-        this.unknownValue3 = unknownValue3;
-    }
-
-    public double getUnknownValue4() {
-        return unknownValue4;
-    }
-
-    protected void setUnknownValue4(double unknownValue4) {
-        this.unknownValue4 = unknownValue4;
-    }
-
-    public double getUnknownValue5() {
-        return unknownValue5;
-    }
-
-    protected void setUnknownValue5(double unknownValue5) {
-        this.unknownValue5 = unknownValue5;
-    }
-
-    public double getUnknownValue6() {
-        return unknownValue6;
-    }
-
-    protected void setUnknownValue6(double unknownValue6) {
-        this.unknownValue6 = unknownValue6;
-    }
-    
-    public int getUnknownValue7() {
-        return unknownValue7;
-    }
-
-    protected void setUnknownValue7(int unknownValue7) {
-        this.unknownValue7 = unknownValue7;
-    }
-
-    public int getUnknownValue8() {
-        return unknownValue8;
-    }
-
-    protected void setUnknownValue8(int unknownValue8) {
-        this.unknownValue8 = unknownValue8;
-    }
-
-    public int getUnknownValue9() {
-        return unknownValue9;
-    }
-
-    protected void setUnknownValue9(int unknownValue9) {
-        this.unknownValue9 = unknownValue9;
     }
 
     public int getUnknownValue3() {
         return unknownValue3;
     }
 
+    protected void setUnknownValue3(final int unknownValue3) {
+        this.unknownValue3 = unknownValue3;
+    }
+
+    public int getUnknownValue4() {
+        return unknownValue4;
+    }
+
+    protected void setUnknownValue4(final int unknownValue4) {
+        this.unknownValue4 = unknownValue4;
+    }
+
+    public int getUnknownValue5() {
+        return unknownValue5;
+    }
+
+    protected void setUnknownValue5(final int unknownValue5) {
+        this.unknownValue5 = unknownValue5;
+    }
+
+    public int getUnknownValue6() {
+        return unknownValue6;
+    }
+
+    protected void setUnknownValue6(final int unknownValue6) {
+        this.unknownValue6 = unknownValue6;
+    }
+
+    public String getBackpackType() {
+        return backpackType;
+    }
+
+    protected void setBackpackType(final String backpackType) {
+        this.backpackType = backpackType;
+    }
+
+    public Coordinate getCoordinate() {
+        return coordinate;
+    }
+
+    protected void setCoordinate(final Coordinate coordinate) {
+        this.coordinate = coordinate;
+    }
+
+    public List<Item> getToolbelt() {
+        return new ArrayList<>(toolbelt);
+    }
+
+    public void setToolbelt(List<Item> toolbelt) {
+        this.toolbelt = new ArrayList<>(toolbelt);
+    }
+    
+    public List<Item> getInventory() {
+        return new ArrayList<>(inventory);
+    }
+
+    public void setInventory(List<Item> inventory) {
+        this.inventory = new ArrayList<>(inventory);
+    }
+
+    public List<Item> getBackpack() {
+        return new ArrayList<>(backpack);
+    }
+
+    public void setBackpack(List<Item> backpack) {
+        this.backpack = new ArrayList<>(backpack);
+    }
+    
     @Override
     public boolean parseLine(String line) {
         if (!super.parseLine(line)) {
             return false;
         }
 
+        final String floatingPointRegex = "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?";        
+        final String coordinateRegex = "\\[(" + floatingPointRegex + "),(" + floatingPointRegex + "),(" + floatingPointRegex + ")\\]";
+        
         final String rawContent = getRawContent();
         final Matcher matcherA = Pattern.compile("^\\['(\\w+)',(true|false),'(\\d+)',(\\w+),(.*)\\]$").matcher(rawContent);
-        final Matcher matcherB = Pattern.compile("^\\['(\\w+)',(true|false),'(\\d+)',\\[(\\d+),\\[(.+?),(.+?),(.+?)\\]\\],(.*?),\\[(\\d+),(\\d+),(\\d+)\\],\"(\\w+)\",(.*)\\]$").matcher(rawContent);
+        final Matcher matcherB = Pattern.compile("^\\['(\\w+)',(true|false),'(\\d+)',\\[(\\d+),(" + coordinateRegex + ")\\],(.*?),\\[(\\d+),(\\d+),(\\d+)\\],\"(\\w+)\",(.*)\\]$").matcher(rawContent);
         
         if (matcherA.matches()) {
             setTypeA(true);
@@ -192,20 +210,19 @@ public class ReadWriteRptLine extends AbstractRptLine {
             
             return true;
         } else if (matcherB.matches()) {
-            setTypeB(true);
+            setTypeB(true);        
             
             final String unknownValue1String = matcherB.group(1);
             final String unknownValue2String = matcherB.group(2);
             final String playerIdString = matcherB.group(3);
             final String unknownValue3String = matcherB.group(4);
-            final String unknownValue4String = matcherB.group(5);
-            final String unknownValue5String = matcherB.group(6);
-            final String unknownValue6String = matcherB.group(7);
-            final String unknownValue7String = matcherB.group(9);
-            final String unknownValue8String = matcherB.group(10);
-            final String unknownValue9String = matcherB.group(11);
-            final String skinNameString = matcherB.group(12);
-            final String versionNumberString = matcherB.group(13);
+            final String coordinateString = matcherB.group(5);
+            final String gearString = matcherB.group(12);
+            final String unknownValue4String = matcherB.group(13);
+            final String unknownValue5String = matcherB.group(14);
+            final String unknownValue6String = matcherB.group(15);            
+            final String skinNameString = matcherB.group(16);
+            final String versionNumberString = matcherB.group(17);
             
             setUnknownValue1(unknownValue1String);
             setUnknownValue2(Boolean.parseBoolean(unknownValue2String));
@@ -221,42 +238,25 @@ public class ReadWriteRptLine extends AbstractRptLine {
                 LOG.warn("Error while parsing unknownValue3. Set to -1. The source String was: " + unknownValue3String, exception);
                 setUnknownValue3(-1);
             }
+            setCoordinate(Coordinate.parseCoordinate(coordinateString));
+            parseGear(gearString);            
             try {
-                setUnknownValue4(Double.parseDouble(unknownValue4String));
+                setUnknownValue4(Integer.parseInt(unknownValue4String));
             } catch (final NumberFormatException exception) {
                 LOG.warn("Error while parsing unknownValue4. Set to -1. The source String was: " + unknownValue4String, exception);
                 setUnknownValue4(-1);
             }
             try {
-                setUnknownValue5(Double.parseDouble(unknownValue5String));
+                setUnknownValue5(Integer.parseInt(unknownValue5String));
             } catch (final NumberFormatException exception) {
                 LOG.warn("Error while parsing unknownValue5. Set to -1. The source String was: " + unknownValue5String, exception);
                 setUnknownValue5(-1);
             }
             try {
-                setUnknownValue6(Double.parseDouble(unknownValue6String));
+                setUnknownValue6(Integer.parseInt(unknownValue6String));
             } catch (final NumberFormatException exception) {
                 LOG.warn("Error while parsing unknownValue6. Set to -1. The source String was: " + unknownValue6String, exception);
                 setUnknownValue6(-1);
-            }
-            parseGear(matcherB.group(8));            
-            try {
-                setUnknownValue7(Integer.parseInt(unknownValue7String));
-            } catch (final NumberFormatException exception) {
-                LOG.warn("Error while parsing unknownValue7. Set to -1. The source String was: " + unknownValue7String, exception);
-                setUnknownValue7(-1);
-            }
-            try {
-                setUnknownValue8(Integer.parseInt(unknownValue8String));
-            } catch (final NumberFormatException exception) {
-                LOG.warn("Error while parsing unknownValue8. Set to -1. The source String was: " + unknownValue8String, exception);
-                setUnknownValue8(-1);
-            }
-            try {
-                setUnknownValue9(Integer.parseInt(unknownValue9String));
-            } catch (final NumberFormatException exception) {
-                LOG.warn("Error while parsing unknownValue9. Set to -1. The source String was: " + unknownValue9String, exception);
-                setUnknownValue9(-1);
             }
             setSkinName(skinNameString);
             try {
@@ -277,25 +277,25 @@ public class ReadWriteRptLine extends AbstractRptLine {
         
         if (matcherGear.matches()) {
             final String toolbeltItemsString = matcherGear.group(1);
-            final String chestItemsString = matcherGear.group(3);
+            final String inventoryItemsString = matcherGear.group(3);
             final String backpackTypeString = matcherGear.group(5);
             final String backpackWeaponsString = matcherGear.group(6);
             final String backpackWeaponNumbersString = matcherGear.group(8);
             final String backpackItemsString = matcherGear.group(10);
             final String backpackItemNumbersString = matcherGear.group(12);
 
-            toolbelt.clear();
-            chest.clear();
-            backpack.clear();
+            final List<Item> toolbelt = new ArrayList<>();
             
             final String[] toolbeltItems = toolbeltItemsString.split(",");
             if (toolbeltItems != null) {
                 for (final String item : toolbeltItems) {
                     toolbelt.add(new Item(item.replaceAll("^\"|\"$", "")));
                 }
-            }
+            }            
+            setToolbelt(toolbelt);
 
-            final Matcher inventoryMatcher = Pattern.compile("\\[(\"\\w+\",\\d+)\\]|(\"\\w+\")").matcher(chestItemsString);
+            final List<Item> inventory = new ArrayList<>();
+            final Matcher inventoryMatcher = Pattern.compile("\\[(\"\\w+\",\\d+)\\]|(\"\\w+\")").matcher(inventoryItemsString);
             while(inventoryMatcher.find()) {                
                 final String itemString = inventoryMatcher.group(0).replaceAll("^\\[|\\]$", "");
                 
@@ -311,12 +311,14 @@ public class ReadWriteRptLine extends AbstractRptLine {
                         itemType = itemString.replaceAll("^\"|\"$", "");
                         rounds = -1;
                     }
-                    chest.add(new Magazin(itemType, rounds));
+                    inventory.add(new Item(itemType, rounds));
                 }
-            }        
+            }            
+            setInventory(inventory);
 
-            backpackType = backpackTypeString;
+            setBackpackType(backpackTypeString);
 
+            final List<Item> backpack = new ArrayList<>();
             if (backpackWeaponsString.length() > 0) {
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("backpackWeaponsString:" + backpackWeaponsString);
@@ -346,6 +348,7 @@ public class ReadWriteRptLine extends AbstractRptLine {
                         }
                     }
                 }
+                setBackpack(backpack);
             }
 
             if (backpackItemsString.length() > 0) {
@@ -376,47 +379,6 @@ public class ReadWriteRptLine extends AbstractRptLine {
                     }
                 }
             }
-        }
-    }
-    
-    class Item {
-        
-        private String type;
-        
-        public Item(String type) {
-            this.type = type;
-        }
-        
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-        
-    }
-    
-    class Magazin extends Item {
-        private int rounds;
-
-        public Magazin(String type, int rounds) {
-            super(type);
-            this.rounds = rounds;
-        }
-
-        public int getRounds() {
-            return rounds;
-        }
-
-        public void setRounds(int rounds) {
-            this.rounds = rounds;
-        }
-
-        @Override
-        public String toString() {
-            return (rounds < 0)? getType() + " (" + Integer.toString(rounds) + ")" : getType();
-        }
-                
-    }
+        }        
+    }        
 }
