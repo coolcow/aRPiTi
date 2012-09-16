@@ -35,17 +35,22 @@ public class Coordinate {
         return z;
     }
 
+    @Override
+    public String toString() {
+        return toString(this);
+    }
+    
     public static String toString(final Coordinate coordinate) {
-        return "[" + Double.toString(coordinate.getX()) + ", " + Double.toString(coordinate.getY()) + ", " + Double.toString(coordinate.getZ()) + " ]";
+        return "[" + Double.toString(coordinate.getX()) + "," + Double.toString(coordinate.getY()) + "," + Double.toString(coordinate.getZ()) + " ]";
     }
 
     public static Coordinate parseCoordinate(final String value) {
         final String floatingPointRegex = "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?";
-        final Matcher matcher = Pattern.compile("^\\[(" + floatingPointRegex + "), (" + floatingPointRegex + "), (" + floatingPointRegex + ")\\]$").matcher(value);
+        final Matcher matcher = Pattern.compile("^\\[(" + floatingPointRegex + "),(" + floatingPointRegex + "),(" + floatingPointRegex + ")\\]$").matcher(value);
         if (matcher.matches()) {
             return new Coordinate(Double.parseDouble(matcher.group(1)), Double.parseDouble(matcher.group(3)), Double.parseDouble(matcher.group(5)));
         } else {            
-            throw new IllegalArgumentException("The given String does not match with the coordinate regex.");
+            throw new IllegalArgumentException("The given String does not match with the coordinate regex. " + value);
         }        
     }
 }
