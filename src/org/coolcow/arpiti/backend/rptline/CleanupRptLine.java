@@ -6,6 +6,7 @@ package org.coolcow.arpiti.backend.rptline;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -13,6 +14,8 @@ import java.util.regex.Pattern;
  */
 public class CleanupRptLine extends AbstractRptLine {
 
+    private static final Logger LOG = Logger.getLogger(CleanupRptLine.class);
+        
     private boolean isZombie = false;
     private boolean isInitialize = false;
     private boolean isObject = false;
@@ -82,6 +85,7 @@ public class CleanupRptLine extends AbstractRptLine {
         final Matcher zombieMatcher = Pattern.compile("^DELETE UNCONTROLLED ZOMBIE: (\\w+) OF: (.+)$").matcher(rawContent);
         final Matcher objectMatcher = Pattern.compile("^DELETED A \"(\\w+)\"$").matcher(rawContent);
         final Matcher initializeMatcher = Pattern.compile("^INITIALIZING CLEANUP SCRIPT$").matcher(rawContent);        
+        
         if (zombieMatcher.matches()) {
             setIsZombie(true);
             
