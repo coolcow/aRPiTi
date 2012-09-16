@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -15,6 +16,8 @@ import java.util.regex.Pattern;
  */
 public class ReadWriteRptLine extends AbstractRptLine {
 
+    private static final Logger LOG = Logger.getLogger(ReadWriteRptLine.class);
+    
     private boolean typeA = false;
     private boolean typeB = false;
     private int playerId;
@@ -161,73 +164,108 @@ public class ReadWriteRptLine extends AbstractRptLine {
         final String rawContent = getRawContent();
         final Matcher matcherA = Pattern.compile("^\\['(\\w+)',(true|false),'(\\d+)',(\\w+),(.*)\\]$").matcher(rawContent);
         final Matcher matcherB = Pattern.compile("^\\['(\\w+)',(true|false),'(\\d+)',\\[(\\d+),\\[(.+?),(.+?),(.+?)\\]\\],(.*?),\\[(\\d+),(\\d+),(\\d+)\\],\"(\\w+)\",(.*)\\]$").matcher(rawContent);
+        
         if (matcherA.matches()) {
             setTypeA(true);
-            setUnknownValue1(matcherA.group(1));
-            setUnknownValue2(Boolean.parseBoolean(matcherA.group(2)));
+            
+            final String unknownValue1String = matcherA.group(1);
+            final String unknownValue2String = matcherA.group(2);
+            final String playerIdString = matcherA.group(3);
+            final String skinNameString = matcherA.group(4);
+            final String versionNumberString = matcherA.group(5);
+                    
+            setUnknownValue1(unknownValue1String);
+            setUnknownValue2(Boolean.parseBoolean(unknownValue2String));
             try {
-                setPlayerId(Integer.parseInt(matcherA.group(3)));
-            } catch (final NumberFormatException ex) {
+                setPlayerId(Integer.parseInt(playerIdString));
+            } catch (final NumberFormatException exception) {
+                LOG.warn("Error while parsing playerId. Set to -1. The source String was: " + playerIdString, exception);
                 setPlayerId(-1);
             }
-            setSkinName(matcherA.group(4));
+            setSkinName(skinNameString);
             try {
-                setVersionNumber(Double.parseDouble(matcherA.group(5)));
-            } catch (final NumberFormatException ex) {
+                setVersionNumber(Double.parseDouble(versionNumberString));
+            } catch (final NumberFormatException exception) {
+                LOG.warn("Error while parsing versionNumber. Set to -1. The source String was: " + versionNumberString, exception);
                 setVersionNumber(-1);
             }
+            
             return true;
         } else if (matcherB.matches()) {
             setTypeB(true);
-            setUnknownValue1(matcherB.group(1));
-            setUnknownValue2(Boolean.parseBoolean(matcherB.group(2)));
+            
+            final String unknownValue1String = matcherB.group(1);
+            final String unknownValue2String = matcherB.group(2);
+            final String playerIdString = matcherB.group(3);
+            final String unknownValue3String = matcherB.group(4);
+            final String unknownValue4String = matcherB.group(5);
+            final String unknownValue5String = matcherB.group(6);
+            final String unknownValue6String = matcherB.group(7);
+            final String unknownValue7String = matcherB.group(9);
+            final String unknownValue8String = matcherB.group(10);
+            final String unknownValue9String = matcherB.group(11);
+            final String skinNameString = matcherB.group(12);
+            final String versionNumberString = matcherB.group(13);
+            
+            setUnknownValue1(unknownValue1String);
+            setUnknownValue2(Boolean.parseBoolean(unknownValue2String));
             try {
-                setPlayerId(Integer.parseInt(matcherB.group(3)));
-            } catch (final NumberFormatException ex) {
+                setPlayerId(Integer.parseInt(playerIdString));
+            } catch (final NumberFormatException exception) {
+                LOG.warn("Error while parsing playerId. Set to -1. The source String was: " + playerIdString, exception);
                 setPlayerId(-1);
             }
             try {
-                setUnknownValue3(Integer.parseInt(matcherB.group(4)));
-            } catch (final NumberFormatException ex) {
+                setUnknownValue3(Integer.parseInt(unknownValue3String));
+            } catch (final NumberFormatException exception) {
+                LOG.warn("Error while parsing unknownValue3. Set to -1. The source String was: " + unknownValue3String, exception);
                 setUnknownValue3(-1);
             }
             try {
-                setUnknownValue4(Double.parseDouble(matcherB.group(5)));
-            } catch (final NumberFormatException ex) {
+                setUnknownValue4(Double.parseDouble(unknownValue4String));
+            } catch (final NumberFormatException exception) {
+                LOG.warn("Error while parsing unknownValue4. Set to -1. The source String was: " + unknownValue4String, exception);
                 setUnknownValue4(-1);
             }
             try {
-                setUnknownValue5(Double.parseDouble(matcherB.group(6)));
-            } catch (final NumberFormatException ex) {
+                setUnknownValue5(Double.parseDouble(unknownValue5String));
+            } catch (final NumberFormatException exception) {
+                LOG.warn("Error while parsing unknownValue5. Set to -1. The source String was: " + unknownValue5String, exception);
                 setUnknownValue5(-1);
             }
             try {
-                setUnknownValue6(Double.parseDouble(matcherB.group(7)));
-            } catch (final NumberFormatException ex) {
+                setUnknownValue6(Double.parseDouble(unknownValue6String));
+            } catch (final NumberFormatException exception) {
+                LOG.warn("Error while parsing unknownValue6. Set to -1. The source String was: " + unknownValue6String, exception);
                 setUnknownValue6(-1);
             }
             parseGear(matcherB.group(8));            
             try {
-                setUnknownValue7(Integer.parseInt(matcherB.group(9)));
-            } catch (final NumberFormatException ex) {
+                setUnknownValue7(Integer.parseInt(unknownValue7String));
+            } catch (final NumberFormatException exception) {
+                LOG.warn("Error while parsing unknownValue7. Set to -1. The source String was: " + unknownValue7String, exception);
                 setUnknownValue7(-1);
             }
             try {
-                setUnknownValue8(Integer.parseInt(matcherB.group(10)));
-            } catch (final NumberFormatException ex) {
+                setUnknownValue8(Integer.parseInt(unknownValue8String));
+            } catch (final NumberFormatException exception) {
+                LOG.warn("Error while parsing unknownValue8. Set to -1. The source String was: " + unknownValue8String, exception);
                 setUnknownValue8(-1);
             }
             try {
-                setUnknownValue9(Integer.parseInt(matcherB.group(11)));
-            } catch (final NumberFormatException ex) {
+                setUnknownValue9(Integer.parseInt(unknownValue9String));
+            } catch (final NumberFormatException exception) {
+                LOG.warn("Error while parsing unknownValue9. Set to -1. The source String was: " + unknownValue9String, exception);
                 setUnknownValue9(-1);
             }
-            setSkinName(matcherB.group(12));
+            setSkinName(skinNameString);
             try {
-                setVersionNumber(Double.parseDouble(matcherB.group(13)));
-            } catch (final NumberFormatException ex) {
+                setVersionNumber(Double.parseDouble(versionNumberString));
+            } catch (final NumberFormatException exception) {
+                LOG.warn("Error while parsing versionNumber. Set to -1. The source String was: " + versionNumberString, exception);
                 setVersionNumber(-1);
             }
+            
             return true;
         } else {
             return false;
@@ -238,65 +276,78 @@ public class ReadWriteRptLine extends AbstractRptLine {
         final Matcher matcherGear = Pattern.compile("^\\[\\[((\"\\w+\",?)*)\\],\\[((\\[\"\\w+\",\\d+\\],?|\"\\w+\",?)*)\\]\\],\\[\"(\\w+)\",\\[\\[((\"\\w+\",?)*)\\],\\[((\\d+,?)*)\\]\\],\\[\\[((\"\\w+\",?)*)\\],\\[((\\d+,?)*)\\]\\]\\]$").matcher(string);
         
         if (matcherGear.matches()) {
+            final String toolbeltItemsString = matcherGear.group(1);
+            final String chestItemsString = matcherGear.group(3);
+            final String backpackTypeString = matcherGear.group(5);
+            final String backpackWeaponsString = matcherGear.group(6);
+            final String backpackWeaponNumbersString = matcherGear.group(8);
+
             toolbelt.clear();
-            try {
-                final String[] toolbeltItems = matcherGear.group(1).split(",");
+            final String[] toolbeltItems = toolbeltItemsString.split(",");
+            if (toolbeltItems != null) {
                 for (final String item : toolbeltItems) {
                     toolbelt.add(new Item(item.replaceAll("^\"|\"$", "")));
                 }
-            } catch (final Exception ex) {
-                ex.printStackTrace();
             }
 
             chest.clear();
-            try {
-                final Matcher inventoryMatcher = Pattern.compile("\\[(\"\\w+\",\\d+)\\]|(\"\\w+\")").matcher(matcherGear.group(3));
-                System.out.println(matcherGear.group(3));
-                while(inventoryMatcher.find()) {
-                     final String itemRaw = inventoryMatcher.group(0).replaceAll("^\\[|\\]$", "");
-                     System.out.println(itemRaw);
-                     final String[] splitItem = itemRaw.split(",");
+            final Matcher inventoryMatcher = Pattern.compile("\\[(\"\\w+\",\\d+)\\]|(\"\\w+\")").matcher(chestItemsString);
+            while(inventoryMatcher.find()) {                
+                final String itemString = inventoryMatcher.group(0).replaceAll("^\\[|\\]$", "");
+                
+                final String[] splitItem = itemString.split(",");
 
-                     final String itemType;
-                     final int rounds;
-                     if (splitItem.length > 1) {
-                         itemType = splitItem[0].replaceAll("^\"|\"$", "");
-                         rounds = Integer.parseInt(splitItem[1]);
-                     } else {
-                         itemType = itemRaw.replaceAll("^\"|\"$", "");
-                         rounds = -1;
-                     }
-                     chest.add(new Magazin(itemType, rounds));
-                }        
-            } catch (final Exception ex) {
-                ex.printStackTrace();
-            }
+                if (splitItem != null) {
+                    final String itemType;
+                    final int rounds;
+                    if (splitItem.length > 1) {
+                        itemType = splitItem[0].replaceAll("^\"|\"$", "");
+                        rounds = Integer.parseInt(splitItem[1]);
+                    } else {
+                        itemType = itemString.replaceAll("^\"|\"$", "");
+                        rounds = -1;
+                    }
+                    chest.add(new Magazin(itemType, rounds));
+                }
+            }        
 
-            backpackType = matcherGear.group(5);
+            backpackType = backpackTypeString;
 
             backpack.clear();
-            try {
-                final String[] backpackWeapons = matcherGear.group(6).split(",");
-                final String[] backpackWeaponNumbers = matcherGear.group(8).split(",");        
+            final String[] backpackWeapons = backpackWeaponsString.split(",");
+            final String[] backpackWeaponNumbers = backpackWeaponNumbersString.split(",");      
+            if (backpackWeapons != null) {
                 for (int index = 0; index < backpackWeapons.length; index++) {
-                    final int numOf = Integer.parseInt(backpackWeaponNumbers[index]);
+                    int numOf;
+                    try {
+                        final String numberString = backpackWeaponNumbers[index];
+                        numOf = Integer.parseInt(numberString);
+                    } catch (final Exception exception) {
+                        LOG.warn("Error while holding numberString. Set to 1.", exception);
+                        numOf = 1;
+                    }
                     final String itemType = backpackWeapons[index].replaceAll("^\"|\"$", "");
                     for (int num = 0; num < numOf; num++) {
                         backpack.add(new Item(itemType));
                     }
                 }
+            }
 
-                final String[] backpackItems = matcherGear.group(10).split(",");
-                final String[] backpackItemsNumbers = matcherGear.group(12).split(",");
-                for (int index = 0; index < backpackItems.length; index++) {
-                    final int numOf = Integer.parseInt(backpackItemsNumbers[index]);
-                    final String itemType = backpackItems[index].replaceAll("^\"|\"$", "");
-                    for (int num = 0; num < numOf; num++) {
-                        backpack.add(new Item(itemType));
-                    }
+            final String[] backpackItems = matcherGear.group(10).split(",");
+            final String[] backpackItemsNumbers = matcherGear.group(12).split(",");
+            for (int index = 0; index < backpackItems.length; index++) {
+                int numOf;
+                try {
+                    final String numberString = backpackItemsNumbers[index];
+                    numOf = Integer.parseInt(numberString);
+                } catch (final Exception exception) {
+                    LOG.warn("Error while holding numberString. Set to 1.", exception);
+                    numOf = 1;
                 }
-            } catch (final Exception ex) {
-                ex.printStackTrace();
+                final String itemType = backpackItems[index].replaceAll("^\"|\"$", "");
+                for (int num = 0; num < numOf; num++) {
+                    backpack.add(new Item(itemType));
+                }
             }
         }
     }
