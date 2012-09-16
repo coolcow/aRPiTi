@@ -6,12 +6,20 @@ package org.coolcow.arpiti.backend.rptline;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author jruiz
  */
 public class DisconnectStartIRptLine extends AbstractRptLine {
+    
+    private static final Logger LOG = Logger.getLogger(DisconnectStartIRptLine.class);
+    
+    private boolean typeA = false;
+    private boolean typeB = false;
+    private boolean typeC = false;
+    private boolean typeD = false;
 
     private String playerName;
     private int playerId;
@@ -90,6 +98,38 @@ public class DisconnectStartIRptLine extends AbstractRptLine {
         this.playerSkin = playerSkin;
     }
 
+    public boolean isTypeA() {
+        return typeA;
+    }
+
+    protected void setTypeA(boolean typeA) {
+        this.typeA = typeA;
+    }
+
+    public boolean isTypeB() {
+        return typeB;
+    }
+
+    protected void setTypeB(boolean typeB) {
+        this.typeB = typeB;
+    }
+
+    public boolean isTypeC() {
+        return typeC;
+    }
+
+    protected void setTypeC(boolean typeC) {
+        this.typeC = typeC;
+    }
+
+    public boolean isTypeD() {
+        return typeD;
+    }
+
+    protected void setTypeD(boolean typeD) {
+        this.typeD = typeD;
+    }
+    
     @Override
     public boolean parseLine(String line) {
         if (!super.parseLine(line)) {
@@ -103,62 +143,101 @@ public class DisconnectStartIRptLine extends AbstractRptLine {
         final Matcher matcherD = Pattern.compile("^(.+) \\(\"(\\d+)\"\\) Object: (\\w+)# (\\d+): (.+) REMOTE?$").matcher(rawContent);
 
         if (matcherA.matches()) {
-            setPlayerName(matcherA.group(1));
-            try {
-                setPlayerId(Integer.parseInt(matcherA.group(2)));
-            } catch (final NumberFormatException ex) {
+            setTypeA(true);
+            
+            final String playerNameString = matcherA.group(1);
+            final String playerIdString = matcherA.group(2);
+            final String unknownValue1String = matcherA.group(3);
+            final String unknownValue2String = matcherA.group(4);
+            final String playerName2String = matcherA.group(5);            
+            
+            setPlayerName(playerNameString);
+            try {                 
+                setPlayerId(Integer.parseInt(playerIdString));
+            } catch (final NumberFormatException exception) {
+                LOG.warn("Error while parsing playerId. Set to -1. The source String was: " + playerIdString, exception);
                 setPlayerId(-1);
             }
-            setUnknownValue1(matcherA.group(3));
+            setUnknownValue1(unknownValue1String);
             try {
-                setUnknownValue2(Integer.parseInt(matcherA.group(4)));
-            } catch (final NumberFormatException ex) {
+                setUnknownValue2(Integer.parseInt(unknownValue2String));
+            } catch (final NumberFormatException exception) {
+                LOG.warn("Error while parsing unknownValue2. Set to -1. The source String was: " + unknownValue2String, exception);
                 setUnknownValue2(-1);
             }
-            setPlayerName2(matcherA.group(5));
+            setPlayerName2(playerName2String);
+            
             return true;
         } else if (matcherB.matches()) {
-            setPlayerName(matcherB.group(1));
+            setTypeB(true);
+            
+            final String playerNameString = matcherB.group(1);
+            final String playerIdString = matcherB.group(2);
+            final String unknownValue1String = matcherB.group(3);
+            final String unknownValue2String = matcherB.group(4);
+            
+            setPlayerName(playerNameString);
             try {
-                setPlayerId(Integer.parseInt(matcherB.group(2)));
-            } catch (final NumberFormatException ex) {
+                setPlayerId(Integer.parseInt(playerIdString));
+            } catch (final NumberFormatException exception) {
+                LOG.warn("Error while parsing playerId. Set to -1. The source String was: " + playerIdString, exception);
                 setPlayerId(-1);
             }
-            setUnknownValue1(matcherB.group(3));
+            setUnknownValue1(unknownValue1String);
             try {
-                setUnknownValue2(Integer.parseInt(matcherB.group(4)));
-            } catch (final NumberFormatException ex) {
+                setUnknownValue2(Integer.parseInt(unknownValue2String));
+            } catch (final NumberFormatException exception) {
+                LOG.warn("Error while parsing unknownValue2. Set to -1. The source String was: " + unknownValue2String, exception);
                 setUnknownValue2(-1);
             }
+            
             return true;
         } else if (matcherC.matches()) {
-            setPlayerName(matcherC.group(1));
+            setTypeC(true);            
+            
+            final String playerNameString = matcherC.group(1);
+            final String playerIdString = matcherC.group(2);
+            
+            setPlayerName(playerNameString);
             try {
-                setPlayerId(Integer.parseInt(matcherC.group(2)));
-            } catch (final NumberFormatException ex) {
+                setPlayerId(Integer.parseInt(playerIdString));
+            } catch (final NumberFormatException exception) {
+                LOG.warn("Error while parsing playerId. Set to -1. The source String was: " + playerIdString, exception);
                 setPlayerId(-1);
             }
             setUnknownValue1(null);
             setUnknownValue2(-1);
             return true;
         } else if (matcherD.matches()) {
-            setPlayerName(matcherD.group(1));
+            setTypeD(true);
+
+            final String playerNameString = matcherD.group(1);
+            final String playerIdString = matcherD.group(2);
+            final String unknownValue3String = matcherD.group(3);
+            final String unknownValue4String = matcherD.group(4);
+            final String playerSkinString = matcherD.group(5);
+            
+            setPlayerName(playerNameString);
             try {
-                setPlayerId(Integer.parseInt(matcherD.group(2)));
-            } catch (final NumberFormatException ex) {
+                setPlayerId(Integer.parseInt(playerIdString));
+            } catch (final NumberFormatException exception) {
+                LOG.warn("Error while parsing playerId. Set to -1. The source String was: " + playerIdString, exception);
                 setPlayerId(-1);
             }
             try {
-                setUnknownValue3(Integer.parseInt(matcherD.group(3)));
-            } catch (final NumberFormatException ex) {
+                setUnknownValue3(Integer.parseInt(unknownValue3String));
+            } catch (final NumberFormatException exception) {
+                LOG.warn("Error while parsing unknownValue3. Set to -1. The source String was: " + unknownValue3String, exception);
                 setUnknownValue3(-1);
             }
             try {
-                setUnknownValue4(Integer.parseInt(matcherD.group(4)));
-            } catch (final NumberFormatException ex) {
+                setUnknownValue4(Integer.parseInt(unknownValue4String));
+            } catch (final NumberFormatException exception) {
+                LOG.warn("Error while parsing unknownValue4. Set to -1. The source String was: " + unknownValue4String, exception);
                 setUnknownValue4(-1);
             }
-            setPlayerSkin(matcherD.group(5));
+            setPlayerSkin(playerSkinString);
+            
             return true;
         } else {
             return false;
