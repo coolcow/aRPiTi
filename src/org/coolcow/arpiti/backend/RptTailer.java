@@ -99,9 +99,13 @@ public class RptTailer extends SwingWorker<Void, Void> {
                                 fireTailingResumed();
                             }
                             lineNumber++;
-                            final AbstractRptLine rptLine = AbstractRptLine.parseLine(lineNumber, lineString);
-                            if (rptLine != null) {
-                                collectedRptLines.add(rptLine);
+                            try {
+                                final AbstractRptLine rptLine = AbstractRptLine.parseLine(lineNumber, lineString);
+                                if (rptLine != null) {
+                                    collectedRptLines.add(rptLine);
+                                }
+                            } catch (final RuntimeException exception) {
+                                LOG.error("Error while parsing RPT line.", exception);
                             }
 
                             final long newTimeInMs = System.currentTimeMillis();
