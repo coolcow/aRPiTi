@@ -281,8 +281,13 @@ public class ReadWriteRptLine extends AbstractRptLine {
             final String backpackTypeString = matcherGear.group(5);
             final String backpackWeaponsString = matcherGear.group(6);
             final String backpackWeaponNumbersString = matcherGear.group(8);
+            final String backpackItemsString = matcherGear.group(10);
+            final String backpackItemNumbersString = matcherGear.group(12);
 
             toolbelt.clear();
+            chest.clear();
+            backpack.clear();
+            
             final String[] toolbeltItems = toolbeltItemsString.split(",");
             if (toolbeltItems != null) {
                 for (final String item : toolbeltItems) {
@@ -290,7 +295,6 @@ public class ReadWriteRptLine extends AbstractRptLine {
                 }
             }
 
-            chest.clear();
             final Matcher inventoryMatcher = Pattern.compile("\\[(\"\\w+\",\\d+)\\]|(\"\\w+\")").matcher(chestItemsString);
             while(inventoryMatcher.find()) {                
                 final String itemString = inventoryMatcher.group(0).replaceAll("^\\[|\\]$", "");
@@ -313,40 +317,63 @@ public class ReadWriteRptLine extends AbstractRptLine {
 
             backpackType = backpackTypeString;
 
-            backpack.clear();
-            final String[] backpackWeapons = backpackWeaponsString.split(",");
-            final String[] backpackWeaponNumbers = backpackWeaponNumbersString.split(",");      
-            if (backpackWeapons != null) {
-                for (int index = 0; index < backpackWeapons.length; index++) {
+            if (backpackWeaponsString.length() > 0) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("backpackWeaponsString:" + backpackWeaponsString);
+                    LOG.debug("backpackWeaponNumbersString: " + backpackWeaponNumbersString);
+                }
+                final String[] backpackWeapons = backpackWeaponsString.split(",");
+                final String[] backpackWeaponNumbers = backpackWeaponNumbersString.split(",");      
+                if (backpackWeapons != null) {
+                    for (int index = 0; index < backpackWeapons.length; index++) {
+                        int numOf;
+                        try {
+                            final String numberString = backpackWeaponNumbers[index];
+                            if (LOG.isDebugEnabled()) {
+                                LOG.debug("number[" + index + "]: " + numberString);
+                            }
+                            numOf = Integer.parseInt(numberString);
+                        } catch (final Exception exception) {
+                            LOG.warn("Error while holding numberString. Set to 1.", exception);
+                            numOf = 1;
+                        }
+                        final String itemType = backpackWeapons[index].replaceAll("^\"|\"$", "");
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("item[" + index + "]: " + itemType);
+                        }
+                        for (int num = 0; num < numOf; num++) {
+                            backpack.add(new Item(itemType));
+                        }
+                    }
+                }
+            }
+
+            if (backpackItemsString.length() > 0) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("backpackItemsString:" + backpackItemsString);
+                    LOG.debug("backpackItemNumbersString: " + backpackItemNumbersString);
+                }
+                final String[] backpackItems = backpackItemsString.split(",");
+                final String[] backpackItemsNumbers = backpackItemNumbersString.split(",");
+                for (int index = 0; index < backpackItems.length; index++) {
                     int numOf;
                     try {
-                        final String numberString = backpackWeaponNumbers[index];
+                        final String numberString = backpackItemsNumbers[index];
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("number[" + index + "]: " + numberString);
+                        }
                         numOf = Integer.parseInt(numberString);
                     } catch (final Exception exception) {
                         LOG.warn("Error while holding numberString. Set to 1.", exception);
                         numOf = 1;
                     }
-                    final String itemType = backpackWeapons[index].replaceAll("^\"|\"$", "");
+                    final String itemType = backpackItems[index].replaceAll("^\"|\"$", "");
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("item[" + index + "]: " + itemType);
+                    }
                     for (int num = 0; num < numOf; num++) {
                         backpack.add(new Item(itemType));
                     }
-                }
-            }
-
-            final String[] backpackItems = matcherGear.group(10).split(",");
-            final String[] backpackItemsNumbers = matcherGear.group(12).split(",");
-            for (int index = 0; index < backpackItems.length; index++) {
-                int numOf;
-                try {
-                    final String numberString = backpackItemsNumbers[index];
-                    numOf = Integer.parseInt(numberString);
-                } catch (final Exception exception) {
-                    LOG.warn("Error while holding numberString. Set to 1.", exception);
-                    numOf = 1;
-                }
-                final String itemType = backpackItems[index].replaceAll("^\"|\"$", "");
-                for (int num = 0; num < numOf; num++) {
-                    backpack.add(new Item(itemType));
                 }
             }
         }
