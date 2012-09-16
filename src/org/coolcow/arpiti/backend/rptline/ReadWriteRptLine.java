@@ -147,26 +147,51 @@ public class ReadWriteRptLine extends AbstractRptLine {
     }
 
     public List<Item> getToolbelt() {
-        return new ArrayList<>(toolbelt);
+        if (toolbelt == null) {
+            return null;
+        } else {
+            return new ArrayList<>(toolbelt);
+        }
     }
 
     public void setToolbelt(List<Item> toolbelt) {
-        this.toolbelt = new ArrayList<>(toolbelt);
+        if (toolbelt == null) {
+            this.toolbelt = null;
+        } else {
+            this.toolbelt = new ArrayList<>(toolbelt);
+        }
     }
     
     public List<Item> getInventory() {
-        return new ArrayList<>(inventory);
+        if (inventory == null) {
+            return null;
+        } else {
+            return new ArrayList<>(inventory);
+        }        
     }
 
     public void setInventory(List<Item> inventory) {
-        this.inventory = new ArrayList<>(inventory);
+        if (inventory == null) {
+            this.inventory = null;
+        } else {
+            this.inventory = new ArrayList<>(inventory);
+        }
     }
 
     public List<Item> getBackpack() {
-        return new ArrayList<>(backpack);
+        if (backpack == null) {
+            return null;
+        } else {
+            return new ArrayList<>(backpack);
+        }        
     }
 
     public void setBackpack(List<Item> backpack) {
+        if (backpack == null) {
+            this.backpack = null;
+        } else {
+            this.backpack = new ArrayList<>(backpack);
+        }
         this.backpack = new ArrayList<>(backpack);
     }
     

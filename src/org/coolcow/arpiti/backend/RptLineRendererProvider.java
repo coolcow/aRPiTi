@@ -19,6 +19,7 @@ import org.coolcow.arpiti.gui.rptline.LoginLoadedRenderer;
 import org.coolcow.arpiti.gui.rptline.LoginPublishingRenderer;
 import org.coolcow.arpiti.gui.rptline.ObjRenderer;
 import org.coolcow.arpiti.gui.rptline.PDeathRenderer;
+import org.coolcow.arpiti.gui.rptline.ReadWriteRenderer;
 import org.coolcow.arpiti.gui.rptline.SecondHandZombieInitializedRenderer;
 import org.coolcow.arpiti.gui.rptline.StartingLoginRenderer;
 import org.coolcow.arpiti.gui.rptline.WriteRenderer;
@@ -54,6 +55,7 @@ public abstract class RptLineRendererProvider {
                     case PDEATH: { renderer = new PDeathRenderer(); } break;
                     case WRITE: { renderer = new WriteRenderer(); } break;
                     case CLEANUP: { renderer = new CleanupRenderer(); } break;
+                    case READ_WRITE: { renderer = new ReadWriteRenderer(); } break;
                     default: renderer = new DefaultRenderer();
                 }
             }
