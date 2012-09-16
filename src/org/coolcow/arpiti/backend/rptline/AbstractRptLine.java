@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.log4j.Logger;
 import org.coolcow.arpiti.gui.MainFrame;
 
 /**
@@ -15,6 +16,8 @@ import org.coolcow.arpiti.gui.MainFrame;
  */
 public abstract class AbstractRptLine implements RptLine {
 
+    private static final Logger LOG = Logger.getLogger(AbstractRptLine.class);
+    
     private final PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private String rawLine = null;
     private Type type = null;
@@ -99,13 +102,18 @@ public abstract class AbstractRptLine implements RptLine {
         AbstractRptLine rptLine = new DefaultRptLine();
         
         final Matcher timeMatcher = Pattern.compile("^(\\d{1,2}:\\d{2}:\\d{2}) (.*)$").matcher(rawLine.trim());
+        
         if (timeMatcher.matches()) {
+            final String dateString = timeMatcher.group(1);
+            final String contentString = timeMatcher.group(2);
+            
             try {
-                date = new SimpleDateFormat(MainFrame.INPUT_DATE_FORMAT).parse(timeMatcher.group(1));
-            } catch (final ParseException ex) {
+                date = new SimpleDateFormat(MainFrame.INPUT_DATE_FORMAT).parse(dateString);
+            } catch (final ParseException exception) {
+                LOG.warn("Error while parsing date. Date is set to null. The source String was: " + dateString, exception);
                 date = null;
             }
-            rawContent = timeMatcher.group(2);
+            rawContent = contentString;
         } else {
             date = null;
             rawContent = rawLine;
@@ -120,9 +128,11 @@ public abstract class AbstractRptLine implements RptLine {
             type = Type.LOCALITY_EVENT;
             content = "";
         } else if (defaultTypeMatcher.matches()) {
-            final String rawType = defaultTypeMatcher.group(1).trim();
-            content = defaultTypeMatcher.group(2);
-            switch (rawType) {
+            final String typeString = defaultTypeMatcher.group(1).trim();
+            final String contentString = defaultTypeMatcher.group(2);
+            
+            content = contentString;
+            switch (typeString) {
                 case "LOGIN ATTEMPT": { 
                     type = Type.LOGIN_ATTEMPT; 
                     rptLine = new LoginAttemptRptLine(); 
