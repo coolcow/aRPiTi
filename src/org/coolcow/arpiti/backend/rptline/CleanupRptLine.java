@@ -84,15 +84,25 @@ public class CleanupRptLine extends AbstractRptLine {
         final Matcher initializeMatcher = Pattern.compile("^INITIALIZING CLEANUP SCRIPT$").matcher(rawContent);        
         if (zombieMatcher.matches()) {
             setIsZombie(true);
-            setZombieType(zombieMatcher.group(1));
-            setZombieIdentifier(zombieMatcher.group(2));
+            
+            final String zombieTypeString = zombieMatcher.group(1);
+            final String zombieIdentifierString = zombieMatcher.group(2);
+            
+            setZombieType(zombieTypeString);
+            setZombieIdentifier(zombieIdentifierString);
+            
             return true;
         } else if (objectMatcher.matches()) {
             setIsObject(true);
-            setObjectType(objectMatcher.group(1));
+            
+            final String zombieTypeString = zombieMatcher.group(1);
+            
+            setObjectType(zombieTypeString);
+            
             return true;
         } else if (initializeMatcher.matches()) {
             setIsInitialize(true);
+            
             return true;
         } else {
             return false;
