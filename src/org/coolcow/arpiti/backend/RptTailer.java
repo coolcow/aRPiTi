@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.swing.SwingWorker;
+import org.apache.log4j.Logger;
 import org.coolcow.arpiti.backend.rptline.AbstractRptLine;
 
 public class RptTailer extends SwingWorker<Void, Void> {
@@ -18,7 +19,9 @@ public class RptTailer extends SwingWorker<Void, Void> {
     private boolean pause = false;
     private List<AbstractRptLine> collectedRptLines = new ArrayList<>();
     private Collection<RptTailerListener> listeners = new ArrayList<>();
-
+    
+    private static final Logger LOG = Logger.getLogger(RptTailer.class);
+            
     public RptTailer(File rptFile) {
         this.rptFile = rptFile;
     }
@@ -75,6 +78,7 @@ public class RptTailer extends SwingWorker<Void, Void> {
         try {
             this.tailing = true;
             while (this.tailing) {
+                long timeInMs = System.currentTimeMillis();
                 try {
                     long fileLength = this.rptFile.length();
                     if (file == null || fileLength < filePointer) {
@@ -82,7 +86,6 @@ public class RptTailer extends SwingWorker<Void, Void> {
                         filePointer = 0;
                     }
 
-                    long timeInMs = System.currentTimeMillis();
                     if (fileLength > filePointer) {
                         fireTailingResumed();
                         file.seek(filePointer);
@@ -110,26 +113,28 @@ public class RptTailer extends SwingWorker<Void, Void> {
                         }
                         filePointer = file.getFilePointer();
                     }
-
-                    if (collectedRptLines.size() > 0) {
-                        Thread.sleep(System.currentTimeMillis() - timeInMs);
-                        fireRptLinesTailed(collectedRptLines);
-                        collectedRptLines = new ArrayList<>();
-                    } else {
-                        fireTailingWait();
-                        Thread.sleep(refreshInterval);
-                    }
-                } catch (final IOException | InterruptedException ex) {
+                } catch (final IOException | InterruptedException exception) {
+                    LOG.error("Error while reading line", exception);
+                }
+                
+                if (collectedRptLines.size() > 0) {
+                    Thread.sleep(System.currentTimeMillis() - timeInMs);
+                    fireRptLinesTailed(collectedRptLines);
+                    collectedRptLines = new ArrayList<>();
+                } else {
+                    fireTailingWait();
+                    Thread.sleep(refreshInterval);
                 }
             }
-        } catch (final RuntimeException e) {
-            e.printStackTrace();
+        } catch (final RuntimeException exception) {
+            LOG.fatal("Error while tailing RPT file.", exception);
         } finally {
             try {
                 if (file != null) {
                     file.close();
                 }
-            } catch (final IOException ex) {
+            } catch (final IOException exception) {
+                LOG.fatal("File could not be closed normaly (maybe the file is already closed or does not exists anymore ?).", exception);
             }
         }
         return null;
