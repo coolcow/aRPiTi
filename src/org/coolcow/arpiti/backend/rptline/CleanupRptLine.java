@@ -99,7 +99,7 @@ public class CleanupRptLine extends AbstractRptLine {
         } else if (objectMatcher.matches()) {
             setIsObject(true);
             
-            final String zombieTypeString = zombieMatcher.group(1);
+            final String zombieTypeString = objectMatcher.group(1);
             
             setObjectType(zombieTypeString);
             
