@@ -34,7 +34,7 @@
                 </executions>
                 <configuration>
                     <keystore>${org.coolcow.keystore.path}</keystore>
-                    <alias>coolcow</alias>
+                    <alias>coolcow.org</alias>
                     <storepass>${org.coolcow.keystore.pass}</storepass>
                 </configuration>
             </plugin>          
