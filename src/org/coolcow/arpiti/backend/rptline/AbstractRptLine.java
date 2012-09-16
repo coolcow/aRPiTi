@@ -177,6 +177,9 @@ public abstract class AbstractRptLine implements RptLine {
                 case "HIVE": { type = Type.HIVE; } break;
                 case "READ/WRITE": { 
                     type = Type.READ_WRITE; 
+                    rptLine = new ReadWriteRptLine();
+                    //['PASS',[false,false,false,true,true,false,true,7083.59,["Pelvis","aimpoint","RightFoot"],[1.10509,0],0,[1115.25,926.767]],[6,3,0,0],["MP5A5","amovppnemstpsraswrfldnon",42],[294,[4684.51,10477.9,0.00143433]],2650]
+                    //^\['(\w+)',\[((true,|false,)*)(.+?),\[((\"\w+\",?)*?)\],\[(.*?)\](.*),(\d+)\]$
 //                    switch (content.split(Pattern.quote("[")).length) {
 //                        case 19: {
 //                            final int first = content.indexOf("[") + 1;
