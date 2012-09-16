@@ -40,11 +40,12 @@ public class Coordinate {
     }
 
     public static Coordinate parseCoordinate(final String value) {
-        final Matcher matcher = Pattern.compile("^\\[(.*?), (.*?), (.*?)\\]$").matcher(value);
+        final String floatingPointRegex = "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?";
+        final Matcher matcher = Pattern.compile("^\\[(" + floatingPointRegex + "), (" + floatingPointRegex + "), (" + floatingPointRegex + ")\\]$").matcher(value);
         if (matcher.matches()) {
-            return new Coordinate(Double.parseDouble(matcher.group(1)), Double.parseDouble(matcher.group(2)), Double.parseDouble(matcher.group(3)));
-        } else {
-            return null; // throw exception ?
+            return new Coordinate(Double.parseDouble(matcher.group(1)), Double.parseDouble(matcher.group(3)), Double.parseDouble(matcher.group(5)));
+        } else {            
+            throw new IllegalArgumentException("The given String does not match with the coordinate regex.");
         }        
     }
 }

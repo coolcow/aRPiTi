@@ -4,6 +4,7 @@
  */
 package org.coolcow.arpiti.backend.bindingconverter;
 
+import org.apache.log4j.Logger;
 import org.coolcow.arpiti.backend.Coordinate;
 import org.jdesktop.beansbinding.Converter;
 
@@ -13,6 +14,8 @@ import org.jdesktop.beansbinding.Converter;
  */
 public class CoordinateToStringConverter extends Converter<Coordinate, String> {
 
+    private static final Logger LOG = Logger.getLogger(CoordinateToStringConverter.class);
+    
     @Override
     public String convertForward(final Coordinate value) {
         return Coordinate.toString(value);
@@ -20,6 +23,11 @@ public class CoordinateToStringConverter extends Converter<Coordinate, String> {
 
     @Override
     public Coordinate convertReverse(final String value) {
-        return Coordinate.parseCoordinate(value);
+        try {
+            return Coordinate.parseCoordinate(value);
+        } catch (final NumberFormatException exception) {
+            LOG.warn("The given String could not be parsed to a Coordinate: " + value, exception);
+            throw exception;
+        }
     }
 }
