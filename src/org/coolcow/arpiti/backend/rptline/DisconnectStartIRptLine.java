@@ -26,7 +26,7 @@ public class DisconnectStartIRptLine extends AbstractRptLine {
     private String unknownValue1;
     private int unknownValue2;
     private String playerName2;
-    private int unknownValue3;
+    private String unknownValue3;
     private int unknownValue4;
     private String playerSkin;
 
@@ -74,11 +74,11 @@ public class DisconnectStartIRptLine extends AbstractRptLine {
         this.playerName2 = playerName2;
     }
 
-    public int getUnknownValue3() {
+    public String getUnknownValue3() {
         return unknownValue3;
     }
 
-    protected void setUnknownValue3(int unknownValue3) {
+    protected void setUnknownValue3(String unknownValue3) {
         this.unknownValue3 = unknownValue3;
     }
 
@@ -224,12 +224,7 @@ public class DisconnectStartIRptLine extends AbstractRptLine {
                 LOG.warn("Error while parsing playerId. Set to -1. The source String was: " + playerIdString, exception);
                 setPlayerId(-1);
             }
-            try {
-                setUnknownValue3(Integer.parseInt(unknownValue3String));
-            } catch (final NumberFormatException exception) {
-                LOG.warn("Error while parsing unknownValue3. Set to -1. The source String was: " + unknownValue3String, exception);
-                setUnknownValue3(-1);
-            }
+            setUnknownValue3(unknownValue3String);
             try {
                 setUnknownValue4(Integer.parseInt(unknownValue4String));
             } catch (final NumberFormatException exception) {
