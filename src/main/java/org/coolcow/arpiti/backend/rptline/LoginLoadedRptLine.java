@@ -4,22 +4,26 @@
  */
 package org.coolcow.arpiti.backend.rptline;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
+import org.coolcow.arpiti.backend.Backend;
+import org.coolcow.arpiti.backend.Player;
+import org.coolcow.arpiti.backend.rptline.interfaces.PlayerProvider;
 
 /**
  *
  * @author jruiz
  */
-public class LoginLoadedRptLine extends AbstractRptLine {
+public class LoginLoadedRptLine extends AbstractRptLine implements PlayerProvider {
 
     private static final Logger LOG = Logger.getLogger(LoginLoadedRptLine.class);
         
+    private Player player;
     private String unknownValue1;
     private int unknownValue2;
-    private String playerName;
-    private String skinName;
 
     public LoginLoadedRptLine() {
         super();
@@ -29,7 +33,7 @@ public class LoginLoadedRptLine extends AbstractRptLine {
         return unknownValue1;
     }
 
-    protected void setUnknownValue1(String unknownValue1) {
+    protected void setUnknownValue1(final String unknownValue1) {
         this.unknownValue1 = unknownValue1;
     }
 
@@ -37,28 +41,20 @@ public class LoginLoadedRptLine extends AbstractRptLine {
         return unknownValue2;
     }
 
-    protected void setUnknownValue2(int unknownValue2) {
+    protected void setUnknownValue2(final int unknownValue2) {
         this.unknownValue2 = unknownValue2;
     }
 
-    public String getPlayerName() {
-        return playerName;
+    public Player getPlayer() {
+        return player;
     }
 
-    protected void setPlayerName(String playerName) {
-        this.playerName = playerName;
-    }
-
-    public String getSkinName() {
-        return skinName;
-    }
-
-    protected void setSkinName(String skinName) {
-        this.skinName = skinName;
+    protected void setPlayer(final Player player) {
+        this.player = player;
     }
 
     @Override
-    public boolean parseLine(String line) {
+    public boolean parseLine(final String line) {
         if (!super.parseLine(line)) {
             return false;
         }
@@ -72,6 +68,17 @@ public class LoginLoadedRptLine extends AbstractRptLine {
             final String playerNameString = matcher.group(3);
             final String skinNameString = matcher.group(4);
             
+            if (playerNameString != null) {
+                final Player player = Backend.getInstance().searchPlayerByName(playerNameString);
+                if (player != null) {
+                    if (skinNameString != null) {
+                        player.setSkinName(skinNameString);
+                    }
+
+                    setPlayer(player);
+                }
+            }
+            
             setUnknownValue1(unknownValue1String);
             try {
                 setUnknownValue2(Integer.parseInt(unknownValue2String));
@@ -79,12 +86,19 @@ public class LoginLoadedRptLine extends AbstractRptLine {
                 LOG.warn("Error while parsing unknownValue2. Set to -1. The source String was: " + unknownValue2String, exception);
                 setUnknownValue2(-1);
             }
-            setPlayerName(playerNameString);
-            setSkinName(skinNameString);
-            
+
             return true;
         } else {
             return false;
         }
+    }
+
+    @Override
+    public Collection<Player> getPlayers() {
+        final Collection<Player> coll = new ArrayList<>();
+        if (player != null) {
+            coll.add(player);
+        }
+        return coll;
     }
 }

@@ -7,7 +7,6 @@ package org.coolcow.arpiti.gui.rptline;
 import java.awt.CardLayout;
 import org.coolcow.arpiti.backend.bindingconverter.CoordinateToStringConverter;
 import org.coolcow.arpiti.backend.bindingconverter.DateToStringConverter;
-import org.coolcow.arpiti.backend.bindingconverter.IntToStringConverter;
 import org.coolcow.arpiti.backend.rptline.ReadWriteRptLine;
 import org.coolcow.arpiti.backend.rptline.RptLine;
 
@@ -76,8 +75,7 @@ public class ReadWriteRenderer extends AbstractRptLineRenderer {
         jTextField1.setMinimumSize(new java.awt.Dimension(150, 20));
         jTextField1.setPreferredSize(new java.awt.Dimension(150, 20));
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.playerId}"), jTextField1, org.jdesktop.beansbinding.BeanProperty.create("text"), "playerId");
-        binding.setConverter(new IntToStringConverter());
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.player.identifier}"), jTextField1, org.jdesktop.beansbinding.BeanProperty.create("text"), "playerIdentifier");
         bindingGroup.addBinding(binding);
 
         gridBagConstraints = new java.awt.GridBagConstraints();

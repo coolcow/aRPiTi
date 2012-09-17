@@ -4,16 +4,19 @@
  */
 package org.coolcow.arpiti.backend.rptline;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 import org.coolcow.arpiti.backend.Coordinate;
+import org.coolcow.arpiti.backend.rptline.interfaces.CoordinateProvider;
 
 /**
  *
  * @author jruiz
  */
-public class SecondHandZombieInitializedRptLine extends AbstractRptLine {
+public class SecondHandZombieInitializedRptLine extends AbstractRptLine implements CoordinateProvider {
 
     private static final Logger LOG = Logger.getLogger(SecondHandZombieInitializedRptLine.class);
         
@@ -86,5 +89,14 @@ public class SecondHandZombieInitializedRptLine extends AbstractRptLine {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public Collection<Coordinate> getCoordinates() {
+        final Collection<Coordinate> coll = new ArrayList<>();
+        if (coordinate != null) {
+            coll.add(coordinate);
+        }
+        return coll;
     }
 }

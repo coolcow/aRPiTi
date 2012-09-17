@@ -4,7 +4,6 @@
  */
 package org.coolcow.arpiti.gui.rptline;
 
-import org.coolcow.arpiti.backend.bindingconverter.IntToStringConverter;
 import org.coolcow.arpiti.backend.rptline.RptLine;
 
 /**
@@ -56,7 +55,7 @@ public class LoginAttemptRenderer extends AbstractRptLineRenderer {
         jTextField1.setMinimumSize(new java.awt.Dimension(150, 20));
         jTextField1.setPreferredSize(new java.awt.Dimension(150, 20));
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.playerName}"), jTextField1, org.jdesktop.beansbinding.BeanProperty.create("text"), "");
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.player.name}"), jTextField1, org.jdesktop.beansbinding.BeanProperty.create("text"), "");
         bindingGroup.addBinding(binding);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -101,7 +100,7 @@ public class LoginAttemptRenderer extends AbstractRptLineRenderer {
         gridBagConstraints.weighty = 1.0;
         jPanel3.add(jPanel2, gridBagConstraints);
 
-        jLabel2.setText("player id: ");
+        jLabel2.setText("player identifier: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -113,8 +112,7 @@ public class LoginAttemptRenderer extends AbstractRptLineRenderer {
         jTextField2.setMinimumSize(new java.awt.Dimension(150, 20));
         jTextField2.setPreferredSize(new java.awt.Dimension(150, 20));
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.playerId}"), jTextField2, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        binding.setConverter(new IntToStringConverter());
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.player.identifier}"), jTextField2, org.jdesktop.beansbinding.BeanProperty.create("text"), "playerIdentifier");
         bindingGroup.addBinding(binding);
 
         gridBagConstraints = new java.awt.GridBagConstraints();

@@ -27,7 +27,7 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
-            <Property name="text" type="java.lang.String" value="playerId: "/>
+            <Property name="text" type="java.lang.String" value="player identifier: "/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -46,12 +46,9 @@
             </Property>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="text" source="Form" sourcePath="${rptLine.playerId}" target="jTextField1" targetPath="text" updateStrategy="0" immediately="false">
+            <BindingProperty name="text" source="Form" sourcePath="${rptLine.player.identifier}" target="jTextField1" targetPath="text" updateStrategy="0" immediately="false">
               <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
-              <Property name="converter" type="org.jdesktop.beansbinding.Converter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                <Connection code="new IntToStringConverter()" type="code"/>
-              </Property>
-              <Property name="name" type="java.lang.String" value="playerId"/>
+              <Property name="name" type="java.lang.String" value="playerIdentifier"/>
             </BindingProperty>
           </BindingProperties>
           <Constraints>
@@ -181,7 +178,7 @@
             </Property>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="text" source="Form" sourcePath="${rptLine.playerName}" target="jTextField6" targetPath="text" updateStrategy="0" immediately="false">
+            <BindingProperty name="text" source="Form" sourcePath="${rptLine.player.name}" target="jTextField6" targetPath="text" updateStrategy="0" immediately="false">
               <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
               <Property name="name" type="java.lang.String" value="playerName"/>
             </BindingProperty>
@@ -202,7 +199,7 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="123" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="107" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
@@ -284,7 +281,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel9">
           <Properties>
-            <Property name="text" type="java.lang.String" value="player skin: "/>
+            <Property name="text" type="java.lang.String" value="skin name:"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -303,7 +300,7 @@
             </Property>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="text" source="Form" sourcePath="${rptLine.playerSkin}" target="jTextField8" targetPath="text" updateStrategy="0" immediately="false">
+            <BindingProperty name="text" source="Form" sourcePath="${rptLine.player.skinName}" target="jTextField8" targetPath="text" updateStrategy="0" immediately="false">
               <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
               <Property name="name" type="java.lang.String" value="playerSkin"/>
             </BindingProperty>
