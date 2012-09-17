@@ -435,9 +435,15 @@ public class ReadWriteRptLine extends AbstractRptLine implements CoordinateProvi
     @Override
     public Collection<Item> getItems() {
         final Collection<Item> coll = new ArrayList<>();
-        coll.addAll(toolbelt);
-        coll.addAll(inventory);
-        coll.addAll(backpack);
+        if (toolbelt != null) {
+            coll.addAll(toolbelt);
+        }
+        if (inventory != null) {
+            coll.addAll(inventory);
+        }
+        if (backpack != null) {
+            coll.addAll(backpack);
+        }
         return coll;
     }
 
