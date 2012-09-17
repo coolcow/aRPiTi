@@ -138,8 +138,8 @@ public final class MainFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("aRPiTi (RPT analysis tool)  - by coolcow [ALPHA version]");
-        setMinimumSize(new java.awt.Dimension(400, 400));
-        setPreferredSize(new java.awt.Dimension(1024, 780));
+        setMinimumSize(new java.awt.Dimension(800, 600));
+        setPreferredSize(new java.awt.Dimension(1200, 800));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         panMain.setLayout(new java.awt.GridBagLayout());
