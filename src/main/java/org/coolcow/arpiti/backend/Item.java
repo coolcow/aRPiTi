@@ -40,7 +40,7 @@ public class Item {
 
     @Override
     public String toString() {
-        return (rounds < 0)? getType() + " (" + Integer.toString(rounds) + ")" : getType();
+        return (rounds <= 0)? getType() : getType() + " (" + Integer.toString(rounds) + ")";
     }
 
 }    

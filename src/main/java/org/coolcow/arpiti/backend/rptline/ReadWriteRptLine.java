@@ -373,9 +373,7 @@ public class ReadWriteRptLine extends AbstractRptLine {
                         }
                     }
                 }
-                setBackpack(backpack);
             }
-
             if (backpackItemsString.length() > 0) {
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("backpackItemsString:" + backpackItemsString);
@@ -403,7 +401,8 @@ public class ReadWriteRptLine extends AbstractRptLine {
                         backpack.add(new Item(itemType));
                     }
                 }
-            }
+            }            
+            setBackpack(backpack);            
         }        
     }        
 }
