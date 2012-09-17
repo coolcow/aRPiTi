@@ -5,8 +5,8 @@
 package org.coolcow.arpiti.gui.renderer;
 
 import java.awt.CardLayout;
-import org.coolcow.arpiti.backend.bindingconverter.CoordinateToStringConverter;
-import org.coolcow.arpiti.backend.bindingconverter.DateToStringConverter;
+import org.coolcow.arpiti.gui.bindingconverter.CoordinateToStringConverter;
+import org.coolcow.arpiti.gui.bindingconverter.DateToStringConverter;
 import org.coolcow.arpiti.backend.rptline.ReadWriteRptLine;
 import org.coolcow.arpiti.backend.rptline.RptLine;
 

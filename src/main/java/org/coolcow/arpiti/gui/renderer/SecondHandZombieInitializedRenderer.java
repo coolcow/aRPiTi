@@ -4,7 +4,7 @@
  */
 package org.coolcow.arpiti.gui.renderer;
 
-import org.coolcow.arpiti.backend.bindingconverter.CoordinateToStringConverter;
+import org.coolcow.arpiti.gui.bindingconverter.CoordinateToStringConverter;
 import org.coolcow.arpiti.backend.rptline.RptLine;
 
 /**

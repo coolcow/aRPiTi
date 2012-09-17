@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.coolcow.arpiti.backend.bindingconverter;
+package org.coolcow.arpiti.gui.bindingconverter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

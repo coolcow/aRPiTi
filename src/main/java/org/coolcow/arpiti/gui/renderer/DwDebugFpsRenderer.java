@@ -4,7 +4,7 @@
  */
 package org.coolcow.arpiti.gui.renderer;
 
-import org.coolcow.arpiti.backend.bindingconverter.DoubleToStringConverter;
+import org.coolcow.arpiti.gui.bindingconverter.DoubleToStringConverter;
 import org.coolcow.arpiti.backend.rptline.RptLine;
 
 /**

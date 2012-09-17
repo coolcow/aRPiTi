@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.coolcow.arpiti.backend.bindingconverter;
+package org.coolcow.arpiti.gui.bindingconverter;
 
 import org.apache.log4j.Logger;
 import org.coolcow.arpiti.backend.Coordinate;
