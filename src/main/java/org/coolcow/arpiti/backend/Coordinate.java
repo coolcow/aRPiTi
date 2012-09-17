@@ -6,6 +6,7 @@ package org.coolcow.arpiti.backend;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -13,10 +14,12 @@ import java.util.regex.Pattern;
  */
 public class Coordinate {
     
+    private static final Logger LOG = Logger.getLogger(Coordinate.class);
+    
     private final double x;
     private final double y;
     private final double z;
-
+    
     public Coordinate(double x, double y, double z) {
         this.x = x;
         this.y = y;
@@ -34,6 +37,18 @@ public class Coordinate {
     public double getZ() {
         return z;
     }
+    
+    public double getGpsX() {
+        return x;
+    }
+    
+    public double getGpsY() {
+        return 15350 - y;
+    }
+    
+    public int getGpsZ() {
+        return (int) (z * 10);
+    }
 
     @Override
     public String toString() {
@@ -45,10 +60,15 @@ public class Coordinate {
     }
 
     public static Coordinate parseCoordinate(final String value) {
+        LOG.fatal(value);
         final String floatingPointRegex = "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?";
         final Matcher matcher = Pattern.compile("^\\[(" + floatingPointRegex + "),(" + floatingPointRegex + "),(" + floatingPointRegex + ")\\]$").matcher(value);
+        
         if (matcher.matches()) {
-            return new Coordinate(Double.parseDouble(matcher.group(1)), Double.parseDouble(matcher.group(3)), Double.parseDouble(matcher.group(5)));
+            final Double x = Double.parseDouble(matcher.group(1));
+            final Double y = Double.parseDouble(matcher.group(3));
+            final Double z = Double.parseDouble(matcher.group(5));
+            return new Coordinate(x, y, z);
         } else {            
             throw new IllegalArgumentException("The given String does not match with the coordinate regex. " + value);
         }        

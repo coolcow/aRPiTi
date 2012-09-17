@@ -4,8 +4,9 @@
  */
 package org.coolcow.arpiti.gui.renderer;
 
-import org.coolcow.arpiti.gui.bindingconverter.CoordinateToStringConverter;
 import org.coolcow.arpiti.backend.rptline.RptLine;
+import org.coolcow.arpiti.backend.rptline.SecondHandZombieInitializedRptLine;
+import org.coolcow.arpiti.gui.DefaultCoordinateInfoComponent;
 
 /**
  *
@@ -33,7 +34,6 @@ public class SecondHandZombieInitializedRenderer extends AbstractRptLineRenderer
 
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -41,6 +41,7 @@ public class SecondHandZombieInitializedRenderer extends AbstractRptLineRenderer
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jCheckBox1 = new javax.swing.JCheckBox();
+        defaultCoordinateInfoComponent1 = new org.coolcow.arpiti.gui.DefaultCoordinateInfoComponent();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -55,21 +56,6 @@ public class SecondHandZombieInitializedRenderer extends AbstractRptLineRenderer
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         jPanel3.add(jLabel1, gridBagConstraints);
-
-        jTextField1.setEditable(false);
-        jTextField1.setMinimumSize(new java.awt.Dimension(150, 20));
-        jTextField1.setPreferredSize(new java.awt.Dimension(150, 20));
-
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.coordinate}"), jTextField1, org.jdesktop.beansbinding.BeanProperty.create("text"), "coordinate");
-        binding.setConverter(new CoordinateToStringConverter());
-        bindingGroup.addBinding(binding);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 4);
-        jPanel3.add(jTextField1, gridBagConstraints);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -98,7 +84,7 @@ public class SecondHandZombieInitializedRenderer extends AbstractRptLineRenderer
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 189, Short.MAX_VALUE)
+            .addGap(0, 184, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -123,7 +109,7 @@ public class SecondHandZombieInitializedRenderer extends AbstractRptLineRenderer
         jTextField2.setMinimumSize(new java.awt.Dimension(150, 20));
         jTextField2.setPreferredSize(new java.awt.Dimension(150, 20));
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.identifier}"), jTextField2, org.jdesktop.beansbinding.BeanProperty.create("text"), "identifier");
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.identifier}"), jTextField2, org.jdesktop.beansbinding.BeanProperty.create("text"), "identifier");
         bindingGroup.addBinding(binding);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -165,6 +151,12 @@ public class SecondHandZombieInitializedRenderer extends AbstractRptLineRenderer
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         jPanel3.add(jCheckBox1, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
+        jPanel3.add(defaultCoordinateInfoComponent1, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
@@ -176,6 +168,7 @@ public class SecondHandZombieInitializedRenderer extends AbstractRptLineRenderer
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private org.coolcow.arpiti.gui.DefaultCoordinateInfoComponent defaultCoordinateInfoComponent1;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -184,7 +177,6 @@ public class SecondHandZombieInitializedRenderer extends AbstractRptLineRenderer
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
@@ -193,6 +185,10 @@ public class SecondHandZombieInitializedRenderer extends AbstractRptLineRenderer
     public void setRptLine(final RptLine rptLine) {
         bindingGroup.unbind();
         super.setRptLine(rptLine);
+        if (rptLine != null && rptLine instanceof SecondHandZombieInitializedRptLine) {
+            final DefaultCoordinateInfoComponent coordinateComponent = (DefaultCoordinateInfoComponent)defaultCoordinateInfoComponent1;
+            coordinateComponent.setCoordinate(((SecondHandZombieInitializedRptLine) rptLine).getCoordinate());
+        }        
         bindingGroup.bind();
     }
 }

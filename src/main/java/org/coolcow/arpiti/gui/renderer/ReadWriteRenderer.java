@@ -5,11 +5,10 @@
 package org.coolcow.arpiti.gui.renderer;
 
 import java.awt.CardLayout;
-import org.coolcow.arpiti.backend.rptline.DisconnectStartIRptLine;
 import org.coolcow.arpiti.backend.rptline.ReadWriteRptLine;
 import org.coolcow.arpiti.backend.rptline.RptLine;
+import org.coolcow.arpiti.gui.DefaultCoordinateInfoComponent;
 import org.coolcow.arpiti.gui.DefaultPlayerInfoComponent;
-import org.coolcow.arpiti.gui.bindingconverter.CoordinateToStringConverter;
 import org.coolcow.arpiti.gui.bindingconverter.DateToStringConverter;
 
 /**
@@ -55,9 +54,9 @@ public class ReadWriteRenderer extends AbstractRptLineRenderer {
         jLabel6 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         defaultPlayerInfoComponent1 = new org.coolcow.arpiti.gui.DefaultPlayerInfoComponent();
+        defaultCoordinateInfoComponent1 = new org.coolcow.arpiti.gui.DefaultCoordinateInfoComponent();
         panNone = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
@@ -117,7 +116,7 @@ public class ReadWriteRenderer extends AbstractRptLineRenderer {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 236, Short.MAX_VALUE)
+            .addGap(0, 231, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -273,21 +272,6 @@ public class ReadWriteRenderer extends AbstractRptLineRenderer {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         panGear.add(jLabel7, gridBagConstraints);
 
-        jTextField3.setEditable(false);
-        jTextField3.setMinimumSize(new java.awt.Dimension(150, 20));
-        jTextField3.setPreferredSize(new java.awt.Dimension(150, 20));
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.coordinate}"), jTextField3, org.jdesktop.beansbinding.BeanProperty.create("text"), "coordinate");
-        binding.setConverter(new CoordinateToStringConverter());
-        bindingGroup.addBinding(binding);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
-        panGear.add(jTextField3, gridBagConstraints);
-
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel10.setText("player info:");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -302,6 +286,12 @@ public class ReadWriteRenderer extends AbstractRptLineRenderer {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         panGear.add(defaultPlayerInfoComponent1, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
+        panGear.add(defaultCoordinateInfoComponent1, gridBagConstraints);
 
         panCards.add(panGear, "gear");
 
@@ -453,6 +443,7 @@ public class ReadWriteRenderer extends AbstractRptLineRenderer {
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private org.coolcow.arpiti.gui.DefaultCoordinateInfoComponent defaultCoordinateInfoComponent1;
     private org.coolcow.arpiti.gui.DefaultPlayerInfoComponent defaultPlayerInfoComponent1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -480,7 +471,6 @@ public class ReadWriteRenderer extends AbstractRptLineRenderer {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JPanel panCards;
     private javax.swing.JPanel panDate;
@@ -508,8 +498,10 @@ public class ReadWriteRenderer extends AbstractRptLineRenderer {
         bindingGroup.unbind();
         super.setRptLine(rptLine);
         if (rptLine != null && rptLine instanceof ReadWriteRptLine) {
-            final DefaultPlayerInfoComponent component = (DefaultPlayerInfoComponent)defaultPlayerInfoComponent1;
-            component.setPlayer(((ReadWriteRptLine) rptLine).getPlayer());
+            final DefaultPlayerInfoComponent playerComponent = (DefaultPlayerInfoComponent)defaultPlayerInfoComponent1;
+            playerComponent.setPlayer(((ReadWriteRptLine) rptLine).getPlayer());
+            final DefaultCoordinateInfoComponent coordinateComponent = (DefaultCoordinateInfoComponent)defaultCoordinateInfoComponent1;
+            coordinateComponent.setCoordinate(((ReadWriteRptLine) rptLine).getCoordinate());
         }        
         bindingGroup.bind();
     }
