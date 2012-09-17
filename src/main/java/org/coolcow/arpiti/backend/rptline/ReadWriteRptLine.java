@@ -221,7 +221,7 @@ public class ReadWriteRptLine extends AbstractRptLine implements CoordinateProvi
             
             final String unknownValue1String = matcherBackpack.group(1);
             final String unknownValue2String = matcherBackpack.group(2);
-            final String hiveIdentifierString = matcherBackpack.group(3);
+            final String hiveIdString = matcherBackpack.group(3);
             final String unknownValue3String = matcherBackpack.group(6);
             final String coordinateString = matcherBackpack.group(7);
             final String gearString = matcherBackpack.group(14);
@@ -233,9 +233,9 @@ public class ReadWriteRptLine extends AbstractRptLine implements CoordinateProvi
             
             final Player player = new Player();
             try {
-                player.setHiveId(Integer.parseInt(hiveIdentifierString));
+                player.setHiveId(Integer.parseInt(hiveIdString));
             } catch (final NumberFormatException exception) {
-                LOG.warn("Error while parsing hiveIdentifier. The source String was: " + hiveIdentifierString, exception);
+                LOG.warn("Error while parsing hiveIdentifier. The source String was: " + hiveIdString, exception);
                 setUnknownValue3(-1);
             }
             player.setSkinName(skinNameString);            

@@ -77,16 +77,16 @@ public class HiveRptLine extends AbstractRptLine implements PlayerProvider {
             
             final String unknownValue1String = writeMatcher.group(1);
             final String playerIdentifierString = writeMatcher.group(2);
-            final String hiveIdentifierString = writeMatcher.group(3);
+            final String hiveIdString = writeMatcher.group(3);
             final String unknownValue2String = writeMatcher.group(4);
 
             final Player player = new Player();
             player.setIdentifier(playerIdentifierString);            
-            if (hiveIdentifierString != null) {
+            if (hiveIdString != null) {
                 try {
-                    player.setHiveId(Integer.parseInt(hiveIdentifierString));
+                    player.setHiveId(Integer.parseInt(hiveIdString));
                 } catch (final NumberFormatException exception) {
-                    LOG.warn("Error while parsing hiveIdentifier." + hiveIdentifierString, exception);
+                    LOG.warn("Error while parsing hiveIdentifier." + hiveIdString, exception);
                 }                
             }
             Backend.getInstance().updatePlayer(player);

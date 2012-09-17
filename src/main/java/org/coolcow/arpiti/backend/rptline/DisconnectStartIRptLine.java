@@ -214,6 +214,7 @@ public class DisconnectStartIRptLine extends AbstractRptLine implements PlayerPr
             final Player player = new Player();
             player.setIdentifier(playerIdentifierString);
             player.setName(playerNameString);
+            player.setSkinName(playerSkinString);
             Backend.getInstance().updatePlayer(player);
             
             setPlayer(player);
@@ -224,7 +225,6 @@ public class DisconnectStartIRptLine extends AbstractRptLine implements PlayerPr
                 LOG.warn("Error while parsing unknownValue4. Set to -1. The source String was: " + unknownValue4String, exception);
                 setUnknownValue4(-1);
             }
-            setPlayerSkin(playerSkinString);
             
             return true;
         } else {

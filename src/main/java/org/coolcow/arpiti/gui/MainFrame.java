@@ -49,11 +49,18 @@ public final class MainFrame extends javax.swing.JFrame {
     private AbstractRptLine popLine = null;
     
     private static final Logger LOG = Logger.getLogger(MainFrame.class);
+    private static MainFrame INSTANCE;
 
+    public static MainFrame getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new MainFrame();
+        }
+        return INSTANCE;
+    }
     /**
      * Creates new form NewJFrame
      */
-    public MainFrame() {
+    private MainFrame() {
         initComponents();
 
         sorter.setRowFilter(new RowFilterImpl());
@@ -133,6 +140,7 @@ public final class MainFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("aRPiTi (RPT analysis tool)  - by coolcow [ALPHA version]");
         setMinimumSize(new java.awt.Dimension(400, 400));
+        setPreferredSize(new java.awt.Dimension(1024, 780));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         panMain.setLayout(new java.awt.GridBagLayout());
