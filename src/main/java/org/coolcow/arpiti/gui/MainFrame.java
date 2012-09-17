@@ -464,13 +464,7 @@ public final class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_mniCopyActionPerformed
 
     private void tgbResumeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tgbResumeActionPerformed
-        if (tgbResume.isSelected()) {
-            Backend.getInstance().getRptTailer().setPause(false);
-            pgbLines.setIndeterminate(true);
-        } else {
-            Backend.getInstance().getRptTailer().setPause(true);
-            pgbLines.setIndeterminate(false);
-        }
+        Backend.getInstance().getRptTailer().setPause(!tgbResume.isSelected());
     }//GEN-LAST:event_tgbResumeActionPerformed
 
     private void tgbAutoScrollActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tgbAutoScrollActionPerformed
@@ -551,7 +545,6 @@ public final class MainFrame extends javax.swing.JFrame {
                     @Override
                     public void run() {
                         model.addLines(rptLines);
-                        pgbLines.setValue(model.getRowCount());
                         pgbLines.setString(model.getRowCount() + " lines (" + sorter.getViewRowCount() + " filtered)");
                         if (autoscroll) {
                             try {
@@ -570,7 +563,7 @@ public final class MainFrame extends javax.swing.JFrame {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    pgbLines.setIndeterminate(true);
+                    pgbLines.setEnabled(true);
                 }
             });
         }
@@ -580,7 +573,39 @@ public final class MainFrame extends javax.swing.JFrame {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    pgbLines.setIndeterminate(false);
+                    pgbLines.setEnabled(false);
+                }
+            });
+        }
+
+        @Override
+        public void tailingStarted(final long byteLength) {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    pgbLines.setMaximum(new Long(byteLength).intValue());
+                }
+            });
+        }
+
+        @Override
+        public void tailingProceed(final long byteRead) {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    pgbLines.setValue(new Long(byteRead).intValue());
+                }
+            });
+        }
+
+        @Override
+        public void tailingStopped() {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    pgbLines.setEnabled(false);
+                    pgbLines.setMaximum(0);
+                    pgbLines.setValue(0);
                 }
             });
         }

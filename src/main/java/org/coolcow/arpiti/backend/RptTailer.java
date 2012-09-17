@@ -13,7 +13,7 @@ import org.coolcow.arpiti.backend.rptline.AbstractRptLine;
 public class RptTailer extends SwingWorker<Void, Void> {
 
     private final File rptFile;
-    private long flushInterval = 1000;
+    private long flushInterval = 25;
     private long refreshInterval = 1000;
     private boolean tailing = false;
     private boolean pause = false;
@@ -40,6 +40,24 @@ public class RptTailer extends SwingWorker<Void, Void> {
         }
     }
 
+    protected void fireTailingStarted(final long byteLength) {
+        for (final RptTailerListener listener : listeners) {
+            listener.tailingStarted(byteLength);
+        }
+    }
+    
+    protected void fireTailingProceed(final long byteRead) {
+        for (final RptTailerListener listener : listeners) {
+            listener.tailingProceed(byteRead);
+        }
+    }
+    
+    protected void fireTailingStopped() {
+        for (final RptTailerListener listener : listeners) {
+            listener.tailingStopped();
+        }
+    }
+    
     protected void fireTailingResumed() {
         for (final RptTailerListener listener : listeners) {
             listener.tailingResumed();
@@ -81,7 +99,9 @@ public class RptTailer extends SwingWorker<Void, Void> {
                     }
 
                     if (fileLength > filePointer) {
-                        fireTailingResumed();
+                        final long toRead = fileLength - filePointer;
+                        long proceed;
+                        fireTailingStarted(toRead);
                         file.seek(filePointer);
                         String lineString;
                         while ((lineString = file.readLine()) != null) {
@@ -108,6 +128,9 @@ public class RptTailer extends SwingWorker<Void, Void> {
                                 fireRptLinesTailed(collectedRptLines);
                                 collectedRptLines = new ArrayList<>();
                             }
+                            proceed = file.getFilePointer() - filePointer;
+                            LOG.fatal(proceed);
+                            fireTailingProceed(proceed);
                         }
                         filePointer = file.getFilePointer();
                     }
@@ -124,6 +147,7 @@ public class RptTailer extends SwingWorker<Void, Void> {
                     Thread.sleep(refreshInterval);
                 }
             }
+            fireTailingStopped();
         } catch (final RuntimeException exception) {
             LOG.fatal("Error while tailing RPT file.", exception);
         } finally {
