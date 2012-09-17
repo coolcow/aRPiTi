@@ -62,7 +62,7 @@ public class LoginLoadedRenderer extends AbstractRptLineRenderer {
         jTextField1.setMinimumSize(new java.awt.Dimension(150, 20));
         jTextField1.setPreferredSize(new java.awt.Dimension(150, 20));
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.skin.name}"), jTextField1, org.jdesktop.beansbinding.BeanProperty.create("text"), "skinName");
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.player.skinName}"), jTextField1, org.jdesktop.beansbinding.BeanProperty.create("text"), "skinName");
         bindingGroup.addBinding(binding);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
