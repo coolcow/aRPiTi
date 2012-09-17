@@ -226,7 +226,7 @@ public class ReadWriteRptLine extends AbstractRptLine {
         
         final String rawContent = getRawContent();
         final Matcher matcherA = Pattern.compile("^\\['(\\w+)',(true|false),'(\\d+)',(\\w+),(.*)\\]$").matcher(rawContent);
-        final Matcher matcherB = Pattern.compile("^\\['(\\w+)',(true|false),'(\\d+)',\\[(\\d+),(" + coordinateRegex + ")\\],(.*?),\\[(\\d+),(\\d+),(\\d+)\\],\"(\\w+)\",(.*)\\]$").matcher(rawContent);
+        final Matcher matcherB = Pattern.compile("^\\['(\\w+)',(true|false),'(\\d+)',\\[(\\d+),(" + coordinateRegex + ")\\],(.*?),\\[(\\d+),(\\d+),(\\d+)\\],\"?(\\w+)\"?,(.*)\\]$").matcher(rawContent);
         final Matcher matcherC = Pattern.compile("^\\['(\\w+)',\\[(\\d+),(\\d+),(\\d+),(\\d+),(\\d+)\\]]$").matcher(rawContent);
         
         if (matcherA.matches()) {
