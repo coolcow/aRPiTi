@@ -1,4 +1,4 @@
-<jnlp spec="$jnlpspec" codebase="$$codebase">
+<jnlp spec="$jnlpspec" codebase="http://www.coolcow.org">
 	<information>
 		<title>$project.Name</title>
 		<vendor>$project.Organization.Name</vendor>
