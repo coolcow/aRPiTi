@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
-import org.coolcow.arpiti.gui.MainFrame;
+import org.coolcow.arpiti.backend.Backend;
 
 /**
  *
@@ -108,7 +108,7 @@ public abstract class AbstractRptLine implements RptLine {
             final String contentString = timeMatcher.group(2);
             
             try {
-                date = new SimpleDateFormat(MainFrame.INPUT_DATE_FORMAT).parse(dateString);
+                date = new SimpleDateFormat(Backend.INPUT_DATE_FORMAT).parse(dateString);
             } catch (final ParseException exception) {
                 LOG.warn("Error while parsing date. Date is set to null. The source String was: " + dateString, exception);
                 date = null;

@@ -5,7 +5,6 @@
 package org.coolcow.arpiti.gui;
 
 import java.awt.Component;
-import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -16,7 +15,6 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
 import java.util.regex.Pattern;
 import javax.swing.*;
 import javax.swing.RowFilter.Entry;
@@ -27,9 +25,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+import org.coolcow.arpiti.backend.Backend;
 import org.coolcow.arpiti.backend.RptLineRendererProvider;
-import org.coolcow.arpiti.backend.RptTailer;
 import org.coolcow.arpiti.backend.RptTailerListener;
 import org.coolcow.arpiti.backend.rptline.AbstractRptLine;
 import org.coolcow.arpiti.gui.rptline.AbstractRptLineRenderer;
@@ -40,14 +37,11 @@ import org.coolcow.arpiti.gui.rptline.AbstractRptLineRenderer;
  */
 public final class MainFrame extends javax.swing.JFrame {
 
-    public final static String INPUT_DATE_FORMAT = "kk:mm:ss";
     public final static String OUTPUT_DATE_FORMAT = "HH:mm:ss";
-    private static MainFrame INSTANCE;
     private final RptLineTableModel model = new RptLineTableModel();
     private File rptFile = null;
     private boolean autoscroll = true;
     private final TableRowSorter<RptLineTableModel> sorter = new TableRowSorter<>(model);
-    private RptTailer rptFileTailer;
     private AbstractRptLine popLine = null;
     
     private static final Logger LOG = Logger.getLogger(MainFrame.class);
@@ -55,7 +49,7 @@ public final class MainFrame extends javax.swing.JFrame {
     /**
      * Creates new form NewJFrame
      */
-    private MainFrame() {
+    public MainFrame() {
         initComponents();
 
         sorter.setRowFilter(new RowFilterImpl());
@@ -68,14 +62,6 @@ public final class MainFrame extends javax.swing.JFrame {
         final TableColumnModel columnModel = tblLines.getColumnModel();
         columnModel.getColumn(RptLineTableModel.COLUMN_NUMBER).setPreferredWidth(60);
         columnModel.getColumn(RptLineTableModel.COLUMN_TIME).setPreferredWidth(60);
-    }
-
-    public static MainFrame getInstance() {
-        if (INSTANCE == null) {
-            return (INSTANCE = new MainFrame());
-        } else {
-            return INSTANCE;
-        }
     }
 
     /**
@@ -461,12 +447,7 @@ public final class MainFrame extends javax.swing.JFrame {
             rptFile = fc.getSelectedFile();
             model.clear();
 
-            if (rptFileTailer != null) {
-                rptFileTailer.stopTailing();
-            }
-            rptFileTailer = new RptTailer(rptFile);
-            rptFileTailer.addLogFileTailerListener(new RptTailerListenerImpl());
-            rptFileTailer.execute();
+            Backend.getInstance().startNewRptTailer(rptFile, new RptTailerListenerImpl());
         }
     }//GEN-LAST:event_mniLoadRptActionPerformed
 
@@ -484,10 +465,10 @@ public final class MainFrame extends javax.swing.JFrame {
 
     private void tgbResumeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tgbResumeActionPerformed
         if (tgbResume.isSelected()) {
-            rptFileTailer.setPause(false);
+            Backend.getInstance().getRptTailer().setPause(false);
             pgbLines.setIndeterminate(true);
         } else {
-            rptFileTailer.setPause(true);
+            Backend.getInstance().getRptTailer().setPause(true);
             pgbLines.setIndeterminate(false);
         }
     }//GEN-LAST:event_tgbResumeActionPerformed
@@ -500,54 +481,6 @@ public final class MainFrame extends javax.swing.JFrame {
         sorter.allRowsChanged();
         tblLines.revalidate();
     }//GEN-LAST:event_btnFilterApplyActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(final String args[]) {
-        configureLocalLog4JAppender();
-        configureLookAndFeel();
-        
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                final MainFrame frame = new MainFrame();
-                frame.setLocationRelativeTo(null);
-                frame.setVisible(true);
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("MainFrame set to visible");
-                }
-            }
-        });
-    }
-    
-    /**
-     * local Log4J appender for BeanMill
-     * 
-     * (http://blogs.cismet.de/gadgets/beanmill/)
-     */
-    private static void configureLocalLog4JAppender() {
-        final Properties p = new Properties();
-        p.put("log4j.appender.Remote", "org.apache.log4j.net.SocketAppender"); // NOI18N
-        p.put("log4j.appender.Remote.remoteHost", "localhost");                // NOI18N
-        p.put("log4j.appender.Remote.port", "4445");                           // NOI18N
-        p.put("log4j.appender.Remote.locationInfo", "true");                   // NOI18N
-        p.put("log4j.rootLogger", "DEBUG,Remote");                             // NOI18N
-        PropertyConfigurator.configure(p);        
-        
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Logger configured (Except you don't see this log message ;) )");
-        }       
-    }
-    
-    private static void configureLookAndFeel() {
-        final String laf = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
-        try {
-            UIManager.setLookAndFeel(laf);
-        } catch (final ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            LOG.error("LookAndFeel could not be set: " + laf, ex);
-        }        
-    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFilterApply;
@@ -609,27 +542,6 @@ public final class MainFrame extends javax.swing.JFrame {
     }
 
     class RptTailerListenerImpl implements RptTailerListener {
-
-        @Override
-        public void rptLineTailed(final AbstractRptLine rptLine) {
-            if (rptLine != null) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        pgbLines.setValue(model.getRowCount());
-                        pgbLines.setString(model.getRowCount() + " lines (" + tblLines.getRowCount() + " filtered)");
-                        model.addLine(rptLine);
-                        try {
-                            if (autoscroll) {
-                                tblLines.scrollRectToVisible(tblLines.getCellRect(tblLines.getRowCount() - 1, tblLines.getColumnCount(), true));
-                            }
-                        } catch (final IndexOutOfBoundsException exception) {
-                            LOG.warn("Error while doing autoscroll.", exception);
-                        }
-                    }
-                });
-            }
-        }
 
         @Override
         public void rptLinesTailed(final List<AbstractRptLine> rptLines) {

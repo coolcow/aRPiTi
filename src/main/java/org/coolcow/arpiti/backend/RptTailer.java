@@ -26,18 +26,12 @@ public class RptTailer extends SwingWorker<Void, Void> {
         this.rptFile = rptFile;
     }
 
-    public void addLogFileTailerListener(final RptTailerListener listener) {
+    public void addListener(final RptTailerListener listener) {
         this.listeners.add(listener);
     }
 
     public void removeLogFileTailerListener(final RptTailerListener listener) {
         this.listeners.remove(listener);
-    }
-
-    protected void fireRptLineTailed(final AbstractRptLine rptLine) {
-        for (final RptTailerListener listener : listeners) {
-            listener.rptLineTailed(rptLine);
-        }
     }
 
     protected void fireRptLinesTailed(final List<AbstractRptLine> rptLines) {
