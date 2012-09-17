@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.coolcow.arpiti.backend;
+package org.coolcow.arpiti.gui;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +13,7 @@ import org.coolcow.arpiti.gui.renderer.DefaultRenderer;
 import org.coolcow.arpiti.gui.renderer.DisconnectStartIRenderer;
 import org.coolcow.arpiti.gui.renderer.DwDebugFpsRenderer;
 import org.coolcow.arpiti.gui.renderer.ErrorRenderer;
+import org.coolcow.arpiti.gui.renderer.HiveRenderer;
 import org.coolcow.arpiti.gui.renderer.LocalityEventRenderer;
 import org.coolcow.arpiti.gui.renderer.LoginAttemptRenderer;
 import org.coolcow.arpiti.gui.renderer.LoginLoadedRenderer;
@@ -56,6 +57,7 @@ public abstract class RptLineRendererProvider {
                     case WRITE: { renderer = new WriteRenderer(); } break;
                     case CLEANUP: { renderer = new CleanupRenderer(); } break;
                     case READ_WRITE: { renderer = new ReadWriteRenderer(); } break;
+                    case HIVE: { renderer = new HiveRenderer(); } break;
                     default: renderer = new DefaultRenderer();
                 }
             }

@@ -28,7 +28,6 @@ import org.apache.log4j.Logger;
 import org.coolcow.arpiti.backend.Backend;
 import org.coolcow.arpiti.backend.Item;
 import org.coolcow.arpiti.backend.Player;
-import org.coolcow.arpiti.backend.RptLineRendererProvider;
 import org.coolcow.arpiti.backend.RptTailerListener;
 import org.coolcow.arpiti.backend.rptline.AbstractRptLine;
 import org.coolcow.arpiti.backend.rptline.interfaces.ItemProvider;
