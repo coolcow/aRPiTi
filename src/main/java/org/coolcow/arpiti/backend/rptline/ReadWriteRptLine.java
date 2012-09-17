@@ -5,6 +5,8 @@
 package org.coolcow.arpiti.backend.rptline;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,6 +24,7 @@ public class ReadWriteRptLine extends AbstractRptLine {
     
     private boolean typeA = false;
     private boolean typeB = false;
+    private boolean typeDate = false;
     private int playerId;
     private String skinName;
     private String unknownValue1;
@@ -35,6 +38,7 @@ public class ReadWriteRptLine extends AbstractRptLine {
     private List<Item> toolbelt;
     private List<Item> inventory = new ArrayList<>();
     private List<Item> backpack = new ArrayList<>();
+    private Date date;
     
     private String backpackType;
             
@@ -56,6 +60,14 @@ public class ReadWriteRptLine extends AbstractRptLine {
 
     protected void setTypeB(final boolean typeB) {
         this.typeB = typeB;
+    }
+
+    public boolean isTypeDate() {
+        return typeDate;
+    }
+
+    protected void setTypeDate(final boolean typeDate) {
+        this.typeDate = typeDate;
     }
 
     public int getPlayerId() {
@@ -146,6 +158,14 @@ public class ReadWriteRptLine extends AbstractRptLine {
         this.coordinate = coordinate;
     }
 
+    public Date getDate() {
+        return date;
+    }
+    
+    protected void setDate(final Date date) {
+        this.date = date;
+    }
+    
     public List<Item> getToolbelt() {
         if (toolbelt == null) {
             return null;
@@ -207,6 +227,7 @@ public class ReadWriteRptLine extends AbstractRptLine {
         final String rawContent = getRawContent();
         final Matcher matcherA = Pattern.compile("^\\['(\\w+)',(true|false),'(\\d+)',(\\w+),(.*)\\]$").matcher(rawContent);
         final Matcher matcherB = Pattern.compile("^\\['(\\w+)',(true|false),'(\\d+)',\\[(\\d+),(" + coordinateRegex + ")\\],(.*?),\\[(\\d+),(\\d+),(\\d+)\\],\"(\\w+)\",(.*)\\]$").matcher(rawContent);
+        final Matcher matcherC = Pattern.compile("^\\['(\\w+)',\\[(\\d+),(\\d+),(\\d+),(\\d+),(\\d+)\\]]$").matcher(rawContent);
         
         if (matcherA.matches()) {
             setTypeA(true);
@@ -289,6 +310,32 @@ public class ReadWriteRptLine extends AbstractRptLine {
             } catch (final NumberFormatException exception) {
                 LOG.warn("Error while parsing versionNumber. Set to -1. The source String was: " + versionNumberString, exception);
                 setVersionNumber(-1);
+            }
+            
+            return true;
+        } else if (matcherC.matches()) {
+            setTypeDate(true);
+            
+            final String unknownValue1String = matcherC.group(1);
+            final String yearString = matcherC.group(2);
+            final String monthString = matcherC.group(3);
+            final String dayString = matcherC.group(4);
+            final String hourString = matcherC.group(5);
+            final String minuteString = matcherC.group(6);
+            
+            setUnknownValue1(unknownValue1String);
+            try {
+                final Date date =  new GregorianCalendar(
+                    Integer.parseInt(yearString), 
+                    Integer.parseInt(monthString), 
+                    Integer.parseInt(dayString), 
+                    Integer.parseInt(hourString), 
+                    Integer.parseInt(minuteString)
+                    ).getTime();
+                setDate(date);
+            } catch (final NumberFormatException exception) {
+                LOG.warn("Error while parsing Date. Set to null.", exception);
+                setDate(null);
             }
             
             return true;

@@ -22,20 +22,20 @@ public abstract class AbstractRptLine implements RptLine {
     private String rawLine = null;
     private Type type = null;
     private int number = -1;
-    private Date date = null;
+    private Date time = null;
     private String rawContent;
 
     @Override
-    public Date getDate() {
-        if (date == null) {
+    public Date getTime() {
+        if (time == null) {
             return null;
         } else {        
-            return (Date) date.clone();
+            return (Date) time.clone();
         }
     }
 
-    protected void setDate(final Date date) {
-        this.date = date;
+    protected void setTime(final Date time) {
+        this.time = time;
     }
 
     @Override
@@ -219,7 +219,7 @@ public abstract class AbstractRptLine implements RptLine {
         }
         rptLine.setRawLine(rawLine);
         rptLine.setNumber(number);
-        rptLine.setDate(date);
+        rptLine.setTime(date);
         rptLine.setType(type);
         rptLine.setRawContent(content);
         rptLine.parseLine(rawLine);

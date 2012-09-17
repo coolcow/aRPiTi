@@ -62,7 +62,7 @@ public interface RptLine {
         }, PDEATH, DELETE, ERROR, OBJ, HIVE, CLEANUP
     };
 
-    Date getDate();
+    Date getTime();
 
     int getNumber();
 

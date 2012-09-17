@@ -56,7 +56,7 @@ public class RptLineTableModel extends AbstractTableModel {
                 return line.getNumber();
             }
             case COLUMN_TIME: {
-                return line.getDate();
+                return line.getTime();
             }
             case COLUMN_TYPE: {
                 return line.getType();
