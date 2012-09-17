@@ -47,8 +47,9 @@ public class PDeathRptLine extends AbstractRptLine implements PlayerProvider {
         if (matcher.matches()) {
             final String playerIdentifierString = matcher.group(1);
             
-            final Player player = Backend.getInstance().getPlayer(playerIdentifierString);
-            
+            final Player player = new Player();
+            player.setIdentifier(playerIdentifierString);
+            Backend.getInstance().updatePlayer(player);            
             setPlayer(player);
             
             return true;

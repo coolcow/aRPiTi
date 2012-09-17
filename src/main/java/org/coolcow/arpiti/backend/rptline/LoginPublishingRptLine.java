@@ -68,16 +68,11 @@ public class LoginPublishingRptLine extends AbstractRptLine implements PlayerPro
             final String playerNameString = matcher.group(4);
             final String skinNameString = matcher.group(5);
             
-            if (playerNameString != null) {
-                final Player player = Backend.getInstance().searchPlayerByName(playerNameString);
-                if (player != null) {
-                    if (skinNameString != null) {
-                        player.setSkinName(skinNameString);
-                    }
-
-                    setPlayer(player);
-                }
-            }
+            final Player player = new Player();
+            player.setSkinName(skinNameString);
+            player.setName(playerNameString);
+            Backend.getInstance().updatePlayer(player);
+            setPlayer(player);
                         
             setUnknownValue1(unknownValue1String);
             try {

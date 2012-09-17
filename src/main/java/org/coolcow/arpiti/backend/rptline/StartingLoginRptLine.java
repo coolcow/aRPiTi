@@ -68,11 +68,10 @@ public class StartingLoginRptLine extends AbstractRptLine implements PlayerProvi
             final String unknownValue2String = matcher.group(3);
             final String playerNameString = matcher.group(4);
             
-            final Player player = Backend.getInstance().getPlayer(playerIdentifierString);
-            if (playerNameString != null) {
-                player.setName(playerNameString);
-            }
-            
+            final Player player = new Player();
+            player.setIdentifier(playerIdentifierString);
+            player.setName(playerNameString);            
+            Backend.getInstance().updatePlayer(player);            
             setPlayer(player);
             setUnknownValue1(unknownValue1String);
             try {

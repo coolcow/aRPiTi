@@ -6,6 +6,8 @@ package org.coolcow.arpiti.backend;
 
 import java.awt.EventQueue;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +34,12 @@ public class Backend {
 
     private RptTailer rptTailer;
     
+    private Map<Integer, Player> playerHiveIdentifierHashmap = new HashMap<>();
     private Map<String, Player> playerIdentifierHashmap = new HashMap<>();
+    private Map<String, Player> playerNameHashmap = new HashMap<>();
+    
+    private Collection<Player> players = new ArrayList<>();
+    
     
     private Backend() {
     }
@@ -126,48 +133,35 @@ public class Backend {
     public void stopRptTailer() {
         rptTailer.stopTailing();
     }
-    
-    public Player searchPlayerByName(final String playerName) {
-        for (final Map.Entry<String, Player> entry : playerIdentifierHashmap.entrySet()) {
-            final Player player = entry.getValue();
-            if (player.getName() != null && player.getName().equals(playerName)) {
-                return player;
-            }
-        }
-        return null;
-    }
-    
-    public Player getPlayer(final String identifier) {
-        Player player = playerIdentifierHashmap.get(identifier);
-        if (player == null) {
-            player = new Player();
-            player.setIdentifier(identifier);
-        }
-        return player;
-    }
-    
-    public Player registerPlayer(final Player newPlayer) {
-        final String identifier = newPlayer.getIdentifier();
-        final Player player = playerIdentifierHashmap.get(identifier);
-        if (player != null) {
-            if (player.getHiveId() == -1) {
-                player.setHiveId(newPlayer.getHiveId());
-            }
-            if (player.getServerId() == -1) {
-                player.setServerId(newPlayer.getServerId());
-            }
-            if (player.getName() == null) {
-                player.setName(newPlayer.getName());
-            }
-            return player;
-        } else {
-            if (identifier == null) {
-                LOG.fatal("bang !");
-            }
-            playerIdentifierHashmap.put(identifier, newPlayer);
-            return newPlayer;
-        }
         
+    public void updatePlayer(final Player newPlayer) {
+        if (newPlayer != null) {
+            final String identifier = newPlayer.getIdentifier();
+            final int hiveIdentifier = newPlayer.getHiveId();
+            final String name = newPlayer.getName();
+                           
+            if (identifier != null) {
+                if (playerIdentifierHashmap.containsKey(identifier)) {
+                    final Player oldPlayer = playerIdentifierHashmap.get(identifier);
+                    newPlayer.merge(oldPlayer);
+                }
+                playerIdentifierHashmap.put(identifier, newPlayer);
+            }
+            if (hiveIdentifier >= 0) {
+                if (playerHiveIdentifierHashmap.containsKey(hiveIdentifier)) {
+                    final Player oldPlayer = playerHiveIdentifierHashmap.get(hiveIdentifier);
+                    newPlayer.merge(oldPlayer);
+                }
+                playerHiveIdentifierHashmap.put(hiveIdentifier, newPlayer);
+            }
+            if (name != null) {
+                if (playerNameHashmap.containsKey(name)) {
+                    final Player oldPlayer = playerNameHashmap.get(name);
+                    newPlayer.merge(oldPlayer);
+                }                                                
+                playerNameHashmap.put(name, newPlayer);
+            }
+        }        
     }
     
     class RptTailerListenerImpl implements RptTailerListener {
@@ -187,7 +181,7 @@ public class Backend {
                     if (rptLine instanceof PlayerProvider) {
                         final PlayerProvider playerProvider = (PlayerProvider) rptLine;
                         for (final Player player : playerProvider.getPlayers()) {
-                            registerPlayer(player);
+                            updatePlayer(player);
                         }
                     }                    
                 }                
@@ -200,6 +194,7 @@ public class Backend {
 
         @Override
         public void tailingWait() {
+            LOG.debug("");
         }
 
         @Override

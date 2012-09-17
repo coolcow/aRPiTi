@@ -65,4 +65,21 @@ public class Player {
     public static String toString(final Player player) {
         return player.name + " (" + player.identifier + ")";
     }
+    
+    public void merge(final Player player) {
+        if (player != null) {
+            if (getHiveId() < 0) {
+                setHiveId(player.getHiveId());
+            }            
+            if (getIdentifier() == null) {
+                setIdentifier(player.getIdentifier());
+            }
+            if (getName() == null) {
+                setName(player.getName());
+            }
+            if (getSkinName() == null) {
+                setSkinName(player.getSkinName());
+            }            
+        }
+    }
 }

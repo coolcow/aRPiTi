@@ -147,12 +147,13 @@ public class DisconnectStartIRptLine extends AbstractRptLine implements PlayerPr
             final String unknownValue2String = matcherA.group(4);
             final String playerName2String = matcherA.group(5);            
             
-            final Player player = Backend.getInstance().getPlayer(playerIdentifierString);
-            if (playerNameString != null) {
-                player.setName(playerNameString);
-            }
+            final Player player = new Player();
+            player.setIdentifier(playerIdentifierString);
+            player.setName(playerNameString);
+            Backend.getInstance().updatePlayer(player);
             
             setPlayer(player);
+            
             setUnknownValue1(unknownValue1String);
             try {
                 setUnknownValue2(Integer.parseInt(unknownValue2String));
@@ -171,10 +172,11 @@ public class DisconnectStartIRptLine extends AbstractRptLine implements PlayerPr
             final String unknownValue1String = matcherB.group(3);
             final String unknownValue2String = matcherB.group(4);
             
-            final Player player = Backend.getInstance().getPlayer(playerIdentifierString);
-            if (playerNameString != null) {
-                player.setName(playerNameString);
-            }
+            final Player player = new Player();
+            player.setIdentifier(playerIdentifierString);
+            player.setName(playerNameString);
+            Backend.getInstance().updatePlayer(player);
+            
             setPlayer(player);
             setUnknownValue1(unknownValue1String);
             try {
@@ -191,10 +193,11 @@ public class DisconnectStartIRptLine extends AbstractRptLine implements PlayerPr
             final String playerNameString = matcherC.group(1);
             final String playerIdentifierString = matcherC.group(2);
             
-            final Player player = Backend.getInstance().getPlayer(playerIdentifierString);
-            if (playerNameString != null) {
-                player.setName(playerNameString);
-            }
+            final Player player = new Player();
+            player.setIdentifier(playerIdentifierString);
+            player.setName(playerNameString);
+            Backend.getInstance().updatePlayer(player);
+
             setPlayer(player);
             setUnknownValue1(null);
             setUnknownValue2(-1);
@@ -208,10 +211,11 @@ public class DisconnectStartIRptLine extends AbstractRptLine implements PlayerPr
             final String unknownValue4String = matcherD.group(4);
             final String playerSkinString = matcherD.group(5);
             
-            final Player player = Backend.getInstance().getPlayer(playerIdentifierString);
-            if (playerNameString != null) {
-                player.setName(playerNameString);
-            }
+            final Player player = new Player();
+            player.setIdentifier(playerIdentifierString);
+            player.setName(playerNameString);
+            Backend.getInstance().updatePlayer(player);
+            
             setPlayer(player);
             setUnknownValue3(unknownValue3String);
             try {

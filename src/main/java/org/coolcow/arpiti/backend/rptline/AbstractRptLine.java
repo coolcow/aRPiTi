@@ -184,31 +184,13 @@ public abstract class AbstractRptLine implements RptLine {
                 case "DELETE": { 
                     type = Type.DELETE; 
                 } break;
-                case "HIVE": { type = Type.HIVE; } break;
+                case "HIVE": {
+                    type = Type.HIVE; 
+                    rptLine = new HiveRptLine();
+                } break;
                 case "READ/WRITE": { 
                     type = Type.READ_WRITE; 
                     rptLine = new ReadWriteRptLine();
-                    //['PASS',[false,false,false,true,true,false,true,7083.59,["Pelvis","aimpoint","RightFoot"],[1.10509,0],0,[1115.25,926.767]],[6,3,0,0],["MP5A5","amovppnemstpsraswrfldnon",42],[294,[4684.51,10477.9,0.00143433]],2650]
-                    //^\['(\w+)',\[((true,|false,)*)(.+?),\[((\"\w+\",?)*?)\],\[(.*?)\](.*),(\d+)\]$
-//                    switch (content.split(Pattern.quote("[")).length) {
-//                        case 19: {
-//                            final int first = content.indexOf("[") + 1;
-//                            final int second = content.indexOf("[", first) + 1;
-//                            final int third = content.indexOf("[", second) + 1;
-//                            final int end = content.indexOf("]", third);
-//                            final String substring = content.substring(third, end);
-//                            final String[] coordStrings = substring.split(",");
-//                            final double x = Double.parseDouble(coordStrings[0]);
-//                            final double y = Double.parseDouble(coordStrings[1]);
-//                            final double z = Double.parseDouble(coordStrings[2]);
-//                        }
-//                        break;
-//                        case 1: {
-//                        }
-//                        break;
-//                        default: {
-//                        }
-//                    }
                 } break;
                 default: {
                 }

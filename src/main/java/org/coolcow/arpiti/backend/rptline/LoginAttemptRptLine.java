@@ -47,11 +47,10 @@ public class LoginAttemptRptLine extends AbstractRptLine implements PlayerProvid
             final String playerIdentifierString = matcher.group(1);
             final String playerNameString = matcher.group(2);
             
-            final Player player = Backend.getInstance().getPlayer(playerIdentifierString);
-            if (playerNameString != null) {
-                player.setName(playerNameString);
-            }
-            
+            final Player player = new Player();
+            player.setIdentifier(playerIdentifierString);
+            player.setName(playerNameString);            
+            Backend.getInstance().updatePlayer(player);
             setPlayer(player);
             
             return true;

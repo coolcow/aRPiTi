@@ -68,16 +68,11 @@ public class LoginLoadedRptLine extends AbstractRptLine implements PlayerProvide
             final String playerNameString = matcher.group(3);
             final String skinNameString = matcher.group(4);
             
-            if (playerNameString != null) {
-                final Player player = Backend.getInstance().searchPlayerByName(playerNameString);
-                if (player != null) {
-                    if (skinNameString != null) {
-                        player.setSkinName(skinNameString);
-                    }
-
-                    setPlayer(player);
-                }
-            }
+            final Player player = new Player();
+            player.setName(playerNameString);
+            player.setSkinName(skinNameString);
+            Backend.getInstance().updatePlayer(player);
+            setPlayer(player);
             
             setUnknownValue1(unknownValue1String);
             try {
