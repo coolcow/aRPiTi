@@ -22,8 +22,7 @@ public class ReadWriteRptLine extends AbstractRptLine {
 
     private static final Logger LOG = Logger.getLogger(ReadWriteRptLine.class);
     
-    private boolean typeA = false;
-    private boolean typeB = false;
+    private boolean typeGear = false;
     private boolean typeDate = false;
     private int playerId;
     private String skinName;
@@ -46,20 +45,12 @@ public class ReadWriteRptLine extends AbstractRptLine {
         super();
     }
 
-    public boolean isTypeA() {
-        return typeA;
+    public boolean isTypeGear() {
+        return typeGear;
     }
 
-    protected void setTypeA(final boolean typeA) {
-        this.typeA = typeA;
-    }
-
-    public boolean isTypeB() {
-        return typeB;
-    }
-
-    protected void setTypeB(final boolean typeB) {
-        this.typeB = typeB;
+    protected void setTypeGear(final boolean typeGear) {
+        this.typeGear = typeGear;
     }
 
     public boolean isTypeDate() {
@@ -225,50 +216,24 @@ public class ReadWriteRptLine extends AbstractRptLine {
         final String coordinateRegex = "\\[(" + floatingPointRegex + "),(" + floatingPointRegex + "),(" + floatingPointRegex + ")\\]";
         
         final String rawContent = getRawContent();
-        final Matcher matcherA = Pattern.compile("^\\['(\\w+)',(true|false),'(\\d+)',(\\w+),(.*)\\]$").matcher(rawContent);
-        final Matcher matcherB = Pattern.compile("^\\['(\\w+)',(true|false),'(\\d+)',\\[(\\d+),(" + coordinateRegex + ")\\],(.*?),\\[(\\d+),(\\d+),(\\d+)\\],\"?(\\w+)\"?,(.*)\\]$").matcher(rawContent);
+        final Matcher matcherBackpack = Pattern.compile("^\\['(\\w+)',(true|false),'(\\d+)',(\\[((\\d+),(" + coordinateRegex + "))?\\],(.*?),\\[(\\d+),(\\d+),(\\d+)\\],)?\"?(\\w+)\"?,(.*)\\]$").matcher(rawContent);
+        LOG.fatal("^\\['(\\w+)',(true|false),'(\\d+)',(\\[((\\d+),(" + coordinateRegex + "))?\\],(.*?),\\[(\\d+),(\\d+),(\\d+)\\],)?\"?(\\w+)\"?,(.*)\\]$");
         final Matcher matcherC = Pattern.compile("^\\['(\\w+)',\\[(\\d+),(\\d+),(\\d+),(\\d+),(\\d+)\\]]$").matcher(rawContent);
         
-        if (matcherA.matches()) {
-            setTypeA(true);
+        if (matcherBackpack.matches()) {
+            setTypeGear(true);        
             
-            final String unknownValue1String = matcherA.group(1);
-            final String unknownValue2String = matcherA.group(2);
-            final String playerIdString = matcherA.group(3);
-            final String skinNameString = matcherA.group(4);
-            final String versionNumberString = matcherA.group(5);
-                    
-            setUnknownValue1(unknownValue1String);
-            setUnknownValue2(Boolean.parseBoolean(unknownValue2String));
-            try {
-                setPlayerId(Integer.parseInt(playerIdString));
-            } catch (final NumberFormatException exception) {
-                LOG.warn("Error while parsing playerId. Set to -1. The source String was: " + playerIdString, exception);
-                setPlayerId(-1);
-            }
-            setSkinName(skinNameString);
-            try {
-                setVersionNumber(Double.parseDouble(versionNumberString));
-            } catch (final NumberFormatException exception) {
-                LOG.warn("Error while parsing versionNumber. Set to -1. The source String was: " + versionNumberString, exception);
-                setVersionNumber(-1);
-            }
-            
-            return true;
-        } else if (matcherB.matches()) {
-            setTypeB(true);        
-            
-            final String unknownValue1String = matcherB.group(1);
-            final String unknownValue2String = matcherB.group(2);
-            final String playerIdString = matcherB.group(3);
-            final String unknownValue3String = matcherB.group(4);
-            final String coordinateString = matcherB.group(5);
-            final String gearString = matcherB.group(12);
-            final String unknownValue4String = matcherB.group(13);
-            final String unknownValue5String = matcherB.group(14);
-            final String unknownValue6String = matcherB.group(15);            
-            final String skinNameString = matcherB.group(16);
-            final String versionNumberString = matcherB.group(17);
+            final String unknownValue1String = matcherBackpack.group(1);
+            final String unknownValue2String = matcherBackpack.group(2);
+            final String playerIdString = matcherBackpack.group(3);
+            final String unknownValue3String = matcherBackpack.group(6);
+            final String coordinateString = matcherBackpack.group(7);
+            final String gearString = matcherBackpack.group(14);
+            final String unknownValue4String = matcherBackpack.group(15);
+            final String unknownValue5String = matcherBackpack.group(16);
+            final String unknownValue6String = matcherBackpack.group(17);            
+            final String skinNameString = matcherBackpack.group(18);
+            final String versionNumberString = matcherBackpack.group(19);
             
             setUnknownValue1(unknownValue1String);
             setUnknownValue2(Boolean.parseBoolean(unknownValue2String));
@@ -284,8 +249,14 @@ public class ReadWriteRptLine extends AbstractRptLine {
                 LOG.warn("Error while parsing unknownValue3. Set to -1. The source String was: " + unknownValue3String, exception);
                 setUnknownValue3(-1);
             }
-            setCoordinate(Coordinate.parseCoordinate(coordinateString));
-            parseGear(gearString);            
+            if (coordinateString != null) {
+                setCoordinate(Coordinate.parseCoordinate(coordinateString));
+            } else {
+                setCoordinate(null);
+            }
+            if (gearString != null) {
+                parseGear(gearString);            
+            }
             try {
                 setUnknownValue4(Integer.parseInt(unknownValue4String));
             } catch (final NumberFormatException exception) {

@@ -466,7 +466,7 @@ public class ReadWriteRenderer extends AbstractRptLineRenderer {
         final CardLayout cardLayout = (CardLayout) panCards.getLayout();
         if (rptLine != null && rptLine instanceof ReadWriteRptLine) {
             final ReadWriteRptLine readWriteRptLine = (ReadWriteRptLine) rptLine;
-            if (readWriteRptLine.isTypeB()) {
+            if (readWriteRptLine.isTypeGear()) {
                 cardLayout.show(panCards, "gear");                
             } else if (readWriteRptLine.isTypeDate()) {
                 cardLayout.show(panCards, "date");                
