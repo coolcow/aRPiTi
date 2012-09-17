@@ -26,9 +26,11 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 import org.apache.log4j.Logger;
 import org.coolcow.arpiti.backend.Backend;
+import org.coolcow.arpiti.backend.Player;
 import org.coolcow.arpiti.backend.RptLineRendererProvider;
 import org.coolcow.arpiti.backend.RptTailerListener;
 import org.coolcow.arpiti.backend.rptline.AbstractRptLine;
+import org.coolcow.arpiti.backend.rptline.interfaces.PlayerProvider;
 import org.coolcow.arpiti.gui.rptline.AbstractRptLineRenderer;
 
 /**
@@ -107,11 +109,9 @@ public final class MainFrame extends javax.swing.JFrame {
         cbxFilterDwDebugFps = new javax.swing.JCheckBox();
         cbxFilterSecondHandZombieInitialized = new javax.swing.JCheckBox();
         jLabel1 = new javax.swing.JLabel();
-        panPlayers = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
-        cbFilterPlayers = new javax.swing.JCheckBox();
         btnFilterApply = new javax.swing.JButton();
+        txtPlayerName = new javax.swing.JTextField();
+        cbFilterPlayers = new javax.swing.JCheckBox();
         mnbMain = new javax.swing.JMenuBar();
         menMain = new javax.swing.JMenu();
         mniLoadRpt = new javax.swing.JMenuItem();
@@ -245,14 +245,13 @@ public final class MainFrame extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         panFilter.add(txtFilter, gridBagConstraints);
 
         panTypes.setBorder(javax.swing.BorderFactory.createTitledBorder("Types"));
-        panTypes.setLayout(new java.awt.GridLayout(0, 1));
+        panTypes.setLayout(new java.awt.GridLayout(0, 2));
 
         cbxFilterNull.setSelected(true);
         cbxFilterNull.setText("<none>");
@@ -324,14 +323,14 @@ public final class MainFrame extends javax.swing.JFrame {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.gridheight = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         panFilter.add(panTypes, gridBagConstraints);
 
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel1.setText("Content:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -340,40 +339,6 @@ public final class MainFrame extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         panFilter.add(jLabel1, gridBagConstraints);
-
-        panPlayers.setBorder(javax.swing.BorderFactory.createTitledBorder("Players (not yet implemented)"));
-        panPlayers.setEnabled(false);
-        panPlayers.setLayout(new java.awt.GridBagLayout());
-
-        jScrollPane1.setMaximumSize(new java.awt.Dimension(150, 130));
-        jScrollPane1.setMinimumSize(new java.awt.Dimension(150, 130));
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(150, 130));
-
-        jList1.setModel(new DefaultListModel());
-        jList1.setEnabled(false);
-        jScrollPane1.setViewportView(jList1);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        panPlayers.add(jScrollPane1, gridBagConstraints);
-
-        cbFilterPlayers.setText("filter selected");
-        cbFilterPlayers.setEnabled(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        panPlayers.add(cbFilterPlayers, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        panFilter.add(panPlayers, gridBagConstraints);
 
         btnFilterApply.setText("apply filter to all rows");
         btnFilterApply.addActionListener(new java.awt.event.ActionListener() {
@@ -384,9 +349,26 @@ public final class MainFrame extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         panFilter.add(btnFilterApply, gridBagConstraints);
+
+        txtPlayerName.setMinimumSize(new java.awt.Dimension(100, 20));
+        txtPlayerName.setPreferredSize(new java.awt.Dimension(100, 20));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        panFilter.add(txtPlayerName, gridBagConstraints);
+
+        cbFilterPlayers.setText("player name:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        panFilter.add(cbFilterPlayers, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -497,8 +479,6 @@ public final class MainFrame extends javax.swing.JFrame {
     private javax.swing.JCheckBox cbxFilterStartingLogin;
     private javax.swing.JCheckBox cbxFilterWrite;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JList jList1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenu menMain;
     private javax.swing.JMenuBar mnbMain;
     private javax.swing.JMenuItem mniCopy;
@@ -507,7 +487,6 @@ public final class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel panFilter;
     private javax.swing.JPanel panInfo;
     private javax.swing.JPanel panMain;
-    private javax.swing.JPanel panPlayers;
     private javax.swing.JPanel panProgress;
     private javax.swing.JPanel panRight;
     private javax.swing.JPanel panTable;
@@ -519,6 +498,7 @@ public final class MainFrame extends javax.swing.JFrame {
     private javax.swing.JToggleButton tgbAutoScroll;
     private javax.swing.JToggleButton tgbResume;
     private javax.swing.JTextField txtFilter;
+    private javax.swing.JTextField txtPlayerName;
     // End of variables declaration//GEN-END:variables
 
     static class RptTableDateCellRenderer extends DefaultTableCellRenderer {
@@ -618,8 +598,11 @@ public final class MainFrame extends javax.swing.JFrame {
             final RptLineTableModel model = entry.getModel();
             final AbstractRptLine line = model.getLine(entry.getIdentifier());
 
-            final String contentFilter = txtFilter.getText();
             final boolean contentFilterIncludes;
+            final boolean typeFilterIncludes;
+            final boolean playerNameFilterIncludes;
+
+            final String contentFilter = txtFilter.getText();
             if (contentFilter != null) {
                 final Pattern pattern = Pattern.compile(contentFilter);
                 contentFilterIncludes = pattern.matcher(line.getRawContent()).find();
@@ -627,7 +610,6 @@ public final class MainFrame extends javax.swing.JFrame {
                 contentFilterIncludes = true;
             }
 
-            final boolean typeFilterIncludes;
             if (line.getType() == null) {
                 typeFilterIncludes = cbxFilterNull.isSelected();
             } else {
@@ -685,7 +667,27 @@ public final class MainFrame extends javax.swing.JFrame {
                 }
             }
 
-            return contentFilterIncludes && typeFilterIncludes;
+            if (cbFilterPlayers.isSelected()) {
+                final String playerNameFilter = txtPlayerName.getText();
+                if (line instanceof PlayerProvider) {
+                    final PlayerProvider playerProvider = (PlayerProvider) line;
+                    boolean playerNameFound = false;
+                    for (final Player player : playerProvider.getPlayers())  {
+                        final String playerName = player.getName();
+                        if (playerName != null && Pattern.compile(playerNameFilter).matcher(playerName).find()) {
+                            playerNameFound = true;
+                            break;
+                        }
+                    }
+                    playerNameFilterIncludes = playerNameFound;
+                } else {
+                    return false;
+                }
+            } else {
+                playerNameFilterIncludes = true;
+            }
+            
+            return contentFilterIncludes && typeFilterIncludes && playerNameFilterIncludes;
         }
     }
 

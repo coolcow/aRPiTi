@@ -54,7 +54,7 @@ public class DisconnectStartIRenderer extends AbstractRptLineRenderer {
 
         jPanel3.setLayout(new java.awt.GridBagLayout());
 
-        jLabel1.setText("playerId: ");
+        jLabel1.setText("player identifier: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -66,8 +66,7 @@ public class DisconnectStartIRenderer extends AbstractRptLineRenderer {
         jTextField1.setMinimumSize(new java.awt.Dimension(150, 20));
         jTextField1.setPreferredSize(new java.awt.Dimension(150, 20));
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.playerId}"), jTextField1, org.jdesktop.beansbinding.BeanProperty.create("text"), "playerId");
-        binding.setConverter(new IntToStringConverter());
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.player.identifier}"), jTextField1, org.jdesktop.beansbinding.BeanProperty.create("text"), "playerIdentifier");
         bindingGroup.addBinding(binding);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -161,7 +160,7 @@ public class DisconnectStartIRenderer extends AbstractRptLineRenderer {
         jTextField6.setMinimumSize(new java.awt.Dimension(150, 20));
         jTextField6.setPreferredSize(new java.awt.Dimension(150, 20));
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.playerName}"), jTextField6, org.jdesktop.beansbinding.BeanProperty.create("text"), "playerName");
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.player.name}"), jTextField6, org.jdesktop.beansbinding.BeanProperty.create("text"), "playerName");
         bindingGroup.addBinding(binding);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -174,7 +173,7 @@ public class DisconnectStartIRenderer extends AbstractRptLineRenderer {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 123, Short.MAX_VALUE)
+            .addGap(0, 107, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -233,7 +232,7 @@ public class DisconnectStartIRenderer extends AbstractRptLineRenderer {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
         jPanel3.add(jTextField7, gridBagConstraints);
 
-        jLabel9.setText("player skin: ");
+        jLabel9.setText("skin name:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
@@ -245,7 +244,7 @@ public class DisconnectStartIRenderer extends AbstractRptLineRenderer {
         jTextField8.setMinimumSize(new java.awt.Dimension(150, 20));
         jTextField8.setPreferredSize(new java.awt.Dimension(150, 20));
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.playerSkin}"), jTextField8, org.jdesktop.beansbinding.BeanProperty.create("text"), "playerSkin");
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.player.skinName}"), jTextField8, org.jdesktop.beansbinding.BeanProperty.create("text"), "playerSkin");
         bindingGroup.addBinding(binding);
 
         gridBagConstraints = new java.awt.GridBagConstraints();

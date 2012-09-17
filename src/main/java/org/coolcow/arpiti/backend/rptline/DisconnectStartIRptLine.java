@@ -4,15 +4,20 @@
  */
 package org.coolcow.arpiti.backend.rptline;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
+import org.coolcow.arpiti.backend.Backend;
+import org.coolcow.arpiti.backend.Player;
+import org.coolcow.arpiti.backend.rptline.interfaces.PlayerProvider;
 
 /**
  *
  * @author jruiz
  */
-public class DisconnectStartIRptLine extends AbstractRptLine {
+public class DisconnectStartIRptLine extends AbstractRptLine implements PlayerProvider {
     
     private static final Logger LOG = Logger.getLogger(DisconnectStartIRptLine.class);
     
@@ -21,8 +26,7 @@ public class DisconnectStartIRptLine extends AbstractRptLine {
     private boolean typeC = false;
     private boolean typeD = false;
 
-    private String playerName;
-    private int playerId;
+    private Player player;
     private String unknownValue1;
     private int unknownValue2;
     private String playerName2;
@@ -34,27 +38,19 @@ public class DisconnectStartIRptLine extends AbstractRptLine {
         super();
     }
 
-    public String getPlayerName() {
-        return playerName;
+    public Player getPlayer() {
+        return player;
     }
 
-    protected void setPlayerName(String playerName) {
-        this.playerName = playerName;
-    }
-
-    public int getPlayerId() {
-        return playerId;
-    }
-
-    protected void setPlayerId(int playerId) {
-        this.playerId = playerId;
+    protected void setPlayer(final Player player) {
+        this.player = player;
     }
 
     public String getUnknownValue1() {
         return unknownValue1;
     }
 
-    protected void setUnknownValue1(String unknownValue1) {
+    protected void setUnknownValue1(final String unknownValue1) {
         this.unknownValue1 = unknownValue1;
     }
 
@@ -62,7 +58,7 @@ public class DisconnectStartIRptLine extends AbstractRptLine {
         return unknownValue2;
     }
 
-    protected void setUnknownValue2(int unknownValue2) {
+    protected void setUnknownValue2(final int unknownValue2) {
         this.unknownValue2 = unknownValue2;
     }
 
@@ -70,7 +66,7 @@ public class DisconnectStartIRptLine extends AbstractRptLine {
         return playerName2;
     }
 
-    protected void setPlayerName2(String playerName2) {
+    protected void setPlayerName2(final String playerName2) {
         this.playerName2 = playerName2;
     }
 
@@ -78,7 +74,7 @@ public class DisconnectStartIRptLine extends AbstractRptLine {
         return unknownValue3;
     }
 
-    protected void setUnknownValue3(String unknownValue3) {
+    protected void setUnknownValue3(final String unknownValue3) {
         this.unknownValue3 = unknownValue3;
     }
 
@@ -86,7 +82,7 @@ public class DisconnectStartIRptLine extends AbstractRptLine {
         return unknownValue4;
     }
 
-    protected void setUnknownValue4(int unknownValue4) {
+    protected void setUnknownValue4(final int unknownValue4) {
         this.unknownValue4 = unknownValue4;
     }
 
@@ -94,7 +90,7 @@ public class DisconnectStartIRptLine extends AbstractRptLine {
         return playerSkin;
     }
 
-    protected void setPlayerSkin(String playerSkin) {
+    protected void setPlayerSkin(final String playerSkin) {
         this.playerSkin = playerSkin;
     }
 
@@ -102,7 +98,7 @@ public class DisconnectStartIRptLine extends AbstractRptLine {
         return typeA;
     }
 
-    protected void setTypeA(boolean typeA) {
+    protected void setTypeA(final boolean typeA) {
         this.typeA = typeA;
     }
 
@@ -110,7 +106,7 @@ public class DisconnectStartIRptLine extends AbstractRptLine {
         return typeB;
     }
 
-    protected void setTypeB(boolean typeB) {
+    protected void setTypeB(final boolean typeB) {
         this.typeB = typeB;
     }
 
@@ -118,7 +114,7 @@ public class DisconnectStartIRptLine extends AbstractRptLine {
         return typeC;
     }
 
-    protected void setTypeC(boolean typeC) {
+    protected void setTypeC(final boolean typeC) {
         this.typeC = typeC;
     }
 
@@ -126,12 +122,12 @@ public class DisconnectStartIRptLine extends AbstractRptLine {
         return typeD;
     }
 
-    protected void setTypeD(boolean typeD) {
+    protected void setTypeD(final boolean typeD) {
         this.typeD = typeD;
     }
     
     @Override
-    public boolean parseLine(String line) {
+    public boolean parseLine(final String line) {
         if (!super.parseLine(line)) {
             return false;
         }
@@ -146,18 +142,18 @@ public class DisconnectStartIRptLine extends AbstractRptLine {
             setTypeA(true);
             
             final String playerNameString = matcherA.group(1);
-            final String playerIdString = matcherA.group(2);
+            final String playerIdentifierString = matcherA.group(2);
             final String unknownValue1String = matcherA.group(3);
             final String unknownValue2String = matcherA.group(4);
             final String playerName2String = matcherA.group(5);            
             
-            setPlayerName(playerNameString);
-            try {                 
-                setPlayerId(Integer.parseInt(playerIdString));
-            } catch (final NumberFormatException exception) {
-                LOG.warn("Error while parsing playerId. Set to -1. The source String was: " + playerIdString, exception);
-                setPlayerId(-1);
-            }
+            final Player player = new Player();
+            player.setIdentifier(playerIdentifierString);
+            player.setName(playerNameString);
+            Backend.getInstance().updatePlayer(player);
+            
+            setPlayer(player);
+            
             setUnknownValue1(unknownValue1String);
             try {
                 setUnknownValue2(Integer.parseInt(unknownValue2String));
@@ -172,17 +168,16 @@ public class DisconnectStartIRptLine extends AbstractRptLine {
             setTypeB(true);
             
             final String playerNameString = matcherB.group(1);
-            final String playerIdString = matcherB.group(2);
+            final String playerIdentifierString = matcherB.group(2);
             final String unknownValue1String = matcherB.group(3);
             final String unknownValue2String = matcherB.group(4);
             
-            setPlayerName(playerNameString);
-            try {
-                setPlayerId(Integer.parseInt(playerIdString));
-            } catch (final NumberFormatException exception) {
-                LOG.warn("Error while parsing playerId. Set to -1. The source String was: " + playerIdString, exception);
-                setPlayerId(-1);
-            }
+            final Player player = new Player();
+            player.setIdentifier(playerIdentifierString);
+            player.setName(playerNameString);
+            Backend.getInstance().updatePlayer(player);
+            
+            setPlayer(player);
             setUnknownValue1(unknownValue1String);
             try {
                 setUnknownValue2(Integer.parseInt(unknownValue2String));
@@ -196,15 +191,14 @@ public class DisconnectStartIRptLine extends AbstractRptLine {
             setTypeC(true);            
             
             final String playerNameString = matcherC.group(1);
-            final String playerIdString = matcherC.group(2);
+            final String playerIdentifierString = matcherC.group(2);
             
-            setPlayerName(playerNameString);
-            try {
-                setPlayerId(Integer.parseInt(playerIdString));
-            } catch (final NumberFormatException exception) {
-                LOG.warn("Error while parsing playerId. Set to -1. The source String was: " + playerIdString, exception);
-                setPlayerId(-1);
-            }
+            final Player player = new Player();
+            player.setIdentifier(playerIdentifierString);
+            player.setName(playerNameString);
+            Backend.getInstance().updatePlayer(player);
+
+            setPlayer(player);
             setUnknownValue1(null);
             setUnknownValue2(-1);
             return true;
@@ -212,18 +206,17 @@ public class DisconnectStartIRptLine extends AbstractRptLine {
             setTypeD(true);
 
             final String playerNameString = matcherD.group(1);
-            final String playerIdString = matcherD.group(2);
+            final String playerIdentifierString = matcherD.group(2);
             final String unknownValue3String = matcherD.group(3);
             final String unknownValue4String = matcherD.group(4);
             final String playerSkinString = matcherD.group(5);
             
-            setPlayerName(playerNameString);
-            try {
-                setPlayerId(Integer.parseInt(playerIdString));
-            } catch (final NumberFormatException exception) {
-                LOG.warn("Error while parsing playerId. Set to -1. The source String was: " + playerIdString, exception);
-                setPlayerId(-1);
-            }
+            final Player player = new Player();
+            player.setIdentifier(playerIdentifierString);
+            player.setName(playerNameString);
+            Backend.getInstance().updatePlayer(player);
+            
+            setPlayer(player);
             setUnknownValue3(unknownValue3String);
             try {
                 setUnknownValue4(Integer.parseInt(unknownValue4String));
@@ -237,5 +230,14 @@ public class DisconnectStartIRptLine extends AbstractRptLine {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public Collection<Player> getPlayers() {
+        final Collection<Player> coll = new ArrayList<>();
+        if (player != null) {
+            coll.add(player);
+        }
+        return coll;
     }
 }

@@ -6,11 +6,18 @@ package org.coolcow.arpiti.backend;
 
 import java.awt.EventQueue;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.coolcow.arpiti.backend.rptline.AbstractRptLine;
+import org.coolcow.arpiti.backend.rptline.interfaces.PlayerProvider;
 import org.coolcow.arpiti.gui.MainFrame;
 
 /**
@@ -26,6 +33,13 @@ public class Backend {
     private static Backend INSTANCE;
 
     private RptTailer rptTailer;
+    
+    private Map<Integer, Player> playerHiveIdentifierHashmap = new HashMap<>();
+    private Map<String, Player> playerIdentifierHashmap = new HashMap<>();
+    private Map<String, Player> playerNameHashmap = new HashMap<>();
+    
+    private Collection<Player> players = new ArrayList<>();
+    
     
     private Backend() {
     }
@@ -104,6 +118,7 @@ public class Backend {
         }
         rptTailer = new RptTailer(file);        
         rptTailer.addListener(listener);
+        rptTailer.addListener(new RptTailerListenerImpl());
         rptTailer.execute();        
     }
     
@@ -118,5 +133,73 @@ public class Backend {
     public void stopRptTailer() {
         rptTailer.stopTailing();
     }
+        
+    public void updatePlayer(final Player newPlayer) {
+        if (newPlayer != null) {
+            final String identifier = newPlayer.getIdentifier();
+            final int hiveIdentifier = newPlayer.getHiveId();
+            final String name = newPlayer.getName();
+                           
+            if (identifier != null) {
+                if (playerIdentifierHashmap.containsKey(identifier)) {
+                    final Player oldPlayer = playerIdentifierHashmap.get(identifier);
+                    newPlayer.merge(oldPlayer);
+                }
+                playerIdentifierHashmap.put(identifier, newPlayer);
+            }
+            if (hiveIdentifier >= 0) {
+                if (playerHiveIdentifierHashmap.containsKey(hiveIdentifier)) {
+                    final Player oldPlayer = playerHiveIdentifierHashmap.get(hiveIdentifier);
+                    newPlayer.merge(oldPlayer);
+                }
+                playerHiveIdentifierHashmap.put(hiveIdentifier, newPlayer);
+            }
+            if (name != null) {
+                if (playerNameHashmap.containsKey(name)) {
+                    final Player oldPlayer = playerNameHashmap.get(name);
+                    newPlayer.merge(oldPlayer);
+                }                                                
+                playerNameHashmap.put(name, newPlayer);
+            }
+        }        
+    }
     
+    class RptTailerListenerImpl implements RptTailerListener {
+
+        @Override
+        public void tailingStarted(long byteLength) {
+        }
+
+        @Override
+        public void tailingProceed(long byteRead) {
+        }
+
+        @Override
+        public void rptLinesTailed(List<AbstractRptLine> rptLines) {
+            if (rptLines != null) {
+                for (final AbstractRptLine rptLine : rptLines) {
+                    if (rptLine instanceof PlayerProvider) {
+                        final PlayerProvider playerProvider = (PlayerProvider) rptLine;
+                        for (final Player player : playerProvider.getPlayers()) {
+                            updatePlayer(player);
+                        }
+                    }                    
+                }                
+            }
+        }
+
+        @Override
+        public void tailingResumed() {
+        }
+
+        @Override
+        public void tailingWait() {
+            LOG.debug("");
+        }
+
+        @Override
+        public void tailingStopped() {
+        }
+        
+    }
 }

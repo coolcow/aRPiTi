@@ -5,27 +5,32 @@
 package org.coolcow.arpiti.backend.rptline;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
+import org.coolcow.arpiti.backend.Backend;
 import org.coolcow.arpiti.backend.Coordinate;
 import org.coolcow.arpiti.backend.Item;
+import org.coolcow.arpiti.backend.Player;
+import org.coolcow.arpiti.backend.rptline.interfaces.CoordinateProvider;
+import org.coolcow.arpiti.backend.rptline.interfaces.ItemProvider;
+import org.coolcow.arpiti.backend.rptline.interfaces.PlayerProvider;
 
 /**
  *
  * @author jruiz
  */
-public class ReadWriteRptLine extends AbstractRptLine {
+public class ReadWriteRptLine extends AbstractRptLine implements CoordinateProvider, ItemProvider, PlayerProvider {
 
     private static final Logger LOG = Logger.getLogger(ReadWriteRptLine.class);
     
     private boolean typeGear = false;
     private boolean typeDate = false;
-    private int playerId;
-    private String skinName;
+    private Player player;
     private String unknownValue1;
     private boolean unknownValue2;
     private int unknownValue3;
@@ -61,20 +66,12 @@ public class ReadWriteRptLine extends AbstractRptLine {
         this.typeDate = typeDate;
     }
 
-    public int getPlayerId() {
-        return playerId;
+    public Player getPlayer() {
+        return player;
     }
 
-    protected void setPlayerId(final int playerId) {
-        this.playerId = playerId;
-    }
-
-    public String getSkinName() {
-        return skinName;
-    }
-
-    protected void setSkinName(final String skinName) {
-        this.skinName = skinName;
+    protected void setPlayer(final Player player) {
+        this.player = player;
     }
 
     public double getVersionNumber() {
@@ -165,7 +162,7 @@ public class ReadWriteRptLine extends AbstractRptLine {
         }
     }
 
-    public void setToolbelt(List<Item> toolbelt) {
+    public void setToolbelt(final List<Item> toolbelt) {
         if (toolbelt == null) {
             this.toolbelt = null;
         } else {
@@ -181,7 +178,7 @@ public class ReadWriteRptLine extends AbstractRptLine {
         }        
     }
 
-    public void setInventory(List<Item> inventory) {
+    public void setInventory(final List<Item> inventory) {
         if (inventory == null) {
             this.inventory = null;
         } else {
@@ -197,7 +194,7 @@ public class ReadWriteRptLine extends AbstractRptLine {
         }        
     }
 
-    public void setBackpack(List<Item> backpack) {
+    public void setBackpack(final List<Item> backpack) {
         if (backpack == null) {
             this.backpack = null;
         } else {
@@ -207,7 +204,7 @@ public class ReadWriteRptLine extends AbstractRptLine {
     }
     
     @Override
-    public boolean parseLine(String line) {
+    public boolean parseLine(final String line) {
         if (!super.parseLine(line)) {
             return false;
         }
@@ -217,7 +214,6 @@ public class ReadWriteRptLine extends AbstractRptLine {
         
         final String rawContent = getRawContent();
         final Matcher matcherBackpack = Pattern.compile("^\\['(\\w+)',(true|false),'(\\d+)',(\\[((\\d+),(" + coordinateRegex + "))?\\],(.*?),\\[(\\d+),(\\d+),(\\d+)\\],)?\"?(\\w+)\"?,(.*)\\]$").matcher(rawContent);
-        LOG.fatal("^\\['(\\w+)',(true|false),'(\\d+)',(\\[((\\d+),(" + coordinateRegex + "))?\\],(.*?),\\[(\\d+),(\\d+),(\\d+)\\],)?\"?(\\w+)\"?,(.*)\\]$");
         final Matcher matcherC = Pattern.compile("^\\['(\\w+)',\\[(\\d+),(\\d+),(\\d+),(\\d+),(\\d+)\\]]$").matcher(rawContent);
         
         if (matcherBackpack.matches()) {
@@ -225,7 +221,7 @@ public class ReadWriteRptLine extends AbstractRptLine {
             
             final String unknownValue1String = matcherBackpack.group(1);
             final String unknownValue2String = matcherBackpack.group(2);
-            final String playerIdString = matcherBackpack.group(3);
+            final String hiveIdentifierString = matcherBackpack.group(3);
             final String unknownValue3String = matcherBackpack.group(6);
             final String coordinateString = matcherBackpack.group(7);
             final String gearString = matcherBackpack.group(14);
@@ -235,14 +231,18 @@ public class ReadWriteRptLine extends AbstractRptLine {
             final String skinNameString = matcherBackpack.group(18);
             final String versionNumberString = matcherBackpack.group(19);
             
+            final Player player = new Player();
+            try {
+                player.setHiveId(Integer.parseInt(hiveIdentifierString));
+            } catch (final NumberFormatException exception) {
+                LOG.warn("Error while parsing hiveIdentifier. The source String was: " + hiveIdentifierString, exception);
+                setUnknownValue3(-1);
+            }
+            player.setSkinName(skinNameString);            
+            setPlayer(player);
+            
             setUnknownValue1(unknownValue1String);
             setUnknownValue2(Boolean.parseBoolean(unknownValue2String));
-            try {
-                setPlayerId(Integer.parseInt(playerIdString));
-            } catch (final NumberFormatException exception) {
-                LOG.warn("Error while parsing playerId. Set to -1. The source String was: " + playerIdString, exception);
-                setPlayerId(-1);
-            }
             try {
                 setUnknownValue3(Integer.parseInt(unknownValue3String));
             } catch (final NumberFormatException exception) {
@@ -275,7 +275,6 @@ public class ReadWriteRptLine extends AbstractRptLine {
                 LOG.warn("Error while parsing unknownValue6. Set to -1. The source String was: " + unknownValue6String, exception);
                 setUnknownValue6(-1);
             }
-            setSkinName(skinNameString);
             try {
                 setVersionNumber(Double.parseDouble(versionNumberString));
             } catch (final NumberFormatException exception) {
@@ -423,4 +422,31 @@ public class ReadWriteRptLine extends AbstractRptLine {
             setBackpack(backpack);            
         }        
     }        
+
+    @Override
+    public Collection<Coordinate> getCoordinates() {
+        final Collection<Coordinate> coll = new ArrayList<>();
+        if (coordinate != null) {
+            coll.add(coordinate);
+        }
+        return coll;
+    }
+
+    @Override
+    public Collection<Item> getItems() {
+        final Collection<Item> coll = new ArrayList<>();
+        coll.addAll(toolbelt);
+        coll.addAll(inventory);
+        coll.addAll(backpack);
+        return coll;
+    }
+
+    @Override
+    public Collection<Player> getPlayers() {
+        final Collection<Player> coll = new ArrayList<>();
+        if (player != null) {
+            coll.add(player);
+        }
+        return coll;
+    }
 }
