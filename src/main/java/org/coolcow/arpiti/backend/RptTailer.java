@@ -129,7 +129,6 @@ public class RptTailer extends SwingWorker<Void, Void> {
                                 collectedRptLines = new ArrayList<>();
                             }
                             proceed = file.getFilePointer() - filePointer;
-                            LOG.fatal(proceed);
                             fireTailingProceed(proceed);
                         }
                         filePointer = file.getFilePointer();
