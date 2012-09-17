@@ -7,8 +7,15 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
+    <organization>
+        <name>coolcow.org</name>
+        <url>http://www.coolcow.org</url>
+    </organization>
+
     <name>aRPiTi</name>
-    <url>http://maven.apache.org</url>
+    <url>http://arpiti.coolcow.org</url>
+    <description>analysis tool for RPT files</description>
+    
     <build>
         <plugins>
             <plugin>
@@ -19,25 +26,25 @@
                     <source>1.7</source>
                     <target>1.7</target>
                 </configuration>
-            </plugin>
-            <plugin>          
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jarsigner-plugin</artifactId>
-                <version>1.2</version>
-                <executions>
-                    <execution>
-                        <id>sign</id>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
+            </plugin>    
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>webstart-maven-plugin</artifactId>
+                <version>1.0-beta-3</version>
                 <configuration>
-                    <keystore>${org.coolcow.keystore.path}</keystore>
-                    <alias>coolcow.org</alias>
-                    <storepass>${org.coolcow.keystore.pass}</storepass>
+                    <jnlp>
+                        <mainClass>org.coolcow.arpiti.backend.Backend</mainClass>
+                    </jnlp>
+                    <sign>
+                        <keystore>${org.coolcow.keystore.path}</keystore>
+                        <storepass>${org.coolcow.keystore.pass}</storepass>
+                        <storetype>jks</storetype>
+                        <alias>coolcow.org</alias>
+                        <verify>true</verify>
+                    </sign>
+                    <verbose>true</verbose>
                 </configuration>
-            </plugin>          
+            </plugin>             
         </plugins>
     </build>
     <properties>
