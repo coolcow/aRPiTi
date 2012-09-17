@@ -2,21 +2,21 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.coolcow.arpiti.gui.rptline;
+package org.coolcow.arpiti.gui.renderer;
 
-import org.coolcow.arpiti.backend.bindingconverter.CoordinateToStringConverter;
+import org.coolcow.arpiti.backend.bindingconverter.DoubleToStringConverter;
 import org.coolcow.arpiti.backend.rptline.RptLine;
 
 /**
  *
  * @author jruiz
  */
-public class SecondHandZombieInitializedRenderer extends AbstractRptLineRenderer {
+public class DwDebugFpsRenderer extends AbstractRptLineRenderer {
 
     /**
      * Creates new form DwDebugFpsRenderer
      */
-    public SecondHandZombieInitializedRenderer() {
+    public DwDebugFpsRenderer() {
         initComponents();
     }
 
@@ -36,46 +36,40 @@ public class SecondHandZombieInitializedRenderer extends AbstractRptLineRenderer
         jTextField1 = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jCheckBox1 = new javax.swing.JCheckBox();
 
         setLayout(new java.awt.GridBagLayout());
 
         jPanel3.setLayout(new java.awt.GridBagLayout());
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel1.setText("coordinate: ");
+        jLabel1.setText("FPS: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         jPanel3.add(jLabel1, gridBagConstraints);
 
         jTextField1.setEditable(false);
-        jTextField1.setMinimumSize(new java.awt.Dimension(150, 20));
-        jTextField1.setPreferredSize(new java.awt.Dimension(150, 20));
+        jTextField1.setMinimumSize(new java.awt.Dimension(50, 20));
+        jTextField1.setPreferredSize(new java.awt.Dimension(50, 20));
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.coordinate}"), jTextField1, org.jdesktop.beansbinding.BeanProperty.create("text"), "coordinate");
-        binding.setConverter(new CoordinateToStringConverter());
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.fps}"), jTextField1, org.jdesktop.beansbinding.BeanProperty.create("text"), "");
+        binding.setConverter(new DoubleToStringConverter());
         bindingGroup.addBinding(binding);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 4);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         jPanel3.add(jTextField1, gridBagConstraints);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 172, Short.MAX_VALUE)
+            .addGap(0, 295, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -83,9 +77,7 @@ public class SecondHandZombieInitializedRenderer extends AbstractRptLineRenderer
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 5;
+        gridBagConstraints.gridheight = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         jPanel3.add(jPanel1, gridBagConstraints);
@@ -98,43 +90,19 @@ public class SecondHandZombieInitializedRenderer extends AbstractRptLineRenderer
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 189, Short.MAX_VALUE)
+            .addGap(0, 240, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weighty = 1.0;
         jPanel3.add(jPanel2, gridBagConstraints);
 
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel2.setText("identifier:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
-        jPanel3.add(jLabel2, gridBagConstraints);
-
-        jTextField2.setEditable(false);
-        jTextField2.setMinimumSize(new java.awt.Dimension(150, 20));
-        jTextField2.setPreferredSize(new java.awt.Dimension(150, 20));
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.identifier}"), jTextField2, org.jdesktop.beansbinding.BeanProperty.create("text"), "identifier");
-        bindingGroup.addBinding(binding);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
-        jPanel3.add(jTextField2, gridBagConstraints);
-
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel3.setText("Second Hand Zombie Initialized");
+        jLabel3.setText("DW_DEBUG FPS");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -144,29 +112,9 @@ public class SecondHandZombieInitializedRenderer extends AbstractRptLineRenderer
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 0);
         jPanel3.add(jLabel3, gridBagConstraints);
 
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel4.setText("?: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
-        jPanel3.add(jLabel4, gridBagConstraints);
-
-        jCheckBox1.setEnabled(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.unknownValue}"), jCheckBox1, org.jdesktop.beansbinding.BeanProperty.create("selected"), "unknownValue");
-        bindingGroup.addBinding(binding);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
-        jPanel3.add(jCheckBox1, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -176,16 +124,12 @@ public class SecondHandZombieInitializedRenderer extends AbstractRptLineRenderer
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 

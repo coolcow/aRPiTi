@@ -2,21 +2,20 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.coolcow.arpiti.gui.rptline;
+package org.coolcow.arpiti.gui.renderer;
 
-import org.coolcow.arpiti.backend.bindingconverter.DoubleToStringConverter;
 import org.coolcow.arpiti.backend.rptline.RptLine;
 
 /**
  *
  * @author jruiz
  */
-public class DwDebugFpsRenderer extends AbstractRptLineRenderer {
+public class LoginAttemptRenderer extends AbstractRptLineRenderer {
 
     /**
      * Creates new form DwDebugFpsRenderer
      */
-    public DwDebugFpsRenderer() {
+    public LoginAttemptRenderer() {
         initComponents();
     }
 
@@ -36,49 +35,49 @@ public class DwDebugFpsRenderer extends AbstractRptLineRenderer {
         jTextField1 = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
 
         setLayout(new java.awt.GridBagLayout());
 
         jPanel3.setLayout(new java.awt.GridBagLayout());
 
-        jLabel1.setText("FPS: ");
+        jLabel1.setText("player name: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
         jPanel3.add(jLabel1, gridBagConstraints);
 
         jTextField1.setEditable(false);
-        jTextField1.setMinimumSize(new java.awt.Dimension(50, 20));
-        jTextField1.setPreferredSize(new java.awt.Dimension(50, 20));
+        jTextField1.setMinimumSize(new java.awt.Dimension(150, 20));
+        jTextField1.setPreferredSize(new java.awt.Dimension(150, 20));
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.fps}"), jTextField1, org.jdesktop.beansbinding.BeanProperty.create("text"), "");
-        binding.setConverter(new DoubleToStringConverter());
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.player.name}"), jTextField1, org.jdesktop.beansbinding.BeanProperty.create("text"), "");
         bindingGroup.addBinding(binding);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
         jPanel3.add(jTextField1, gridBagConstraints);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 295, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 290, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridheight = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         jPanel3.add(jPanel1, gridBagConstraints);
 
@@ -86,23 +85,44 @@ public class DwDebugFpsRenderer extends AbstractRptLineRenderer {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 390, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 240, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         gridBagConstraints.weighty = 1.0;
         jPanel3.add(jPanel2, gridBagConstraints);
 
+        jLabel2.setText("player identifier: ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
+        jPanel3.add(jLabel2, gridBagConstraints);
+
+        jTextField2.setEditable(false);
+        jTextField2.setMinimumSize(new java.awt.Dimension(150, 20));
+        jTextField2.setPreferredSize(new java.awt.Dimension(150, 20));
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.player.identifier}"), jTextField2, org.jdesktop.beansbinding.BeanProperty.create("text"), "playerIdentifier");
+        bindingGroup.addBinding(binding);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        jPanel3.add(jTextField2, gridBagConstraints);
+
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel3.setText("DW_DEBUG FPS");
+        jLabel3.setText("Login Attempt");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -113,8 +133,6 @@ public class DwDebugFpsRenderer extends AbstractRptLineRenderer {
         jPanel3.add(jLabel3, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -125,11 +143,13 @@ public class DwDebugFpsRenderer extends AbstractRptLineRenderer {
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 

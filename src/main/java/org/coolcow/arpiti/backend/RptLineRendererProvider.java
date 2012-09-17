@@ -7,22 +7,22 @@ package org.coolcow.arpiti.backend;
 import java.util.HashMap;
 import java.util.Map;
 import org.coolcow.arpiti.backend.rptline.AbstractRptLine;
-import org.coolcow.arpiti.gui.rptline.AbstractRptLineRenderer;
-import org.coolcow.arpiti.gui.rptline.CleanupRenderer;
-import org.coolcow.arpiti.gui.rptline.DefaultRenderer;
-import org.coolcow.arpiti.gui.rptline.DisconnectStartIRenderer;
-import org.coolcow.arpiti.gui.rptline.DwDebugFpsRenderer;
-import org.coolcow.arpiti.gui.rptline.ErrorRenderer;
-import org.coolcow.arpiti.gui.rptline.LocalityEventRenderer;
-import org.coolcow.arpiti.gui.rptline.LoginAttemptRenderer;
-import org.coolcow.arpiti.gui.rptline.LoginLoadedRenderer;
-import org.coolcow.arpiti.gui.rptline.LoginPublishingRenderer;
-import org.coolcow.arpiti.gui.rptline.ObjRenderer;
-import org.coolcow.arpiti.gui.rptline.PDeathRenderer;
-import org.coolcow.arpiti.gui.rptline.ReadWriteRenderer;
-import org.coolcow.arpiti.gui.rptline.SecondHandZombieInitializedRenderer;
-import org.coolcow.arpiti.gui.rptline.StartingLoginRenderer;
-import org.coolcow.arpiti.gui.rptline.WriteRenderer;
+import org.coolcow.arpiti.gui.renderer.AbstractRptLineRenderer;
+import org.coolcow.arpiti.gui.renderer.CleanupRenderer;
+import org.coolcow.arpiti.gui.renderer.DefaultRenderer;
+import org.coolcow.arpiti.gui.renderer.DisconnectStartIRenderer;
+import org.coolcow.arpiti.gui.renderer.DwDebugFpsRenderer;
+import org.coolcow.arpiti.gui.renderer.ErrorRenderer;
+import org.coolcow.arpiti.gui.renderer.LocalityEventRenderer;
+import org.coolcow.arpiti.gui.renderer.LoginAttemptRenderer;
+import org.coolcow.arpiti.gui.renderer.LoginLoadedRenderer;
+import org.coolcow.arpiti.gui.renderer.LoginPublishingRenderer;
+import org.coolcow.arpiti.gui.renderer.ObjRenderer;
+import org.coolcow.arpiti.gui.renderer.PDeathRenderer;
+import org.coolcow.arpiti.gui.renderer.ReadWriteRenderer;
+import org.coolcow.arpiti.gui.renderer.SecondHandZombieInitializedRenderer;
+import org.coolcow.arpiti.gui.renderer.StartingLoginRenderer;
+import org.coolcow.arpiti.gui.renderer.WriteRenderer;
 
 /**
  *

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.coolcow.arpiti.gui.rptline;
+package org.coolcow.arpiti.gui.renderer;
 
 import java.awt.CardLayout;
 import org.coolcow.arpiti.backend.bindingconverter.CoordinateToStringConverter;
