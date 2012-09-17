@@ -34,7 +34,7 @@ public class Backend {
 
     private RptTailer rptTailer;
     
-    private Map<Integer, Player> playerHiveIdentifierHashmap = new HashMap<>();
+    private Map<Integer, Player> playerHiveIdHashmap = new HashMap<>();
     private Map<String, Player> playerIdentifierHashmap = new HashMap<>();
     private Map<String, Player> playerNameHashmap = new HashMap<>();
     
@@ -62,7 +62,7 @@ public class Backend {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                final MainFrame frame = new MainFrame();
+                final MainFrame frame = MainFrame.getInstance();
                 frame.setLocationRelativeTo(null);
                 frame.setVisible(true);
                 if (LOG.isDebugEnabled()) {
@@ -137,7 +137,7 @@ public class Backend {
     public void updatePlayer(final Player newPlayer) {
         if (newPlayer != null) {
             final String identifier = newPlayer.getIdentifier();
-            final int hiveIdentifier = newPlayer.getHiveId();
+            final int hiveId = newPlayer.getHiveId();
             final String name = newPlayer.getName();
                            
             if (identifier != null) {
@@ -147,12 +147,12 @@ public class Backend {
                 }
                 playerIdentifierHashmap.put(identifier, newPlayer);
             }
-            if (hiveIdentifier >= 0) {
-                if (playerHiveIdentifierHashmap.containsKey(hiveIdentifier)) {
-                    final Player oldPlayer = playerHiveIdentifierHashmap.get(hiveIdentifier);
+            if (hiveId >= 0) {
+                if (playerHiveIdHashmap.containsKey(hiveId)) {
+                    final Player oldPlayer = playerHiveIdHashmap.get(hiveId);
                     newPlayer.merge(oldPlayer);
                 }
-                playerHiveIdentifierHashmap.put(hiveIdentifier, newPlayer);
+                playerHiveIdHashmap.put(hiveId, newPlayer);
             }
             if (name != null) {
                 if (playerNameHashmap.containsKey(name)) {

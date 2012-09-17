@@ -1,5 +1,8 @@
 package org.coolcow.arpiti.backend;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -11,11 +14,12 @@ package org.coolcow.arpiti.backend;
  */
 public class Player {
     
-    private String name;
-    private String identifier;
-    private int serverId;
-    private int hiveId;
-    private String skinName;
+    private String name = null;;
+    private String identifier = null;;
+    private int hiveId = -1;
+    private String skinName = null;
+    
+    private final PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     
     public String getName() {
         return name;
@@ -31,14 +35,6 @@ public class Player {
 
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
-    }
-
-    public int getServerId() {
-        return serverId;
-    }
-
-    public void setServerId(int serverId) {
-        this.serverId = serverId;
     }
 
     public int getHiveId() {
@@ -82,4 +78,13 @@ public class Player {
             }            
         }
     }
+    
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.removePropertyChangeListener(listener);
+    }
+    
 }
