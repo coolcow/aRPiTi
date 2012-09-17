@@ -4,8 +4,11 @@
  */
 package org.coolcow.arpiti.gui.renderer;
 
-import org.coolcow.arpiti.gui.bindingconverter.IntToStringConverter;
+import org.coolcow.arpiti.backend.rptline.DisconnectStartIRptLine;
+import org.coolcow.arpiti.backend.rptline.LoginPublishingRptLine;
 import org.coolcow.arpiti.backend.rptline.RptLine;
+import org.coolcow.arpiti.gui.DefaultPlayerInfoComponent;
+import org.coolcow.arpiti.gui.bindingconverter.IntToStringConverter;
 
 /**
  *
@@ -43,6 +46,8 @@ public class LoginPublishingRenderer extends AbstractRptLineRenderer {
         jLabel7 = new javax.swing.JLabel();
         jTextField6 = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        defaultPlayerInfoComponent1 = new org.coolcow.arpiti.gui.DefaultPlayerInfoComponent();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -52,7 +57,7 @@ public class LoginPublishingRenderer extends AbstractRptLineRenderer {
         jLabel1.setText("skin name: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
@@ -67,9 +72,9 @@ public class LoginPublishingRenderer extends AbstractRptLineRenderer {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         jPanel3.add(jTextField1, gridBagConstraints);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -80,7 +85,7 @@ public class LoginPublishingRenderer extends AbstractRptLineRenderer {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 166, Short.MAX_VALUE)
+            .addGap(0, 136, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -95,7 +100,7 @@ public class LoginPublishingRenderer extends AbstractRptLineRenderer {
         jLabel2.setText("?: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
@@ -110,9 +115,9 @@ public class LoginPublishingRenderer extends AbstractRptLineRenderer {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         jPanel3.add(jTextField2, gridBagConstraints);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -136,16 +141,16 @@ public class LoginPublishingRenderer extends AbstractRptLineRenderer {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         jPanel3.add(jTextField5, gridBagConstraints);
 
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel6.setText("?: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
@@ -155,7 +160,7 @@ public class LoginPublishingRenderer extends AbstractRptLineRenderer {
         jLabel7.setText("player name: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
@@ -170,16 +175,16 @@ public class LoginPublishingRenderer extends AbstractRptLineRenderer {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         jPanel3.add(jTextField6, gridBagConstraints);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 123, Short.MAX_VALUE)
+            .addGap(0, 118, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -194,6 +199,21 @@ public class LoginPublishingRenderer extends AbstractRptLineRenderer {
         gridBagConstraints.weightx = 1.0;
         jPanel3.add(jPanel4, gridBagConstraints);
 
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel5.setText("player info:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
+        jPanel3.add(jLabel5, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
+        jPanel3.add(defaultPlayerInfoComponent1, gridBagConstraints);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
@@ -204,9 +224,11 @@ public class LoginPublishingRenderer extends AbstractRptLineRenderer {
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private org.coolcow.arpiti.gui.DefaultPlayerInfoComponent defaultPlayerInfoComponent1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel2;
@@ -223,6 +245,10 @@ public class LoginPublishingRenderer extends AbstractRptLineRenderer {
     public void setRptLine(final RptLine rptLine) {
         bindingGroup.unbind();
         super.setRptLine(rptLine);
+        if (rptLine != null && rptLine instanceof LoginPublishingRptLine) {
+            final DefaultPlayerInfoComponent component = (DefaultPlayerInfoComponent)defaultPlayerInfoComponent1;
+            component.setPlayer(((LoginPublishingRptLine) rptLine).getPlayer());
+        }            
         bindingGroup.bind();
     }
 }

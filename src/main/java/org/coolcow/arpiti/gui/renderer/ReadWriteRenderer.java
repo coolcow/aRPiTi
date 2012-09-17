@@ -5,10 +5,12 @@
 package org.coolcow.arpiti.gui.renderer;
 
 import java.awt.CardLayout;
-import org.coolcow.arpiti.gui.bindingconverter.CoordinateToStringConverter;
-import org.coolcow.arpiti.gui.bindingconverter.DateToStringConverter;
+import org.coolcow.arpiti.backend.rptline.DisconnectStartIRptLine;
 import org.coolcow.arpiti.backend.rptline.ReadWriteRptLine;
 import org.coolcow.arpiti.backend.rptline.RptLine;
+import org.coolcow.arpiti.gui.DefaultPlayerInfoComponent;
+import org.coolcow.arpiti.gui.bindingconverter.CoordinateToStringConverter;
+import org.coolcow.arpiti.gui.bindingconverter.DateToStringConverter;
 
 /**
  *
@@ -54,6 +56,8 @@ public class ReadWriteRenderer extends AbstractRptLineRenderer {
         jLabel5 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        defaultPlayerInfoComponent1 = new org.coolcow.arpiti.gui.DefaultPlayerInfoComponent();
         panNone = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
@@ -80,7 +84,7 @@ public class ReadWriteRenderer extends AbstractRptLineRenderer {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         panGear.add(jTextField1, gridBagConstraints);
@@ -99,7 +103,7 @@ public class ReadWriteRenderer extends AbstractRptLineRenderer {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 5;
+        gridBagConstraints.gridheight = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         panGear.add(jPanel1, gridBagConstraints);
@@ -112,12 +116,12 @@ public class ReadWriteRenderer extends AbstractRptLineRenderer {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 266, Short.MAX_VALUE)
+            .addGap(0, 236, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weighty = 1.0;
@@ -138,7 +142,7 @@ public class ReadWriteRenderer extends AbstractRptLineRenderer {
         jLabel1.setText("player id: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
@@ -253,7 +257,7 @@ public class ReadWriteRenderer extends AbstractRptLineRenderer {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         panGear.add(jPanel4, gridBagConstraints);
@@ -262,7 +266,7 @@ public class ReadWriteRenderer extends AbstractRptLineRenderer {
         jLabel7.setText("coordinate: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
@@ -278,10 +282,25 @@ public class ReadWriteRenderer extends AbstractRptLineRenderer {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         panGear.add(jTextField3, gridBagConstraints);
+
+        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel10.setText("player info:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
+        panGear.add(jLabel10, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
+        panGear.add(defaultPlayerInfoComponent1, gridBagConstraints);
 
         panCards.add(panGear, "gear");
 
@@ -426,7 +445,9 @@ public class ReadWriteRenderer extends AbstractRptLineRenderer {
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private org.coolcow.arpiti.gui.DefaultPlayerInfoComponent defaultPlayerInfoComponent1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -477,6 +498,10 @@ public class ReadWriteRenderer extends AbstractRptLineRenderer {
 
         bindingGroup.unbind();
         super.setRptLine(rptLine);
+        if (rptLine != null && rptLine instanceof ReadWriteRptLine) {
+            final DefaultPlayerInfoComponent component = (DefaultPlayerInfoComponent)defaultPlayerInfoComponent1;
+            component.setPlayer(((ReadWriteRptLine) rptLine).getPlayer());
+        }        
         bindingGroup.bind();
     }
 }

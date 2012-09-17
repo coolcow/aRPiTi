@@ -4,7 +4,10 @@
  */
 package org.coolcow.arpiti.gui.renderer;
 
+import org.coolcow.arpiti.backend.rptline.DisconnectStartIRptLine;
+import org.coolcow.arpiti.backend.rptline.PDeathRptLine;
 import org.coolcow.arpiti.backend.rptline.RptLine;
+import org.coolcow.arpiti.gui.DefaultPlayerInfoComponent;
 
 /**
  *
@@ -36,6 +39,8 @@ public class PDeathRenderer extends AbstractRptLineRenderer {
         jLabel2 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        defaultPlayerInfoComponent1 = new org.coolcow.arpiti.gui.DefaultPlayerInfoComponent();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -55,7 +60,7 @@ public class PDeathRenderer extends AbstractRptLineRenderer {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 3;
+        gridBagConstraints.gridheight = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         jPanel3.add(jPanel1, gridBagConstraints);
@@ -68,12 +73,12 @@ public class PDeathRenderer extends AbstractRptLineRenderer {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 240, Short.MAX_VALUE)
+            .addGap(0, 210, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weighty = 1.0;
@@ -82,7 +87,7 @@ public class PDeathRenderer extends AbstractRptLineRenderer {
         jLabel2.setText("player identifier: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
@@ -97,7 +102,7 @@ public class PDeathRenderer extends AbstractRptLineRenderer {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         jPanel3.add(jTextField2, gridBagConstraints);
@@ -113,6 +118,21 @@ public class PDeathRenderer extends AbstractRptLineRenderer {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 0);
         jPanel3.add(jLabel3, gridBagConstraints);
 
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel5.setText("player info:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
+        jPanel3.add(jLabel5, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
+        jPanel3.add(defaultPlayerInfoComponent1, gridBagConstraints);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
@@ -123,8 +143,10 @@ public class PDeathRenderer extends AbstractRptLineRenderer {
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private org.coolcow.arpiti.gui.DefaultPlayerInfoComponent defaultPlayerInfoComponent1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -136,6 +158,10 @@ public class PDeathRenderer extends AbstractRptLineRenderer {
     public void setRptLine(final RptLine rptLine) {
         bindingGroup.unbind();
         super.setRptLine(rptLine);
+        if (rptLine != null && rptLine instanceof PDeathRptLine) {
+            final DefaultPlayerInfoComponent component = (DefaultPlayerInfoComponent)defaultPlayerInfoComponent1;
+            component.setPlayer(((PDeathRptLine) rptLine).getPlayer());
+        }
         bindingGroup.bind();
     }
 }

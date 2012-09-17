@@ -4,8 +4,11 @@
  */
 package org.coolcow.arpiti.gui.renderer;
 
-import org.coolcow.arpiti.gui.bindingconverter.IntToStringConverter;
+import org.coolcow.arpiti.backend.rptline.DisconnectStartIRptLine;
 import org.coolcow.arpiti.backend.rptline.RptLine;
+import org.coolcow.arpiti.backend.rptline.StartingLoginRptLine;
+import org.coolcow.arpiti.gui.DefaultPlayerInfoComponent;
+import org.coolcow.arpiti.gui.bindingconverter.IntToStringConverter;
 
 /**
  *
@@ -43,6 +46,8 @@ public class StartingLoginRenderer extends AbstractRptLineRenderer {
         jLabel7 = new javax.swing.JLabel();
         jTextField6 = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
+        defaultPlayerInfoComponent1 = new org.coolcow.arpiti.gui.DefaultPlayerInfoComponent();
+        jLabel10 = new javax.swing.JLabel();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -52,7 +57,7 @@ public class StartingLoginRenderer extends AbstractRptLineRenderer {
         jLabel1.setText("player identifier: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         jPanel3.add(jLabel1, gridBagConstraints);
@@ -66,7 +71,7 @@ public class StartingLoginRenderer extends AbstractRptLineRenderer {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         jPanel3.add(jTextField1, gridBagConstraints);
@@ -79,7 +84,7 @@ public class StartingLoginRenderer extends AbstractRptLineRenderer {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 166, Short.MAX_VALUE)
+            .addGap(0, 136, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -94,7 +99,7 @@ public class StartingLoginRenderer extends AbstractRptLineRenderer {
         jLabel2.setText("?: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         jPanel3.add(jLabel2, gridBagConstraints);
@@ -108,7 +113,7 @@ public class StartingLoginRenderer extends AbstractRptLineRenderer {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         jPanel3.add(jTextField2, gridBagConstraints);
@@ -134,7 +139,7 @@ public class StartingLoginRenderer extends AbstractRptLineRenderer {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         jPanel3.add(jTextField5, gridBagConstraints);
@@ -143,7 +148,7 @@ public class StartingLoginRenderer extends AbstractRptLineRenderer {
         jLabel6.setText("?: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         jPanel3.add(jLabel6, gridBagConstraints);
@@ -152,7 +157,7 @@ public class StartingLoginRenderer extends AbstractRptLineRenderer {
         jLabel7.setText("player name: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         jPanel3.add(jLabel7, gridBagConstraints);
@@ -166,7 +171,7 @@ public class StartingLoginRenderer extends AbstractRptLineRenderer {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         jPanel3.add(jTextField6, gridBagConstraints);
@@ -189,6 +194,21 @@ public class StartingLoginRenderer extends AbstractRptLineRenderer {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         jPanel3.add(jPanel4, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
+        jPanel3.add(defaultPlayerInfoComponent1, gridBagConstraints);
+
+        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel10.setText("player info:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
+        jPanel3.add(jLabel10, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
@@ -200,7 +220,9 @@ public class StartingLoginRenderer extends AbstractRptLineRenderer {
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private org.coolcow.arpiti.gui.DefaultPlayerInfoComponent defaultPlayerInfoComponent1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
@@ -219,6 +241,10 @@ public class StartingLoginRenderer extends AbstractRptLineRenderer {
     public void setRptLine(final RptLine rptLine) {
         bindingGroup.unbind();
         super.setRptLine(rptLine);
+        if (rptLine != null && rptLine instanceof StartingLoginRptLine) {
+            final DefaultPlayerInfoComponent component = (DefaultPlayerInfoComponent)defaultPlayerInfoComponent1;
+            component.setPlayer(((StartingLoginRptLine) rptLine).getPlayer());
+        }
         bindingGroup.bind();
     }
 }
