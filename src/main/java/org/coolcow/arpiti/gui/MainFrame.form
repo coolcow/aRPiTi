@@ -443,7 +443,7 @@
                         </Constraint>
                       </Constraints>
                     </Component>
-                    <Component class="javax.swing.JCheckBox" name="cbFilterItems1">
+                    <Component class="javax.swing.JCheckBox" name="cbFilterCoordinate">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="has coordinate"/>
                         <Property name="horizontalAlignment" type="int" value="11"/>

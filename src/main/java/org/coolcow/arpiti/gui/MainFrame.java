@@ -26,10 +26,12 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 import org.apache.log4j.Logger;
 import org.coolcow.arpiti.backend.Backend;
+import org.coolcow.arpiti.backend.Coordinate;
 import org.coolcow.arpiti.backend.Item;
 import org.coolcow.arpiti.backend.Player;
 import org.coolcow.arpiti.backend.RptTailerListener;
 import org.coolcow.arpiti.backend.rptline.AbstractRptLine;
+import org.coolcow.arpiti.backend.rptline.interfaces.CoordinateProvider;
 import org.coolcow.arpiti.backend.rptline.interfaces.ItemProvider;
 import org.coolcow.arpiti.backend.rptline.interfaces.PlayerProvider;
 import org.coolcow.arpiti.gui.renderer.AbstractRptLineRenderer;
@@ -123,7 +125,7 @@ public final class MainFrame extends javax.swing.JFrame {
         cbFilterItems = new javax.swing.JCheckBox();
         txtItemType = new javax.swing.JTextField();
         cbFilterContent = new javax.swing.JCheckBox();
-        cbFilterItems1 = new javax.swing.JCheckBox();
+        cbFilterCoordinate = new javax.swing.JCheckBox();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jRadioButton1 = new javax.swing.JRadioButton();
@@ -411,15 +413,15 @@ public final class MainFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         panFilter.add(cbFilterContent, gridBagConstraints);
 
-        cbFilterItems1.setText("has coordinate");
-        cbFilterItems1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        cbFilterItems1.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        cbFilterCoordinate.setText("has coordinate");
+        cbFilterCoordinate.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        cbFilterCoordinate.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
-        panFilter.add(cbFilterItems1, gridBagConstraints);
+        panFilter.add(cbFilterCoordinate, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -742,8 +744,8 @@ public final class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnLoadRpt;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JCheckBox cbFilterContent;
+    private javax.swing.JCheckBox cbFilterCoordinate;
     private javax.swing.JCheckBox cbFilterItems;
-    private javax.swing.JCheckBox cbFilterItems1;
     private javax.swing.JCheckBox cbFilterPlayers;
     private javax.swing.JCheckBox cbxFilterCleanup;
     private javax.swing.JCheckBox cbxFilterDelete;
@@ -906,6 +908,7 @@ public final class MainFrame extends javax.swing.JFrame {
             final boolean typeFilterIncludes;
             final boolean playerNameFilterIncludes;
             final boolean itemTypeFilterIncludes;
+            final boolean coordinateFilterIncludes;
 
             if (cbFilterContent.isSelected()) {
                 final String contentFilter = txtFilterContent.getText();
@@ -1017,8 +1020,13 @@ public final class MainFrame extends javax.swing.JFrame {
                 itemTypeFilterIncludes = true;
             }
             
+            if (cbFilterCoordinate.isSelected()) {
+                coordinateFilterIncludes = (line instanceof CoordinateProvider);
+            } else {
+                coordinateFilterIncludes = true;
+            }
             
-            return contentFilterIncludes && typeFilterIncludes && playerNameFilterIncludes && itemTypeFilterIncludes;
+            return coordinateFilterIncludes && contentFilterIncludes && typeFilterIncludes && playerNameFilterIncludes && itemTypeFilterIncludes;
         }
     }
 
