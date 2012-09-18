@@ -101,6 +101,9 @@ public final class MainFrame extends javax.swing.JFrame {
         txtFilterContent = new javax.swing.JTextField();
         panTypes = new javax.swing.JPanel();
         cbxFilterNull = new javax.swing.JCheckBox();
+        cbxFilterDwDebugFps = new javax.swing.JCheckBox();
+        cbxFilterError = new javax.swing.JCheckBox();
+        cbxFilterLocalityEvent = new javax.swing.JCheckBox();
         cbxFilterStartingLogin = new javax.swing.JCheckBox();
         cbxFilterLoginAttempt = new javax.swing.JCheckBox();
         cbxFilterLoginPublishing = new javax.swing.JCheckBox();
@@ -114,15 +117,13 @@ public final class MainFrame extends javax.swing.JFrame {
         cbxFilterPdeath = new javax.swing.JCheckBox();
         cbxFilterSecondHandZombieInitialized = new javax.swing.JCheckBox();
         cbxFilterObj = new javax.swing.JCheckBox();
-        cbxFilterDwDebugFps = new javax.swing.JCheckBox();
-        cbxFilterError = new javax.swing.JCheckBox();
-        cbxFilterLocalityEvent = new javax.swing.JCheckBox();
         btnFilterApply = new javax.swing.JButton();
         txtPlayerName = new javax.swing.JTextField();
         cbFilterPlayers = new javax.swing.JCheckBox();
         cbFilterItems = new javax.swing.JCheckBox();
         txtItemType = new javax.swing.JTextField();
         cbFilterContent = new javax.swing.JCheckBox();
+        cbFilterItems1 = new javax.swing.JCheckBox();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jRadioButton1 = new javax.swing.JRadioButton();
@@ -254,12 +255,15 @@ public final class MainFrame extends javax.swing.JFrame {
 
         panFilter.setBorder(javax.swing.BorderFactory.createTitledBorder("Filter"));
         panFilter.setLayout(new java.awt.GridBagLayout());
+
+        txtFilterContent.setMinimumSize(new java.awt.Dimension(100, 23));
+        txtFilterContent.setPreferredSize(new java.awt.Dimension(100, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         panFilter.add(txtFilterContent, gridBagConstraints);
 
         panTypes.setBorder(javax.swing.BorderFactory.createTitledBorder("Types"));
@@ -268,6 +272,18 @@ public final class MainFrame extends javax.swing.JFrame {
         cbxFilterNull.setSelected(true);
         cbxFilterNull.setText("<none>");
         panTypes.add(cbxFilterNull);
+
+        cbxFilterDwDebugFps.setSelected(true);
+        cbxFilterDwDebugFps.setText("DW_DEBUG FPS");
+        panTypes.add(cbxFilterDwDebugFps);
+
+        cbxFilterError.setSelected(true);
+        cbxFilterError.setText("ERROR");
+        panTypes.add(cbxFilterError);
+
+        cbxFilterLocalityEvent.setSelected(true);
+        cbxFilterLocalityEvent.setText("Locality Event");
+        panTypes.add(cbxFilterLocalityEvent);
 
         cbxFilterStartingLogin.setSelected(true);
         cbxFilterStartingLogin.setText("STARTING LOGIN");
@@ -321,91 +337,89 @@ public final class MainFrame extends javax.swing.JFrame {
         cbxFilterObj.setText("OBJ");
         panTypes.add(cbxFilterObj);
 
-        cbxFilterDwDebugFps.setSelected(true);
-        cbxFilterDwDebugFps.setText("DW_DEBUG FPS");
-        panTypes.add(cbxFilterDwDebugFps);
-
-        cbxFilterError.setSelected(true);
-        cbxFilterError.setText("ERROR");
-        panTypes.add(cbxFilterError);
-
-        cbxFilterLocalityEvent.setSelected(true);
-        cbxFilterLocalityEvent.setText("Locality Event");
-        panTypes.add(cbxFilterLocalityEvent);
-
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridheight = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         panFilter.add(panTypes, gridBagConstraints);
 
-        btnFilterApply.setText("apply filter to all rows");
+        btnFilterApply.setText("apply to all rows");
         btnFilterApply.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnFilterApplyActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
-        gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         panFilter.add(btnFilterApply, gridBagConstraints);
 
-        txtPlayerName.setMinimumSize(new java.awt.Dimension(100, 20));
-        txtPlayerName.setPreferredSize(new java.awt.Dimension(100, 20));
+        txtPlayerName.setMinimumSize(new java.awt.Dimension(100, 23));
+        txtPlayerName.setPreferredSize(new java.awt.Dimension(100, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         panFilter.add(txtPlayerName, gridBagConstraints);
 
         cbFilterPlayers.setText("player name:");
         cbFilterPlayers.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         cbFilterPlayers.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         panFilter.add(cbFilterPlayers, gridBagConstraints);
 
         cbFilterItems.setText("item type:");
         cbFilterItems.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         cbFilterItems.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        panFilter.add(cbFilterItems, gridBagConstraints);
-
-        txtItemType.setMinimumSize(new java.awt.Dimension(100, 20));
-        txtItemType.setPreferredSize(new java.awt.Dimension(100, 20));
-        gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
+        panFilter.add(cbFilterItems, gridBagConstraints);
+
+        txtItemType.setMinimumSize(new java.awt.Dimension(100, 23));
+        txtItemType.setPreferredSize(new java.awt.Dimension(100, 23));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         panFilter.add(txtItemType, gridBagConstraints);
 
         cbFilterContent.setText("content:");
         cbFilterContent.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         cbFilterContent.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         panFilter.add(cbFilterContent, gridBagConstraints);
+
+        cbFilterItems1.setText("has coordinate");
+        cbFilterItems1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        cbFilterItems1.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
+        panFilter.add(cbFilterItems1, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -729,6 +743,7 @@ public final class MainFrame extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JCheckBox cbFilterContent;
     private javax.swing.JCheckBox cbFilterItems;
+    private javax.swing.JCheckBox cbFilterItems1;
     private javax.swing.JCheckBox cbFilterPlayers;
     private javax.swing.JCheckBox cbxFilterCleanup;
     private javax.swing.JCheckBox cbxFilterDelete;
