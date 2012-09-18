@@ -150,7 +150,7 @@ public class Backend {
             if (hiveId >= 0) {
                 if (playerHiveIdHashmap.containsKey(hiveId)) {
                     final Player oldPlayer = playerHiveIdHashmap.get(hiveId);
-                    newPlayer.merge(oldPlayer);
+                    newPlayer.merge(newPlayer);
                 }
                 playerHiveIdHashmap.put(hiveId, newPlayer);
             }
