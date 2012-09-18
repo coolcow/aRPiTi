@@ -266,7 +266,7 @@ public class HiveRenderer extends AbstractRptLineRenderer {
     @Override
     public void setRptLine(final RptLine rptLine) {
         final CardLayout cardLayout = (CardLayout) panCards.getLayout();
-        if (rptLine != null && rptLine instanceof ReadWriteRptLine) {
+        if (rptLine != null && rptLine instanceof HiveRptLine) {
             final HiveRptLine readWriteRptLine = (HiveRptLine) rptLine;
             if (readWriteRptLine.isTypeWrite()) {
                 cardLayout.show(panCards, "write");                

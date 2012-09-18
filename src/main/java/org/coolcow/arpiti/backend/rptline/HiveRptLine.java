@@ -99,7 +99,7 @@ public class HiveRptLine extends AbstractRptLine implements PlayerProvider {
                 setUnknownValue1(-1);
             }
             try {
-                setUnknownValue2(Integer.parseInt(unknownValue1String));
+                setUnknownValue2(Integer.parseInt(unknownValue2String));
             } catch (final NumberFormatException exception) {
                 LOG.warn("Error while parsing unknownValue2. Set to -1. The source String was: " + unknownValue2String, exception);
                 setUnknownValue2(-1);
