@@ -210,9 +210,9 @@ public final class MainFrame extends javax.swing.JFrame {
         panMain.add(panProgress, gridBagConstraints);
 
         panInfo.setBorder(javax.swing.BorderFactory.createTitledBorder("Details about selected row"));
-        panInfo.setMaximumSize(new java.awt.Dimension(300, 23));
-        panInfo.setMinimumSize(new java.awt.Dimension(300, 23));
-        panInfo.setPreferredSize(new java.awt.Dimension(300, 23));
+        panInfo.setMaximumSize(new java.awt.Dimension(350, 23));
+        panInfo.setMinimumSize(new java.awt.Dimension(350, 23));
+        panInfo.setPreferredSize(new java.awt.Dimension(350, 23));
         panInfo.setLayout(new javax.swing.BoxLayout(panInfo, javax.swing.BoxLayout.LINE_AXIS));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
