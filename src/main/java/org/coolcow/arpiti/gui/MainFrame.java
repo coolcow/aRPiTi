@@ -33,6 +33,7 @@ import org.coolcow.arpiti.backend.rptline.AbstractRptLine;
 import org.coolcow.arpiti.backend.rptline.interfaces.ItemProvider;
 import org.coolcow.arpiti.backend.rptline.interfaces.PlayerProvider;
 import org.coolcow.arpiti.gui.renderer.AbstractRptLineRenderer;
+import org.coolcow.arpiti.gui.utils.LoadFromProperties;
 
 /**
  *
@@ -46,7 +47,6 @@ public final class MainFrame extends javax.swing.JFrame {
     private boolean autoscroll = true;
     private final TableRowSorter<RptLineTableModel> sorter = new TableRowSorter<>(model);
     private AbstractRptLine popLine = null;
-    
     private static final Logger LOG = Logger.getLogger(MainFrame.class);
     private static MainFrame INSTANCE;
 
@@ -56,6 +56,7 @@ public final class MainFrame extends javax.swing.JFrame {
         }
         return INSTANCE;
     }
+
     /**
      * Creates new form NewJFrame
      */
@@ -724,6 +725,11 @@ public final class MainFrame extends javax.swing.JFrame {
         final FileNameExtensionFilter rptFilter = new FileNameExtensionFilter("RPT file", "rpt");
         fc.setFileFilter(rptFilter);
         fc.setDialogTitle("choose RPT file");
+        if (rptFile != null) {
+            fc.setCurrentDirectory(rptFile);
+        } else {
+            rptFile = LoadFromProperties.restoreRptPath();
+        }
         final int returnVal = fc.showOpenDialog(this);
 
         tgbResume.setEnabled(true);
@@ -734,9 +740,9 @@ public final class MainFrame extends javax.swing.JFrame {
 
             Backend.getInstance().startNewRptTailer(rptFile, new RptTailerListenerImpl());
             txtRptPath.setText(rptFile.getAbsolutePath());
+            LoadFromProperties.storeRptPath(rptFile);
         }
     }//GEN-LAST:event_btnLoadRptActionPerformed
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFilterApply;
     private javax.swing.JButton btnLoadRpt;
@@ -825,7 +831,6 @@ public final class MainFrame extends javax.swing.JFrame {
         public void rptLinesTailed(final List<AbstractRptLine> rptLines) {
             if (rptLines != null) {
                 SwingUtilities.invokeLater(new Runnable() {
-
                     @Override
                     public void run() {
                         model.addLines(rptLines);
@@ -916,7 +921,7 @@ public final class MainFrame extends javax.swing.JFrame {
                     contentFilterIncludes = true;
                 }
             } else {
-                contentFilterIncludes = true;                
+                contentFilterIncludes = true;
             }
 
             if (line.getType() == null) {
@@ -981,7 +986,7 @@ public final class MainFrame extends javax.swing.JFrame {
                 if (line instanceof PlayerProvider) {
                     final PlayerProvider playerProvider = (PlayerProvider) line;
                     boolean playerNameFound = false;
-                    for (final Player player : playerProvider.getPlayers())  {
+                    for (final Player player : playerProvider.getPlayers()) {
                         final String playerName = player.getName();
                         if (playerName != null && Pattern.compile(playerNameFilter).matcher(playerName).find()) {
                             playerNameFound = true;
@@ -995,14 +1000,14 @@ public final class MainFrame extends javax.swing.JFrame {
             } else {
                 playerNameFilterIncludes = true;
             }
-            
+
 
             if (cbFilterItems.isSelected()) {
                 final String itemTypeFilter = txtItemType.getText();
                 if (line instanceof ItemProvider) {
                     final ItemProvider itemProvider = (ItemProvider) line;
                     boolean itemTypeFound = false;
-                    for (final Item item : itemProvider.getItems())  {
+                    for (final Item item : itemProvider.getItems()) {
                         final String itemType = item.getType();
                         if (itemType != null && Pattern.compile(itemTypeFilter).matcher(itemType).find()) {
                             itemTypeFound = true;
@@ -1016,8 +1021,8 @@ public final class MainFrame extends javax.swing.JFrame {
             } else {
                 itemTypeFilterIncludes = true;
             }
-            
-            
+
+
             return contentFilterIncludes && typeFilterIncludes && playerNameFilterIncludes && itemTypeFilterIncludes;
         }
     }
