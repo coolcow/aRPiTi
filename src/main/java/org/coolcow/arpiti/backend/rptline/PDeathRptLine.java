@@ -32,6 +32,9 @@ public class PDeathRptLine extends AbstractRptLine implements PlayerProvider {
     }
 
     protected void setPlayer(final Player player) {
+        if (player != null) {
+            Backend.getInstance().updatePlayer(player);            
+        }
         this.player = player;
     }
 
@@ -49,7 +52,6 @@ public class PDeathRptLine extends AbstractRptLine implements PlayerProvider {
             
             final Player player = new Player();
             player.setIdentifier(playerIdentifierString);
-            Backend.getInstance().updatePlayer(player);            
             setPlayer(player);
             
             return true;

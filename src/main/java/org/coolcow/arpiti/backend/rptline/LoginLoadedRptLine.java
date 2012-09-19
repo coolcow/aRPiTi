@@ -50,6 +50,9 @@ public class LoginLoadedRptLine extends AbstractRptLine implements PlayerProvide
     }
 
     protected void setPlayer(final Player player) {
+        if (player != null) {
+            Backend.getInstance().updatePlayer(player);
+        }
         this.player = player;
     }
 
@@ -71,7 +74,6 @@ public class LoginLoadedRptLine extends AbstractRptLine implements PlayerProvide
             final Player player = new Player();
             player.setName(playerNameString);
             player.setSkinName(skinNameString);
-            Backend.getInstance().updatePlayer(player);
             setPlayer(player);
             
             setUnknownValue1(unknownValue1String);

@@ -43,6 +43,9 @@ public class DisconnectStartIRptLine extends AbstractRptLine implements PlayerPr
     }
 
     protected void setPlayer(final Player player) {
+        if (player != null) {
+            Backend.getInstance().updatePlayer(player);
+        }
         this.player = player;
     }
 
@@ -150,7 +153,6 @@ public class DisconnectStartIRptLine extends AbstractRptLine implements PlayerPr
             final Player player = new Player();
             player.setIdentifier(playerIdentifierString);
             player.setName(playerNameString);
-            Backend.getInstance().updatePlayer(player);
             
             setPlayer(player);
             
@@ -175,7 +177,6 @@ public class DisconnectStartIRptLine extends AbstractRptLine implements PlayerPr
             final Player player = new Player();
             player.setIdentifier(playerIdentifierString);
             player.setName(playerNameString);
-            Backend.getInstance().updatePlayer(player);
             
             setPlayer(player);
             setUnknownValue1(unknownValue1String);
@@ -196,7 +197,6 @@ public class DisconnectStartIRptLine extends AbstractRptLine implements PlayerPr
             final Player player = new Player();
             player.setIdentifier(playerIdentifierString);
             player.setName(playerNameString);
-            Backend.getInstance().updatePlayer(player);
 
             setPlayer(player);
             setUnknownValue1(null);
@@ -215,7 +215,6 @@ public class DisconnectStartIRptLine extends AbstractRptLine implements PlayerPr
             player.setIdentifier(playerIdentifierString);
             player.setName(playerNameString);
             player.setSkinName(playerSkinString);
-            Backend.getInstance().updatePlayer(player);
             
             setPlayer(player);
             setUnknownValue3(unknownValue3String);

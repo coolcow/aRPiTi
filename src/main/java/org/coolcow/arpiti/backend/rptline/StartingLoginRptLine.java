@@ -34,6 +34,9 @@ public class StartingLoginRptLine extends AbstractRptLine implements PlayerProvi
     }
 
     protected void setPlayer(final Player player) {
+        if (player != null) {
+            Backend.getInstance().updatePlayer(player);                        
+        }
         this.player = player;
     }
 
@@ -71,7 +74,6 @@ public class StartingLoginRptLine extends AbstractRptLine implements PlayerProvi
             final Player player = new Player();
             player.setIdentifier(playerIdentifierString);
             player.setName(playerNameString);            
-            Backend.getInstance().updatePlayer(player);            
             setPlayer(player);
             setUnknownValue1(unknownValue1String);
             try {

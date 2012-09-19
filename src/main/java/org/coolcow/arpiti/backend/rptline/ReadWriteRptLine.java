@@ -71,6 +71,9 @@ public class ReadWriteRptLine extends AbstractRptLine implements CoordinateProvi
     }
 
     protected void setPlayer(final Player player) {
+        if (player != null) {
+            Backend.getInstance().updatePlayer(player);            
+        }
         this.player = player;
     }
 

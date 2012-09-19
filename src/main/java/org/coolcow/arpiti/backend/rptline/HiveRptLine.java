@@ -44,6 +44,9 @@ public class HiveRptLine extends AbstractRptLine implements PlayerProvider {
     }
 
     protected void setPlayer(final Player player) {
+        if (player != null) {
+            Backend.getInstance().updatePlayer(player);
+        }
         this.player = player;
     }
 
@@ -89,7 +92,6 @@ public class HiveRptLine extends AbstractRptLine implements PlayerProvider {
                     LOG.warn("Error while parsing hiveIdentifier." + hiveIdString, exception);
                 }                
             }
-            Backend.getInstance().updatePlayer(player);
             
             setPlayer(player);            
             try {

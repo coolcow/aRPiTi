@@ -34,6 +34,9 @@ public class LoginPublishingRptLine extends AbstractRptLine implements PlayerPro
     }
 
     protected void setPlayer(final Player player) {
+        if (player != null) {
+            Backend.getInstance().updatePlayer(player);
+        }
         this.player = player;
     }
     
@@ -71,7 +74,6 @@ public class LoginPublishingRptLine extends AbstractRptLine implements PlayerPro
             final Player player = new Player();
             player.setSkinName(skinNameString);
             player.setName(playerNameString);
-            Backend.getInstance().updatePlayer(player);
             setPlayer(player);
                         
             setUnknownValue1(unknownValue1String);
