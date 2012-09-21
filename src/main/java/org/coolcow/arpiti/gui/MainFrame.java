@@ -26,14 +26,8 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 import org.apache.log4j.Logger;
 import org.coolcow.arpiti.backend.Backend;
-import org.coolcow.arpiti.backend.Coordinate;
-import org.coolcow.arpiti.backend.Item;
-import org.coolcow.arpiti.backend.Player;
-import org.coolcow.arpiti.backend.RptTailerListener;
+import org.coolcow.arpiti.backend.rpttailer.RptTailerListener;
 import org.coolcow.arpiti.backend.rptline.AbstractRptLine;
-import org.coolcow.arpiti.backend.rptline.interfaces.CoordinateProvider;
-import org.coolcow.arpiti.backend.rptline.interfaces.ItemProvider;
-import org.coolcow.arpiti.backend.rptline.interfaces.PlayerProvider;
 import org.coolcow.arpiti.gui.renderer.AbstractRptLineRenderer;
 
 /**
@@ -120,12 +114,7 @@ public final class MainFrame extends javax.swing.JFrame {
         cbxFilterSecondHandZombieInitialized = new javax.swing.JCheckBox();
         cbxFilterObj = new javax.swing.JCheckBox();
         btnFilterApply = new javax.swing.JButton();
-        txtPlayerName = new javax.swing.JTextField();
-        cbFilterPlayers = new javax.swing.JCheckBox();
-        cbFilterItems = new javax.swing.JCheckBox();
-        txtItemType = new javax.swing.JTextField();
         cbFilterContent = new javax.swing.JCheckBox();
-        cbFilterCoordinate = new javax.swing.JCheckBox();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jRadioButton1 = new javax.swing.JRadioButton();
@@ -357,51 +346,11 @@ public final class MainFrame extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         panFilter.add(btnFilterApply, gridBagConstraints);
-
-        txtPlayerName.setMinimumSize(new java.awt.Dimension(100, 23));
-        txtPlayerName.setPreferredSize(new java.awt.Dimension(100, 23));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
-        panFilter.add(txtPlayerName, gridBagConstraints);
-
-        cbFilterPlayers.setText("player name:");
-        cbFilterPlayers.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        cbFilterPlayers.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
-        panFilter.add(cbFilterPlayers, gridBagConstraints);
-
-        cbFilterItems.setText("item type:");
-        cbFilterItems.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        cbFilterItems.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
-        panFilter.add(cbFilterItems, gridBagConstraints);
-
-        txtItemType.setMinimumSize(new java.awt.Dimension(100, 23));
-        txtItemType.setPreferredSize(new java.awt.Dimension(100, 23));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
-        panFilter.add(txtItemType, gridBagConstraints);
 
         cbFilterContent.setText("content:");
         cbFilterContent.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -412,16 +361,6 @@ public final class MainFrame extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         panFilter.add(cbFilterContent, gridBagConstraints);
-
-        cbFilterCoordinate.setText("has coordinate");
-        cbFilterCoordinate.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        cbFilterCoordinate.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
-        panFilter.add(cbFilterCoordinate, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -744,9 +683,6 @@ public final class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnLoadRpt;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JCheckBox cbFilterContent;
-    private javax.swing.JCheckBox cbFilterCoordinate;
-    private javax.swing.JCheckBox cbFilterItems;
-    private javax.swing.JCheckBox cbFilterPlayers;
     private javax.swing.JCheckBox cbxFilterCleanup;
     private javax.swing.JCheckBox cbxFilterDelete;
     private javax.swing.JCheckBox cbxFilterDisconnectStartI;
@@ -802,8 +738,6 @@ public final class MainFrame extends javax.swing.JFrame {
     private javax.swing.JToggleButton tgbAutoScroll;
     private javax.swing.JToggleButton tgbResume;
     private javax.swing.JTextField txtFilterContent;
-    private javax.swing.JTextField txtItemType;
-    private javax.swing.JTextField txtPlayerName;
     private javax.swing.JTextField txtRptPath;
     // End of variables declaration//GEN-END:variables
 
@@ -906,9 +840,6 @@ public final class MainFrame extends javax.swing.JFrame {
 
             final boolean contentFilterIncludes;
             final boolean typeFilterIncludes;
-            final boolean playerNameFilterIncludes;
-            final boolean itemTypeFilterIncludes;
-            final boolean coordinateFilterIncludes;
 
             if (cbFilterContent.isSelected()) {
                 final String contentFilter = txtFilterContent.getText();
@@ -978,55 +909,8 @@ public final class MainFrame extends javax.swing.JFrame {
                         typeFilterIncludes = true;
                 }
             }
-
-            if (cbFilterPlayers.isSelected()) {
-                final String playerNameFilter = txtPlayerName.getText();
-                if (line instanceof PlayerProvider) {
-                    final PlayerProvider playerProvider = (PlayerProvider) line;
-                    boolean playerNameFound = false;
-                    for (final Player player : playerProvider.getPlayers())  {
-                        final String playerName = player.getName();
-                        if (playerName != null && Pattern.compile(playerNameFilter).matcher(playerName).find()) {
-                            playerNameFound = true;
-                            break;
-                        }
-                    }
-                    playerNameFilterIncludes = playerNameFound;
-                } else {
-                    return false;
-                }
-            } else {
-                playerNameFilterIncludes = true;
-            }
             
-
-            if (cbFilterItems.isSelected()) {
-                final String itemTypeFilter = txtItemType.getText();
-                if (line instanceof ItemProvider) {
-                    final ItemProvider itemProvider = (ItemProvider) line;
-                    boolean itemTypeFound = false;
-                    for (final Item item : itemProvider.getItems())  {
-                        final String itemType = item.getType();
-                        if (itemType != null && Pattern.compile(itemTypeFilter).matcher(itemType).find()) {
-                            itemTypeFound = true;
-                            break;
-                        }
-                    }
-                    itemTypeFilterIncludes = itemTypeFound;
-                } else {
-                    return false;
-                }
-            } else {
-                itemTypeFilterIncludes = true;
-            }
-            
-            if (cbFilterCoordinate.isSelected()) {
-                coordinateFilterIncludes = (line instanceof CoordinateProvider);
-            } else {
-                coordinateFilterIncludes = true;
-            }
-            
-            return coordinateFilterIncludes && contentFilterIncludes && typeFilterIncludes && playerNameFilterIncludes && itemTypeFilterIncludes;
+            return contentFilterIncludes && typeFilterIncludes;
         }
     }
 

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.coolcow.arpiti.backend;
+package org.coolcow.arpiti.backend.entities;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

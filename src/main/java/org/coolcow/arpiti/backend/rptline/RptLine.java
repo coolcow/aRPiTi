@@ -71,6 +71,5 @@ public interface RptLine {
     String getRawLine();
 
     String getRawContent();
-
-    boolean parseLine(final String line);
+    
 }

@@ -4,16 +4,12 @@
  */
 package org.coolcow.arpiti.backend.rptline;
 
-import org.apache.log4j.Logger;
-
 /**
  *
  * @author jruiz
  */
 public class ErrorRptLine extends AbstractRptLine {
 
-    private static final Logger LOG = Logger.getLogger(ErrorRptLine.class);
-    
     private String message = null;
     
     public ErrorRptLine() {
@@ -24,18 +20,8 @@ public class ErrorRptLine extends AbstractRptLine {
         return message;
     }
 
-    protected void setMessage(String message) {
+    public void setMessage(String message) {
         this.message = message;
     }
     
-    @Override
-    public boolean parseLine(String line) {
-        if (!super.parseLine(line)) {
-            return false;
-        }
-        
-        setMessage(getRawContent());
-        
-        return true;
-    }
 }

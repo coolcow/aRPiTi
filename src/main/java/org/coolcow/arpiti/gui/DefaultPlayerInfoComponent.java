@@ -5,7 +5,7 @@
 package org.coolcow.arpiti.gui;
 
 import javax.swing.JDialog;
-import org.coolcow.arpiti.backend.Player;
+import org.coolcow.arpiti.backend.entities.Player;
 import org.coolcow.arpiti.gui.bindingconverter.IntToStringConverter;
 
 /**

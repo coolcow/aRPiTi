@@ -1,4 +1,4 @@
-package org.coolcow.arpiti.backend;
+package org.coolcow.arpiti.backend.rpttailer;
 
 import java.util.List;
 import org.coolcow.arpiti.backend.rptline.AbstractRptLine;

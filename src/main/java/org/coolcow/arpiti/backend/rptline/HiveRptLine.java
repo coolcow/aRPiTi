@@ -4,26 +4,16 @@
  */
 package org.coolcow.arpiti.backend.rptline;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import org.apache.log4j.Logger;
-import org.coolcow.arpiti.backend.Backend;
-import org.coolcow.arpiti.backend.Player;
-import org.coolcow.arpiti.backend.rptline.interfaces.PlayerProvider;
-
 /**
  *
  * @author jruiz
  */
-public class HiveRptLine extends AbstractRptLine implements PlayerProvider {
+public class HiveRptLine extends AbstractRptLine {
 
-    private static final Logger LOG = Logger.getLogger(HiveRptLine.class);
-    
     private boolean typeWrite = false;    
     
-    private Player player;
+    private String playerIdentifier;
+    private int hiveId;
     private int unknownValue1;
     private int unknownValue2;
 
@@ -35,26 +25,31 @@ public class HiveRptLine extends AbstractRptLine implements PlayerProvider {
         return typeWrite;
     }
 
-    protected void setTypeWrite(final boolean typeWrite) {
+    public void setTypeWrite(final boolean typeWrite) {
         this.typeWrite = typeWrite;
     }
 
-    public Player getPlayer() {
-        return player;
+    public String getPlayerIdentifier() {
+        return playerIdentifier;
     }
 
-    protected void setPlayer(final Player player) {
-        if (player != null) {
-            Backend.getInstance().updatePlayer(player);
-        }
-        this.player = player;
+    public void setPlayerIdentifier(final String playerIdentifier) {
+        this.playerIdentifier = playerIdentifier;
     }
 
+    public int getHiveId() {
+        return hiveId;
+    }
+
+    public void setHiveId(final int hiveId) {
+        this.hiveId = hiveId;
+    }
+    
     public int getUnknownValue1() {
         return unknownValue1;
     }
 
-    protected void setUnknownValue1(final int unknownValue1) {
+    public void setUnknownValue1(final int unknownValue1) {
         this.unknownValue1 = unknownValue1;
     }
 
@@ -62,62 +57,8 @@ public class HiveRptLine extends AbstractRptLine implements PlayerProvider {
         return unknownValue2;
     }
 
-    protected void setUnknownValue2(final int unknownValue2) {
+    public void setUnknownValue2(final int unknownValue2) {
         this.unknownValue2 = unknownValue2;
     }
         
-    @Override
-    public boolean parseLine(String line) {
-        if (!super.parseLine(line)) {
-            return false;
-        }
-
-        final String rawContent = getRawContent();
-        final Matcher writeMatcher = Pattern.compile("^WRITE: \"CHILD:(\\d+):(\\w+):(\\d+):(\\d+):\"$").matcher(rawContent);
-        
-        if (writeMatcher.matches()) {
-            setTypeWrite(true);
-            
-            final String unknownValue1String = writeMatcher.group(1);
-            final String playerIdentifierString = writeMatcher.group(2);
-            final String hiveIdString = writeMatcher.group(3);
-            final String unknownValue2String = writeMatcher.group(4);
-
-            final Player player = new Player();
-            player.setIdentifier(playerIdentifierString);            
-            if (hiveIdString != null) {
-                try {
-                    player.setHiveId(Integer.parseInt(hiveIdString));
-                } catch (final NumberFormatException exception) {
-                    LOG.warn("Error while parsing hiveIdentifier." + hiveIdString, exception);
-                }                
-            }
-            
-            setPlayer(player);            
-            try {
-                setUnknownValue1(Integer.parseInt(unknownValue1String));
-            } catch (final NumberFormatException exception) {
-                LOG.warn("Error while parsing unknownValue1. Set to -1. The source String was: " + unknownValue1String, exception);
-                setUnknownValue1(-1);
-            }
-            try {
-                setUnknownValue2(Integer.parseInt(unknownValue2String));
-            } catch (final NumberFormatException exception) {
-                LOG.warn("Error while parsing unknownValue2. Set to -1. The source String was: " + unknownValue2String, exception);
-                setUnknownValue2(-1);
-            }
-        } 
-        
-        return true;
-    }
-    
-    @Override
-    public Collection<Player> getPlayers() {
-        final Collection<Player> coll = new ArrayList<>();
-        if (player != null) {
-            coll.add(player);
-        }
-        return coll;
-    }
-    
 }

@@ -5,7 +5,7 @@
 package org.coolcow.arpiti.gui;
 
 import javax.swing.JDialog;
-import org.coolcow.arpiti.backend.Coordinate;
+import org.coolcow.arpiti.backend.entities.Coordinate;
 import org.coolcow.arpiti.gui.bindingconverter.CoordinateToStringConverter;
 import org.coolcow.arpiti.gui.bindingconverter.DoubleToStringConverter;
 import org.coolcow.arpiti.gui.bindingconverter.IntToStringConverter;

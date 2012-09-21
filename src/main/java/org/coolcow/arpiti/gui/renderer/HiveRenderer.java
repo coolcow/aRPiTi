@@ -6,9 +6,7 @@ package org.coolcow.arpiti.gui.renderer;
 
 import java.awt.CardLayout;
 import org.coolcow.arpiti.backend.rptline.HiveRptLine;
-import org.coolcow.arpiti.backend.rptline.ReadWriteRptLine;
 import org.coolcow.arpiti.backend.rptline.RptLine;
-import org.coolcow.arpiti.gui.DefaultPlayerInfoComponent;
 import org.coolcow.arpiti.gui.bindingconverter.IntToStringConverter;
 
 /**
@@ -44,8 +42,10 @@ public class HiveRenderer extends AbstractRptLineRenderer {
         jTextField5 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        defaultPlayerInfoComponent1 = new org.coolcow.arpiti.gui.DefaultPlayerInfoComponent();
-        jLabel10 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jTextField4 = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        jTextField6 = new javax.swing.JTextField();
         panNone = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
@@ -66,7 +66,7 @@ public class HiveRenderer extends AbstractRptLineRenderer {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 186, Short.MAX_VALUE)
+            .addGap(0, 166, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -139,7 +139,7 @@ public class HiveRenderer extends AbstractRptLineRenderer {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 147, Short.MAX_VALUE)
+            .addGap(0, 123, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -154,23 +154,48 @@ public class HiveRenderer extends AbstractRptLineRenderer {
         gridBagConstraints.weightx = 1.0;
         panWrite.add(jPanel4, gridBagConstraints);
 
-        defaultPlayerInfoComponent1.setMinimumSize(new java.awt.Dimension(150, 25));
-        defaultPlayerInfoComponent1.setPreferredSize(new java.awt.Dimension(150, 25));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
-        panWrite.add(defaultPlayerInfoComponent1, gridBagConstraints);
-
-        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel10.setText("player info:");
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel7.setText("player identifier:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
-        panWrite.add(jLabel10, gridBagConstraints);
+        panWrite.add(jLabel7, gridBagConstraints);
+
+        jTextField4.setEditable(false);
+        jTextField4.setMinimumSize(new java.awt.Dimension(150, 20));
+        jTextField4.setPreferredSize(new java.awt.Dimension(150, 20));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
+        panWrite.add(jTextField4, gridBagConstraints);
+
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel9.setText("hive id:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
+        panWrite.add(jLabel9, gridBagConstraints);
+
+        jTextField6.setEditable(false);
+        jTextField6.setMinimumSize(new java.awt.Dimension(150, 20));
+        jTextField6.setPreferredSize(new java.awt.Dimension(150, 20));
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${rptLine.hiveId}"), jTextField6, org.jdesktop.beansbinding.BeanProperty.create("text"), "hiveId");
+        binding.setConverter(new IntToStringConverter());
+        bindingGroup.addBinding(binding);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
+        panWrite.add(jTextField6, gridBagConstraints);
 
         panCards.add(panWrite, "write");
 
@@ -244,19 +269,21 @@ public class HiveRenderer extends AbstractRptLineRenderer {
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private org.coolcow.arpiti.gui.DefaultPlayerInfoComponent defaultPlayerInfoComponent1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField jTextField6;
     private javax.swing.JPanel panCards;
     private javax.swing.JPanel panNone;
     private javax.swing.JPanel panWrite;
@@ -279,10 +306,6 @@ public class HiveRenderer extends AbstractRptLineRenderer {
         
         bindingGroup.unbind();
         super.setRptLine(rptLine);
-        if (rptLine != null && rptLine instanceof HiveRptLine) {
-            final DefaultPlayerInfoComponent component = (DefaultPlayerInfoComponent)defaultPlayerInfoComponent1;
-            component.setPlayer(((HiveRptLine) rptLine).getPlayer());
-        }
         bindingGroup.bind();
     }
 }

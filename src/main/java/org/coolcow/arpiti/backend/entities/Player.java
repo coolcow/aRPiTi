@@ -1,4 +1,4 @@
-package org.coolcow.arpiti.backend;
+package org.coolcow.arpiti.backend.entities;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;

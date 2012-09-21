@@ -5,7 +5,7 @@
 package org.coolcow.arpiti.gui.bindingconverter;
 
 import org.apache.log4j.Logger;
-import org.coolcow.arpiti.backend.Coordinate;
+import org.coolcow.arpiti.backend.entities.Coordinate;
 import org.jdesktop.beansbinding.Converter;
 
 /**

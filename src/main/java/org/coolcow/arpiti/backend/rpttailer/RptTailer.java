@@ -1,4 +1,4 @@
-package org.coolcow.arpiti.backend;
+package org.coolcow.arpiti.backend.rpttailer;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.List;
 import javax.swing.SwingWorker;
 import org.apache.log4j.Logger;
+import org.coolcow.arpiti.backend.RptLineParser;
 import org.coolcow.arpiti.backend.rptline.AbstractRptLine;
 
 public class RptTailer extends SwingWorker<Void, Void> {
@@ -114,7 +115,7 @@ public class RptTailer extends SwingWorker<Void, Void> {
                             }
                             lineNumber++;
                             try {
-                                final AbstractRptLine rptLine = AbstractRptLine.parseLine(lineNumber, lineString);
+                                final AbstractRptLine rptLine = RptLineParser.parseLine(lineNumber, lineString);
                                 if (rptLine != null) {
                                     collectedRptLines.add(rptLine);
                                 }
